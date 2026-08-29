@@ -377,6 +377,59 @@
   .process-step h3{ color:var(--ink); font-size:1.02rem; margin-bottom:8px; }
   .process-step p{ color:var(--ink-dim); font-size:.88rem; line-height:1.55; max-width:26ch; }
 
+  /* ---------- Repair story (scroll-driven) ---------- */
+  /* A tall section with a sticky stage inside it: scrolling through the
+     section's height scrubs the animation while the stage stays put.
+     No library — the whole effect is transform + opacity off one handler. */
+  .story-section{ position:relative; height:340vh; background:var(--bg); }
+  .story-stage{
+    position:sticky; top:0; height:100vh; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(72% 52% at 50% 42%, rgba(255,77,35,.13), transparent 66%),
+      var(--bg);
+  }
+  .story-copy{
+    position:relative; z-index:2;
+    max-width:min(1080px, 88vw); margin:0 auto; text-align:center;
+    color:var(--ink);
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(1.35rem, 3.9vw, 3.1rem);
+    line-height:1.32; letter-spacing:-0.02em;
+  }
+  .story-seg{ opacity:0; }
+  .story-slot{
+    display:inline-block; vertical-align:middle;
+    width:clamp(34px, 5.1vw, 76px); height:clamp(34px, 5.1vw, 76px);
+    margin:0 .14em;
+  }
+  .story-tiles{ position:absolute; inset:0; z-index:3; pointer-events:none; }
+  .story-tile{
+    position:absolute; top:0; left:0; transform-origin:0 0; opacity:0;
+    width:clamp(68px, 14.5vw, 156px); height:clamp(68px, 14.5vw, 156px);
+    border-radius:16px; overflow:hidden;
+    border:1px solid var(--line-dark);
+    background:linear-gradient(160deg, rgba(255,255,255,.075), rgba(255,255,255,.015));
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    will-change:transform, opacity;
+  }
+  .story-tile svg{ width:86%; }
+  .story-cap{
+    font-family:var(--font-body); font-weight:700; font-size:.62rem;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim-2);
+  }
+
+  /* Reduced motion: no pinning and no scrubbing — the stages simply sit in a
+     row above the finished sentence. */
+  @media (prefers-reduced-motion: reduce){
+    .story-section{ height:auto; padding:100px 0; }
+    .story-stage{ position:static; height:auto; flex-direction:column; gap:44px; padding:0 clamp(20px,5vw,48px); }
+    .story-tiles{ position:static; display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+    .story-tile{ position:relative; opacity:1; }
+    .story-slot{ display:none; }
+    .story-seg{ opacity:1; }
+  }
+
   /* ---------- Testimonials ---------- */
   .testimonials-section{ padding:110px 0 130px; background:var(--paper); overflow:hidden; }
   .t-viewport{ overflow:hidden; }
@@ -831,6 +884,77 @@
     </div>
   </section>
 
+  <!-- REPAIR STORY (scroll-driven) -->
+  <section class="story-section" aria-label="What a repair looks like, stage by stage">
+    <div class="story-stage">
+      <div class="story-tiles">
+        <div class="story-tile">
+          <svg viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#4c4b50"/>
+            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#2b2a2e"/>
+            <path d="M28 56 q9 6 0 12" stroke="#141316" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M40 40 l11 15 M116 30 l-5 12 7 9" stroke="#ff4d23" stroke-width="2.4" stroke-linecap="round"/>
+            <g stroke="#ff4d23" stroke-width="2" opacity=".9"><line x1="34" y1="33" x2="46" y2="45"/><line x1="46" y1="33" x2="34" y2="45"/></g>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#4a4a50"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#4a4a50"/>
+          </svg>
+          <span class="story-cap">Assess</span>
+        </div>
+        <div class="story-tile">
+          <svg viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#55545a"/>
+            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#2b2a2e"/>
+            <path d="M22 84 H196" stroke="#ff4d23" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round" opacity=".85"/>
+            <path d="M22 80 V88 M196 80 V88" stroke="#ff4d23" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#4a4a50"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#4a4a50"/>
+          </svg>
+          <span class="story-cap">Straighten</span>
+        </div>
+        <div class="story-tile">
+          <svg viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#98938b"/>
+            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#2b2a2e"/>
+            <path d="M38 47 C74 41 148 41 180 50" stroke="#b3aea6" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#4a4a50"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#4a4a50"/>
+          </svg>
+          <span class="story-cap">Prime</span>
+        </div>
+        <div class="story-tile">
+          <svg viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#e8390f"/>
+            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#1f1512"/>
+            <g fill="#ffb703" opacity=".9">
+              <circle cx="176" cy="30" r="2"/><circle cx="186" cy="38" r="1.6"/><circle cx="168" cy="38" r="1.4"/>
+            </g>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#55555c"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#55555c"/>
+          </svg>
+          <span class="story-cap">Paint</span>
+        </div>
+        <div class="story-tile">
+          <svg viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="storyGloss" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff7a4d"/><stop offset=".5" stop-color="#e8390f"/><stop offset="1" stop-color="#7a1c05"/>
+              </linearGradient>
+            </defs>
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="url(#storyGloss)"/>
+            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#1c1414"/>
+            <path d="M38 47 C74 41 148 41 180 50" stroke="rgba(255,255,255,.6)" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+            <g fill="#ffb703">
+              <path d="M182 26l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/>
+              <path d="M32 60l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/>
+            </g>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#6a6a72"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#6a6a72"/>
+          </svg>
+          <span class="story-cap">Polish</span>
+        </div>
+      </div>
+
+      <h2 class="story-copy">
+        <span class="story-seg">Every dent,</span><span class="story-slot"></span><span class="story-seg">every scratch,</span><span class="story-slot"></span><span class="story-seg">every panel pulled back to spec,</span><span class="story-slot"></span><span class="story-seg">every color matched</span><span class="story-slot"></span><span class="story-seg">— and handed back</span><span class="story-slot"></span><span class="story-seg">like nothing ever happened.</span>
+      </h2>
+    </div>
+  </section>
+
   <!-- TESTIMONIALS -->
   <section class="testimonials-section" id="reviews">
     <div class="container">
@@ -1170,6 +1294,91 @@
       });
     });
   }
+
+  /* Repair story: scroll scrubs the five stages out of a row and into the
+     sentence. Positions are measured in stage-local coordinates, so the tiles
+     land exactly on the inline slots the headline already reserves. */
+  (function(){
+    var section = document.querySelector('.story-section');
+    if (!section || reduceMotion) return;
+
+    var stage = section.querySelector('.story-stage');
+    var tiles = Array.prototype.slice.call(section.querySelectorAll('.story-tile'));
+    var slots = Array.prototype.slice.call(section.querySelectorAll('.story-slot'));
+    var segs  = Array.prototype.slice.call(section.querySelectorAll('.story-seg'));
+    var caps  = tiles.map(function(t){ return t.querySelector('.story-cap'); });
+    if (!tiles.length || tiles.length !== slots.length) return;
+
+    var geo = null;
+    function clamp01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+    function easeInOut(t){ return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+
+    function measure(){
+      var sr = stage.getBoundingClientRect();
+      var size = tiles[0].offsetWidth;
+      var gap = Math.round(size * 0.11);
+      var total = tiles.length * size + (tiles.length - 1) * gap;
+      var slotScale = slots[0].offsetWidth / size;
+      geo = { slotScale: slotScale, starts: [], ends: [] };
+      for (var i = 0; i < tiles.length; i++){
+        geo.starts.push({
+          x: (sr.width - total) / 2 + i * (size + gap),
+          y: sr.height * 0.56
+        });
+        var q = slots[i].getBoundingClientRect();
+        geo.ends.push({
+          x: q.left - sr.left + q.width  / 2 - (size * slotScale) / 2,
+          y: q.top  - sr.top  + q.height / 2 - (size * slotScale) / 2
+        });
+      }
+    }
+
+    function progress(){
+      var travel = section.offsetHeight - stage.offsetHeight;
+      if (travel <= 0) return 0;
+      return clamp01(-section.getBoundingClientRect().top / travel);
+    }
+
+    function render(){
+      if (!geo) measure();
+      var p = progress();
+
+      for (var i = 0; i < tiles.length; i++){
+        var rise = clamp01((p - (0.02 + i * 0.025)) / 0.13);
+        var fly  = clamp01((p - (0.40 + i * 0.055)) / 0.22);
+        var re = easeOut(rise), fe = easeInOut(fly);
+        var a = geo.starts[i], b = geo.ends[i];
+
+        var x = a.x + (b.x - a.x) * fe;
+        var y = a.y + (b.y - a.y) * fe + (1 - re) * 70;
+        var scale = 1 + (geo.slotScale - 1) * fe;
+
+        tiles[i].style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + scale.toFixed(4) + ')';
+        tiles[i].style.opacity = re;
+        // Captions only make sense at row size; they are gone before the flight ends.
+        if (caps[i]) caps[i].style.opacity = re * (1 - clamp01(fly * 2.2));
+      }
+
+      for (var j = 0; j < segs.length; j++){
+        segs[j].style.opacity = clamp01((p - (0.68 + j * 0.042)) / 0.05);
+      }
+    }
+
+    var ticking = false;
+    document.addEventListener('scroll', function(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){ render(); ticking = false; });
+    }, { passive: true });
+
+    function remeasure(){ geo = null; render(); }
+    window.addEventListener('resize', remeasure);
+    // The headline reflows once the display font lands, which moves the slots.
+    window.addEventListener('load', remeasure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+    render();
+  })();
 
   /* Testimonials carousel */
   var track = document.getElementById('tTrack');
