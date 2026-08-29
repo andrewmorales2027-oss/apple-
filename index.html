@@ -258,10 +258,9 @@
     cursor:ew-resize; user-select:none; touch-action:none;
   }
   .compare-layer{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .compare-before{ background: radial-gradient(120% 100% at 30% 0%, #2c2c30, #17171a 70%); }
-  .compare-before::before{ content:''; position:absolute; inset:0; background-image: repeating-linear-gradient(115deg, rgba(255,255,255,.03) 0 2px, transparent 2px 14px); }
-  .compare-after{ background: radial-gradient(130% 110% at 30% 0%, #ff8156, #ff4327 40%, #6a1204 100%); clip-path: inset(0 50% 0 0); }
-  .compare-after::before{ content:''; position:absolute; inset:0; background:linear-gradient(120deg, rgba(255,255,255,.5), transparent 45%); mix-blend-mode:overlay; }
+  .compare-before{ background: radial-gradient(120% 100% at 30% 10%, #232326, #131315 75%); }
+  .compare-after{ background: radial-gradient(120% 100% at 70% 10%, #1c0f0a, #12090a 75%); clip-path: inset(0 0 0 50%); }
+  .car-illustration{ width:76%; max-width:360px; filter:drop-shadow(0 16px 22px rgba(0,0,0,.5)); }
   .compare-tag{ position:absolute; top:16px; font-family:var(--font-mono); font-weight:700; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; padding:6px 12px; border-radius:var(--radius-pill); color:#fff; z-index:2; }
   .compare-before .compare-tag{ left:16px; background:rgba(255,255,255,.14); backdrop-filter:blur(6px); }
   .compare-after .compare-tag{ right:16px; background:rgba(0,0,0,.35); backdrop-filter:blur(6px); }
@@ -543,8 +542,65 @@
         <p class="section-sub">Drag the slider — computerized color matching that disappears into your factory finish, even on tricoat pearlescent paint.</p>
       </div>
       <div class="compare-shell" id="compareShell" data-reveal style="--reveal-delay:120ms">
-        <div class="compare-layer compare-before"><span class="compare-tag">Before</span></div>
-        <div class="compare-layer compare-after" id="compareAfter"><span class="compare-tag">After</span></div>
+        <div class="compare-layer compare-before">
+          <span class="compare-tag">Before</span>
+          <svg class="car-illustration" viewBox="0 0 400 190" aria-hidden="true">
+            <defs>
+              <linearGradient id="bodyBefore" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#3a3a3e"/>
+                <stop offset="1" stop-color="#1c1c1f"/>
+              </linearGradient>
+              <radialGradient id="dentBefore" cx="50%" cy="50%" r="60%">
+                <stop offset="0" stop-color="#0c0c0d"/>
+                <stop offset="1" stop-color="#0c0c0d" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="200" cy="168" rx="150" ry="9" fill="#000" opacity=".35"/>
+            <path d="M40,148 Q40,120 62,113 L66,96 Q70,80 92,78 L108,78 Q118,56 148,44 L246,44 Q276,56 288,78 L302,80 Q322,83 330,96 L344,98 Q360,101 360,120 L360,148 Z" fill="url(#bodyBefore)" stroke="#0a0a0b" stroke-width="1.5"/>
+            <path d="M108,78 Q118,58 148,46 L246,46 Q272,58 284,78 L268,78 Q256,60 232,58 L162,58 Q140,60 126,78 Z" fill="#111417" opacity=".9"/>
+            <line x1="62" y1="112" x2="344" y2="112" stroke="#000" stroke-opacity=".3" stroke-width="1.5"/>
+            <ellipse cx="255" cy="108" rx="34" ry="20" fill="url(#dentBefore)" opacity=".6"/>
+            <g stroke="#cfcfd2" stroke-width="1.6" stroke-linecap="round" opacity=".55">
+              <line x1="222" y1="90" x2="258" y2="122"/>
+              <line x1="238" y1="86" x2="248" y2="96"/>
+            </g>
+            <path d="M340,100 L352,101 L349,113 L338,111 Z" fill="#5c5c60"/>
+            <line x1="339" y1="101" x2="351" y2="112" stroke="#0a0a0b" stroke-width="1.4"/>
+            <line x1="351" y1="101" x2="339" y2="112" stroke="#0a0a0b" stroke-width="1.4"/>
+            <rect x="44" y="103" width="12" height="10" rx="2" fill="#3d1512"/>
+            <circle cx="95" cy="150" r="30" fill="#0a0a0b"/><circle cx="95" cy="150" r="13" fill="#3a3a3d"/>
+            <circle cx="300" cy="150" r="30" fill="#0a0a0b"/><circle cx="300" cy="150" r="13" fill="#3a3a3d"/>
+          </svg>
+        </div>
+        <div class="compare-layer compare-after" id="compareAfter">
+          <span class="compare-tag">After</span>
+          <svg class="car-illustration" viewBox="0 0 400 190" aria-hidden="true">
+            <defs>
+              <linearGradient id="bodyAfter" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ff8156"/>
+                <stop offset=".55" stop-color="#ff4327"/>
+                <stop offset="1" stop-color="#8a1c0a"/>
+              </linearGradient>
+              <linearGradient id="sheenAfter" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+                <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="200" cy="168" rx="150" ry="9" fill="#000" opacity=".4"/>
+            <path d="M40,148 Q40,120 62,113 L66,96 Q70,80 92,78 L108,78 Q118,56 148,44 L246,44 Q276,56 288,78 L302,80 Q322,83 330,96 L344,98 Q360,101 360,120 L360,148 Z" fill="url(#bodyAfter)" stroke="#4a0f04" stroke-width="1.5"/>
+            <path d="M40,148 Q40,120 62,113 L66,96 Q70,80 92,78 L108,78 Q118,56 148,44 L246,44 Q276,56 288,78 L302,80 Q322,83 330,96 L344,98 Q360,101 360,120 L360,148 Z" fill="url(#sheenAfter)"/>
+            <path d="M108,78 Q118,58 148,46 L246,46 Q272,58 284,78 L268,78 Q256,60 232,58 L162,58 Q140,60 126,78 Z" fill="#0e1216" opacity=".92"/>
+            <line x1="62" y1="112" x2="344" y2="112" stroke="#f2c9b9" stroke-opacity=".5" stroke-width="1.6"/>
+            <path d="M340,100 L352,101 L349,113 L338,111 Z" fill="#fff6e6"/>
+            <rect x="44" y="103" width="12" height="10" rx="2" fill="#ff3b24"/>
+            <g fill="#ffd7a8" opacity=".9">
+              <path d="M120,64 l2.4,6 6,2.4 -6,2.4 -2.4,6 -2.4,-6 -6,-2.4 6,-2.4z" transform="scale(0.55) translate(90,10)"/>
+              <path d="M300,50 l2,5 5,2 -5,2 -2,5 -2,-5 -5,-2 5,-2z" transform="scale(0.6) translate(90,10)"/>
+            </g>
+            <circle cx="95" cy="150" r="30" fill="#0a0a0b"/><circle cx="95" cy="150" r="13" fill="#c7ccd1"/>
+            <circle cx="300" cy="150" r="30" fill="#0a0a0b"/><circle cx="300" cy="150" r="13" fill="#c7ccd1"/>
+          </svg>
+        </div>
         <div class="compare-handle" id="compareHandle">
           <div class="compare-grip">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l-5 7 5 7M16 5l5 7-5 7"/></svg>
@@ -959,7 +1015,7 @@ if ('IntersectionObserver' in window){
   let dragging = false;
   function setPercent(pct){
     pct = Math.max(2, Math.min(98, pct));
-    after.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+    after.style.clipPath = 'inset(0 0 0 ' + pct + '%)';
     handle.style.left = pct + '%';
   }
   function pctFromEvent(clientX){
@@ -1048,10 +1104,12 @@ if ('IntersectionObserver' in window && ctaBanner){
 }
 
 /* ================================================================
-   WebGL scene — real-time three.js hero: a physically-based "paint
-   drop" (transmission + iridescence + clearcoat, the way tricoat
-   pearlescent automotive paint actually behaves optically), a spark
-   particle field, scroll-driven camera, and bloom postprocessing.
+   WebGL scene — real-time three.js hero: an actual low-poly car,
+   built from primitives and painted with a physically-based clearcoat
+   + iridescence material (the way tricoat pearlescent automotive
+   paint actually behaves optically), sitting on a showroom floor
+   with a spark particle field, a scroll-driven orbiting camera, and
+   bloom postprocessing on the headlights/taillights.
    ================================================================ */
 (async function initScene(){
   const canvas = document.getElementById('gl-canvas');
@@ -1080,7 +1138,7 @@ if ('IntersectionObserver' in window && ctaBanner){
     return;
   }
 
-  let renderer, scene, camera, composer, paintMesh, sparkPoints, dustPoints;
+  let renderer, scene, camera, composer, carGroup, sparkPoints, dustPoints;
   let running = false;
   let scrollProgress = 0;
 
@@ -1109,10 +1167,11 @@ if ('IntersectionObserver' in window && ctaBanner){
     renderer.toneMappingExposure = 1.1;
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x0b0b0d, 0.032);
+    scene.fog = new THREE.FogExp2(0x0b0b0d, 0.022);
 
     camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 200);
-    camera.position.set(2.2, 0.3, 12);
+    camera.position.set(-5.9, 2.1, 4.1);
+    camera.lookAt(0, 0.6, 0);
 
     scene.add(new THREE.AmbientLight(0x9a8f8c, 0.5));
     const key = new THREE.DirectionalLight(0xffb27a, 2.6);
@@ -1149,22 +1208,108 @@ if ('IntersectionObserver' in window && ctaBanner){
       return new THREE.Points(geo, mat);
     }
 
-    sparkPoints = makeField(isTouch ? 220 : 500, 12, 20, 0.5, 0xff8a4d, 0.9);
+    sparkPoints = makeField(isTouch ? 220 : 500, 8, 6, 0.4, 0xff8a4d, 0.9);
     scene.add(sparkPoints);
-    dustPoints = makeField(isTouch ? 300 : 700, 30, 36, 1.3, 0x8892a0, 0.35);
+    dustPoints = makeField(isTouch ? 300 : 700, 26, 30, 1.2, 0x8892a0, 0.3);
     scene.add(dustPoints);
 
-    const paintGeo = new THREE.IcosahedronGeometry(2.0, 8);
-    const paintMat = new THREE.MeshPhysicalMaterial({
-      color: 0xff4327, metalness:0.35, roughness:0.08,
-      transmission:0.55, thickness:1.4, ior:1.5,
-      clearcoat:1, clearcoatRoughness:0.04,
-      iridescence:0.55, iridescenceIOR:1.4,
-      envMapIntensity:1.4
-    });
-    paintMesh = new THREE.Mesh(paintGeo, paintMat);
-    paintMesh.position.set(2.2, 0.2, -1.5);
-    scene.add(paintMesh);
+    // -------- showroom floor + soft ground spotlight --------
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(60, 60),
+      new THREE.MeshStandardMaterial({ color: 0x0d0d10, roughness: 0.35, metalness: 0.25 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+
+    function makeSpotTexture(){
+      const size = 256;
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const ctx = c.getContext('2d');
+      const g = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+      g.addColorStop(0, 'rgba(255,140,90,.55)');
+      g.addColorStop(0.55, 'rgba(255,90,40,.16)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, size, size);
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+    const spot = new THREE.Mesh(
+      new THREE.PlaneGeometry(9, 9),
+      new THREE.MeshBasicMaterial({ map: makeSpotTexture(), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    spot.rotation.x = -Math.PI / 2;
+    spot.position.y = 0.015;
+    scene.add(spot);
+
+    // -------- the car: built from primitives, painted with the shop's finish --------
+    function buildCar(){
+      const group = new THREE.Group();
+
+      const bodyMat = new THREE.MeshPhysicalMaterial({
+        color: 0xff4327, metalness: 0.55, roughness: 0.12,
+        clearcoat: 1, clearcoatRoughness: 0.05,
+        iridescence: 0.25, iridescenceIOR: 1.3,
+        envMapIntensity: 1.5
+      });
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0x0a0f14, metalness: 0.1, roughness: 0.05,
+        transmission: 0.7, thickness: 0.4, ior: 1.45, envMapIntensity: 1.2
+      });
+      const tireMat = new THREE.MeshStandardMaterial({ color: 0x0c0c0e, roughness: 0.75, metalness: 0.1 });
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xc7ccd1, roughness: 0.25, metalness: 0.9 });
+      const headMat = new THREE.MeshStandardMaterial({ color: 0xfff2d8, emissive: 0xfff2d8, emissiveIntensity: 2.2, roughness: 0.3 });
+      const tailMat = new THREE.MeshStandardMaterial({ color: 0xff2a1a, emissive: 0xff2a1a, emissiveIntensity: 1.6, roughness: 0.3 });
+
+      const chassis = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.42, 4.1), bodyMat);
+      chassis.position.set(0, 0.55, 0);
+      group.add(chassis);
+
+      const hood = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.3, 1.35), bodyMat);
+      hood.position.set(0, 0.72, 1.55);
+      group.add(hood);
+
+      const trunk = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.34, 1.05), bodyMat);
+      trunk.position.set(0, 0.73, -1.75);
+      group.add(trunk);
+
+      const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.5, 1.7), bodyMat);
+      cabin.position.set(0, 1.02, -0.15);
+      group.add(cabin);
+
+      const glass = new THREE.Mesh(new THREE.BoxGeometry(1.42, 0.36, 1.58), glassMat);
+      glass.position.set(0, 1.06, -0.15);
+      group.add(glass);
+
+      const wheelGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.34, 24);
+      const rimGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.36, 20);
+      [[-0.98, 1.35], [0.98, 1.35], [-0.98, -1.35], [0.98, -1.35]].forEach(([x, z]) => {
+        const wheel = new THREE.Mesh(wheelGeo, tireMat);
+        wheel.rotation.z = Math.PI / 2;
+        wheel.position.set(x, 0.42, z);
+        group.add(wheel);
+        const rim = new THREE.Mesh(rimGeo, rimMat);
+        rim.rotation.z = Math.PI / 2;
+        rim.position.set(x, 0.42, z);
+        group.add(rim);
+      });
+
+      const headGeo = new THREE.BoxGeometry(0.14, 0.14, 0.1);
+      [-0.68, 0.68].forEach((x) => {
+        const h = new THREE.Mesh(headGeo, headMat);
+        h.position.set(x, 0.7, 2.24);
+        group.add(h);
+        const tl = new THREE.Mesh(headGeo, tailMat);
+        tl.position.set(x, 0.72, -2.29);
+        group.add(tl);
+      });
+
+      return group;
+    }
+    carGroup = buildCar();
+    scene.add(carGroup);
 
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
@@ -1185,17 +1330,17 @@ if ('IntersectionObserver' in window && ctaBanner){
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
     if (!reduceMotion){
-      paintMesh.rotation.x = t*0.1 + scrollProgress*1.0;
-      paintMesh.rotation.y = t*0.16 + scrollProgress*1.5;
-      paintMesh.material.color.setHSL((t*0.02) % 1, 0.75, 0.55);
+      carGroup.rotation.y = Math.sin(t*0.15)*0.09;
       sparkPoints.rotation.y = t*0.05 + scrollProgress*0.6;
-      sparkPoints.position.y = Math.sin(t*0.4)*0.4;
+      sparkPoints.position.y = Math.sin(t*0.4)*0.3 + 0.3;
       dustPoints.rotation.y = -t*0.01;
     }
-    camera.position.z = 12 - scrollProgress*8.5;
-    camera.position.y = 0.3 + scrollProgress*1.1;
-    camera.rotation.z = scrollProgress*0.02;
-    paintMesh.position.z = -1.5 + scrollProgress*3;
+    const angle = THREE.MathUtils.degToRad(-55 + scrollProgress*160);
+    const radius = 7.2 - scrollProgress*1.2;
+    camera.position.x = Math.sin(angle)*radius;
+    camera.position.z = Math.cos(angle)*radius;
+    camera.position.y = 2.1 - scrollProgress*0.7;
+    camera.lookAt(0, 0.6, 0);
     composer.render();
   }
 
