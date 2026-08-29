@@ -3,502 +3,462 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>United Collision Center | Mountain View Auto Body Shop</title>
-<meta name="description" content="United Collision Center — Mountain View's 4.8★ rated auto body shop. Collision repair, paint matching, dent removal & EV-certified repair. Free estimates.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23e8390f'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EUC%3C/text%3E%3C/svg%3E">
+<title>Meridian | Private Aviation, Redefined</title>
+<meta name="description" content="Meridian is a global private aviation broker — on-demand charter across a vetted fleet of light, midsize, super-midsize and heavy jets, with 24/7 concierge and worldwide reach.">
+<meta name="theme-color" content="#04060a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080b12'/%3E%3Cpath d='M32 10 L46 40 L34 35 L34 50 L30 50 L30 35 L18 40 Z' fill='%23c9a86a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/"
+  }
+}
+</script>
 <style>
   :root{
-    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.83, 0, 0.17, 1);
 
-    --bg: #0a0a0c;
-    --bg-soft: #131316;
-    --bg-soft-2: #1b1b1f;
-    --paper: #f7f5f1;
-    --paper-alt: #edeae3;
-    --ink: #f6f4f0;
-    --ink-dim: rgba(246,244,240,.66);
-    --ink-dim-2: rgba(246,244,240,.42);
-    --dark: #16151a;
-    --dark-dim: rgba(22,21,26,.64);
-    --dark-dim-2: rgba(22,21,26,.4);
-    --accent: #ff4d23;
-    --accent-deep: #d6350e;
-    --accent-2: #ffb703;
-    --line-dark: rgba(255,255,255,.1);
-    --line-light: rgba(22,21,26,.1);
-    --radius-lg: 26px;
-    --radius-md: 18px;
-    --radius-sm: 12px;
+    --bg: #05070c;
+    --bg-1: #0a0e17;
+    --bg-2: #10151f;
+    --bg-3: #171d2a;
+    --ink: #f4f2ec;
+    --ink-dim: rgba(244,242,236,.68);
+    --ink-dim-2: rgba(244,242,236,.42);
+    --gold: #c9a86a;
+    --gold-hi: #eddcb4;
+    --gold-deep: #9c7d47;
+    --line: rgba(244,242,236,.14);
+    --line-soft: rgba(244,242,236,.08);
+
+    --glass-bg: rgba(244,242,236,.055);
+    --glass-bg-strong: rgba(244,242,236,.09);
+    --glass-border: rgba(244,242,236,.16);
+    --glass-shadow: 0 30px 80px -30px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.14);
+
+    --radius-xl: 32px;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 11px;
     --radius-pill: 999px;
-    --shadow-lift: 0 20px 60px -20px rgba(0,0,0,.45);
-    --font-display: 'Sora', system-ui, sans-serif;
-    --font-body: 'Inter', system-ui, sans-serif;
-    --container: 1180px;
+
+    --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --container: 1240px;
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; background:var(--bg); }
   body{
     margin:0;
-    background:var(--paper);
-    color:var(--dark);
+    background:var(--bg);
+    color:var(--ink);
     font-family:var(--font-body);
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
+    text-rendering:optimizeLegibility;
+    overflow-x:clip;
   }
   img,svg{ display:block; max-width:100%; }
   a{ color:inherit; text-decoration:none; }
   ul{ list-style:none; margin:0; padding:0; }
   section{ position:relative; }
-  h1,h2,h3,h4{ font-family:var(--font-display); margin:0; font-weight:700; }
+  h1,h2,h3,h4{ font-family:var(--font-display); margin:0; font-weight:500; }
   p{ margin:0; }
   button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
-  .container{ max-width:var(--container); margin:0 auto; padding:0 clamp(20px,5vw,48px); }
+  .container{ max-width:var(--container); margin:0 auto; padding:0 clamp(20px,5vw,56px); position:relative; z-index:1; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:.72rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold-hi);
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:linear-gradient(90deg, transparent, var(--gold)); }
+  .eyebrow.center{ justify-content:center; }
+  .eyebrow.center::before{ display:none; }
 
-  ::selection{ background:var(--accent); color:#fff; }
+  ::selection{ background:var(--gold); color:#141005; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* ---------- Grain overlay (filmic layer) ---------- */
+  #grain{
+    position:fixed; inset:-100px; z-index:5; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  #vignette{
+    position:fixed; inset:0; z-index:4; pointer-events:none;
+    background: radial-gradient(120% 90% at 50% 8%, transparent 40%, rgba(0,0,0,.55) 100%);
+  }
+
+  /* ---------- WebGL hero canvas ---------- */
+  #gl-stage{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(70% 55% at 76% 10%, rgba(201,168,106,.16), transparent 60%),
+      radial-gradient(60% 45% at 10% 100%, rgba(90,120,190,.14), transparent 60%),
+      linear-gradient(180deg, #05070c 0%, #070a11 55%, #05070c 100%);
+    opacity:1;
+    transition: opacity 900ms var(--ease-out-soft);
+  }
+  #gl-stage.is-dim{ opacity:.22; }
+  #gl-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+
+  /* ---------- Cursor ---------- */
+  .cursor-dot,.cursor-ring{
+    position:fixed; top:0; left:0; z-index:400; pointer-events:none;
+    border-radius:50%; transform:translate(-50%,-50%);
+    will-change:transform;
+  }
+  .cursor-dot{ width:6px; height:6px; background:var(--gold); }
+  .cursor-ring{ width:34px; height:34px; border:1px solid rgba(244,242,236,.5); transition: width 220ms var(--ease-out), height 220ms var(--ease-out), border-color 220ms ease, background 220ms ease; }
+  .cursor-ring.is-active{ width:56px; height:56px; background:rgba(244,242,236,.08); border-color:var(--gold); }
+  body.has-fine-cursor{ cursor:none; }
+  body.has-fine-cursor a, body.has-fine-cursor button{ cursor:none; }
+  @media (hover:none), (pointer:coarse){ .cursor-dot,.cursor-ring{ display:none !important; } }
 
   /* ---------- Buttons ---------- */
   .btn{
-    display:inline-flex; align-items:center; justify-content:center; gap:.55em;
-    padding:.95em 1.6em;
+    display:inline-flex; align-items:center; justify-content:center; gap:.6em;
+    padding:1em 1.7em;
     border-radius:var(--radius-pill);
-    font-family:var(--font-body); font-weight:700; font-size:.95rem;
-    letter-spacing:.01em;
-    transition: transform 160ms var(--ease-out), box-shadow 200ms var(--ease-out), background 200ms ease;
-    white-space:nowrap;
+    font-family:var(--font-body); font-weight:600; font-size:.9rem;
+    letter-spacing:.02em;
+    transition: transform 200ms var(--ease-out), box-shadow 250ms var(--ease-out), background 250ms ease, border-color 250ms ease;
+    white-space:nowrap; position:relative; isolation:isolate;
   }
-  .btn:active{ transform:scale(0.97); }
-  .btn svg{ width:1.15em; height:1.15em; flex:none; }
-  .btn-primary{
-    background: linear-gradient(180deg, var(--accent), var(--accent-deep));
-    color:#fff;
-    box-shadow: 0 10px 30px -8px rgba(255,77,35,.55);
+  .btn svg{ width:1.05em; height:1.05em; flex:none; }
+  .btn-gold{
+    background: linear-gradient(180deg, var(--gold-hi), var(--gold) 55%, var(--gold-deep));
+    color:#141005;
+    box-shadow: 0 16px 40px -14px rgba(201,168,106,.55);
+  }
+  .btn-glass{
+    background: var(--glass-bg); color:var(--ink);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
   }
   @media (hover:hover) and (pointer:fine){
-    .btn-primary:hover{ box-shadow: 0 14px 36px -8px rgba(255,77,35,.7); transform:translateY(-2px); }
-    .btn-primary:active{ transform:scale(0.97); }
+    .btn-gold:hover{ transform:translateY(-2px); box-shadow: 0 20px 50px -12px rgba(201,168,106,.75); }
+    .btn-glass:hover{ background:var(--glass-bg-strong); border-color:rgba(244,242,236,.3); transform:translateY(-2px); }
   }
-  .btn-ghost-dark{ background:rgba(255,255,255,.08); color:var(--ink); border:1px solid var(--line-dark); backdrop-filter:blur(10px); }
-  @media (hover:hover) and (pointer:fine){ .btn-ghost-dark:hover{ background:rgba(255,255,255,.14); } }
-  .btn-ghost-light{ background:rgba(22,21,26,.06); color:var(--dark); border:1px solid var(--line-light); }
-  @media (hover:hover) and (pointer:fine){ .btn-ghost-light:hover{ background:rgba(22,21,26,.1); } }
-  .btn-block{ width:100%; }
+  .btn:active{ transform:scale(.97) !important; }
+  .magnetic{ will-change:transform; }
+
+  /* ---------- Liquid glass surface ---------- */
+  .glass{
+    position:relative;
+    background: var(--glass-bg);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    box-shadow: var(--glass-shadow);
+    overflow:hidden;
+  }
+  .glass::before{
+    content:'';
+    position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background: linear-gradient(115deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 26%);
+    mix-blend-mode:overlay;
+  }
+  .glass::after{
+    content:'';
+    position:absolute; top:-60%; left:-30%; width:60%; height:220%; pointer-events:none;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.16), transparent);
+    transform: rotate(8deg) translateX(-40%);
+    animation: sheen 8s var(--ease-in-out) infinite;
+  }
+  @keyframes sheen{ 0%,60%,100%{ transform: rotate(8deg) translateX(-40%);} 30%{ transform: rotate(8deg) translateX(220%);} }
+  @media (prefers-reduced-motion: reduce){ .glass::after{ animation:none; opacity:0; } }
 
   /* ---------- Reveal on scroll ---------- */
-  /* Note: intentionally opacity+transform, not clip-path — a self-applied
-     clip-path that zeroes an element's paint area makes Chromium's
-     IntersectionObserver report it as permanently non-intersecting, so it
-     can never be observed into view. transform/opacity avoids that trap
-     entirely and is still compositor-only. */
-  [data-reveal]{
-    opacity:0;
-    transform: translateY(28px);
-    transition: transform 700ms var(--ease-out), opacity 600ms var(--ease-out);
+  html.js-ready [data-reveal]{
+    opacity:0; transform: translateY(30px);
+    transition: transform 900ms var(--ease-out), opacity 800ms var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
   }
-  [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
-  @media (prefers-reduced-motion: reduce){
-    [data-reveal]{ opacity:0; transform:none; transition: opacity 300ms ease; }
-    [data-reveal].is-visible{ opacity:1; }
-  }
+  html.js-ready [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
 
   /* ---------- Preloader ---------- */
   #preloader{
     position:fixed; inset:0; z-index:999; background:var(--bg);
-    display:flex; align-items:center; justify-content:center;
-    transition: opacity 500ms var(--ease-out), visibility 500ms var(--ease-out);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:22px;
+    transition: opacity 700ms var(--ease-out), visibility 700ms var(--ease-out);
   }
   #preloader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
-  .preload-badge{ position:relative; width:76px; height:76px; }
-  .preload-ring{
-    position:absolute; inset:0; border-radius:50%;
-    border:3px solid rgba(255,255,255,.12);
-    border-top-color:var(--accent);
-    animation: spin 900ms linear infinite;
-  }
-  .preload-mark{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-display); font-weight:800; color:var(--ink); font-size:1.05rem; letter-spacing:.02em;
-  }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce){ .preload-ring{ animation:none; } }
+  .pre-mark{ width:52px; height:52px; color:var(--gold); }
+  .pre-word{ font-family:var(--font-display); letter-spacing:.32em; font-size:.85rem; color:var(--ink-dim); text-transform:uppercase; }
+  .pre-bar{ width:180px; height:1px; background:var(--line); position:relative; overflow:hidden; }
+  .pre-bar-fill{ position:absolute; inset:0; width:0%; background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi)); transition:width 300ms ease; }
 
   /* ---------- Header ---------- */
   header{
     position:fixed; top:0; left:0; right:0; z-index:200;
-    padding:18px 0;
-    transition: background 300ms ease, box-shadow 300ms ease, padding 300ms var(--ease-out), backdrop-filter 300ms ease;
+    padding:26px 0;
+    transition: padding 300ms var(--ease-out), background 300ms ease;
   }
   header .container{ display:flex; align-items:center; justify-content:space-between; gap:24px; }
-  header.is-scrolled{
-    padding:10px 0;
-    background:rgba(10,10,12,.7);
-    backdrop-filter:blur(18px) saturate(160%);
-    box-shadow:0 1px 0 var(--line-dark), 0 20px 40px -30px rgba(0,0,0,.6);
+  header.is-scrolled{ padding:14px 0; }
+  header.is-scrolled .header-glass{ opacity:1; }
+  .header-glass{
+    position:absolute; inset:0 0 auto 0; height:100%; z-index:-1; opacity:0;
+    background:rgba(5,7,12,.55); backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
+    border-bottom:1px solid var(--line-soft);
+    transition: opacity 300ms ease;
   }
-  .brand{ display:flex; align-items:center; gap:12px; color:var(--ink); }
-  .brand-mark{ width:40px; height:40px; flex:none; }
-  .brand-word{ font-family:var(--font-display); font-weight:800; font-size:.98rem; line-height:1.05; letter-spacing:.01em; }
-  .brand-word span{ display:block; font-family:var(--font-body); font-weight:600; font-size:.66rem; letter-spacing:.14em; color:var(--ink-dim-2); text-transform:uppercase; margin-top:2px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{ width:34px; height:34px; flex:none; color:var(--gold); }
+  .brand-word{ font-family:var(--font-display); font-weight:500; font-size:1.05rem; letter-spacing:.03em; line-height:1; }
+  .brand-word span{ display:block; font-family:var(--font-body); font-weight:600; font-size:.56rem; letter-spacing:.28em; color:var(--ink-dim-2); text-transform:uppercase; margin-top:5px; }
 
-  nav.primary-nav{ display:flex; align-items:center; gap:2px; }
+  nav.primary-nav{ display:flex; align-items:center; gap:4px; }
   nav.primary-nav a{
-    color:var(--ink-dim); font-weight:600; font-size:.9rem; padding:10px 16px; border-radius:var(--radius-pill);
+    color:var(--ink-dim); font-weight:500; font-size:.86rem; padding:10px 16px; border-radius:var(--radius-pill);
     transition: color 200ms ease, background 200ms ease;
   }
-  @media (hover:hover) and (pointer:fine){
-    nav.primary-nav a:hover{ color:var(--ink); background:rgba(255,255,255,.07); }
-  }
-  .header-actions{ display:flex; align-items:center; gap:10px; }
-  .header-call{ display:flex; align-items:center; gap:8px; color:var(--ink); font-weight:700; font-size:.88rem; padding:9px 16px; border-radius:var(--radius-pill); border:1px solid var(--line-dark); background:rgba(255,255,255,.05); transition:background 200ms ease, transform 160ms var(--ease-out); }
-  .header-call:active{ transform:scale(0.97); }
-  .header-call svg{ width:16px; height:16px; color:var(--accent); flex:none; }
+  @media (hover:hover) and (pointer:fine){ nav.primary-nav a:hover{ color:var(--ink); background:rgba(244,242,236,.06); } }
+  .header-actions{ display:flex; align-items:center; gap:12px; }
+  .header-actions .btn-glass{ padding:.75em 1.3em; font-size:.82rem; }
+  @media (max-width:960px){ .header-actions .btn-glass span{ display:none; } .header-actions .btn-glass{ padding:.85em; } }
 
-  .menu-toggle{ display:none; width:42px; height:42px; border-radius:50%; align-items:center; justify-content:center; color:var(--ink); background:rgba(255,255,255,.08); border:1px solid var(--line-dark); }
-  .menu-toggle svg{ width:18px; height:18px; }
+  .menu-toggle{ display:none; width:42px; height:42px; border-radius:50%; align-items:center; justify-content:center; color:var(--ink); background:rgba(244,242,236,.08); border:1px solid var(--line); flex:none; }
+  .menu-toggle svg{ width:16px; height:16px; }
+  @media (max-width:900px){ nav.primary-nav{ display:none; } .menu-toggle{ display:flex; } }
 
-  /* ---------- Mobile drawer ---------- */
   .mobile-drawer{
-    position:fixed; inset:0; z-index:190;
-    background:#08080a;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-    transform:translateY(-100%);
-    transition: transform 480ms var(--ease-drawer);
+    position:fixed; inset:0; z-index:190; background:#050709;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    transform:translateY(-100%); transition: transform 520ms var(--ease-in-out);
   }
   .mobile-drawer.open{ transform:translateY(0); }
-  .mobile-drawer a{ color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:1.6rem; padding:14px 0; }
-  .mobile-drawer .btn{ margin-top:18px; }
-
-  @media (max-width: 900px){
-    nav.primary-nav{ display:none; }
-    .header-call span{ display:none; }
-    .menu-toggle{ display:flex; }
-  }
+  .mobile-drawer a{ color:var(--ink); font-family:var(--font-display); font-weight:500; font-size:1.7rem; padding:14px 0; }
+  .mobile-drawer .btn{ margin-top:22px; }
+  .drawer-close{ position:absolute; top:26px; right:clamp(20px,5vw,56px); width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(244,242,236,.08); border:1px solid var(--line); }
+  .drawer-close svg{ width:16px; height:16px; }
 
   /* ---------- Hero ---------- */
-  .hero{
-    background:
-      radial-gradient(60% 55% at 78% 8%, rgba(255,77,35,.28), transparent 60%),
-      radial-gradient(45% 40% at 8% 92%, rgba(255,183,3,.14), transparent 60%),
-      linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
-    padding:170px 0 120px;
-    overflow:hidden;
-    isolation:isolate;
-  }
-  .hero::before{
-    content:''; position:absolute; inset:0; z-index:-1; opacity:.5;
-    background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-    background-size:56px 56px;
-    mask-image: radial-gradient(60% 60% at 70% 20%, black, transparent 75%);
-  }
-  .hero-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; }
-  @media (max-width:980px){ .hero-grid{ grid-template-columns:1fr; } }
-
-  .eyebrow{
-    display:inline-flex; align-items:center; gap:8px;
-    font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-    padding:8px 14px; border-radius:var(--radius-pill);
-    border:1px solid var(--line-dark); background:rgba(255,255,255,.06); color:var(--ink-dim);
-  }
-  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulseDot 1.8s var(--ease-in-out) infinite; }
-  @keyframes pulseDot{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.4; transform:scale(1.3); } }
-  @media (prefers-reduced-motion: reduce){ .eyebrow .dot{ animation:none; } }
-
+  .hero{ min-height:100vh; display:flex; align-items:center; padding:150px 0 90px; }
+  .hero-inner{ text-align:center; max-width:920px; margin:0 auto; }
   .hero h1{
     color:var(--ink);
-    font-size:clamp(2.6rem, 6vw, 4.6rem);
-    line-height:.98;
-    letter-spacing:-0.03em;
-    margin:22px 0 24px;
+    font-size:clamp(3rem, 8.4vw, 6.6rem);
+    line-height:.98; letter-spacing:-0.01em; font-weight:400;
+    margin:26px 0 26px;
   }
-  .hero h1 .word{ display:inline-block; overflow:hidden; vertical-align:top; }
-  .hero h1 .word span{
-    display:inline-block; transform:translateY(115%);
-    animation: riseUp 900ms var(--ease-out) forwards;
-    animation-delay: var(--d, 0ms);
-  }
+  .hero h1 em{ font-style:italic; color:var(--gold-hi); }
+  .hero h1 .line{ display:block; overflow:hidden; }
+  .hero h1 .line span{ display:inline-block; transform:translateY(112%); animation: riseUp 1100ms var(--ease-out) forwards; animation-delay: var(--d,0ms); }
   @keyframes riseUp{ to{ transform:translateY(0); } }
-  @media (prefers-reduced-motion: reduce){ .hero h1 .word span{ animation:none; transform:none; } }
-  .hero h1 .accent-text{ color:var(--accent); }
+  html:not(.js-ready) .hero h1 .line span{ transform:none; animation:none; }
 
-  .hero p.lead{ color:var(--ink-dim); font-size:1.08rem; line-height:1.6; max-width:46ch; }
-  .hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-top:34px; }
-  .hero-trust{ display:flex; align-items:center; gap:14px; margin-top:38px; flex-wrap:wrap; }
-  .rating-chip{ display:flex; align-items:center; gap:10px; }
-  .stars{ display:flex; gap:2px; }
-  .stars svg{ width:16px; height:16px; color:var(--accent-2); }
-  .rating-chip strong{ color:var(--ink); font-family:var(--font-display); font-size:.95rem; }
-  .rating-chip span{ color:var(--ink-dim-2); font-size:.82rem; }
-  .avatars{ display:flex; }
-  .avatars .a{ width:30px; height:30px; border-radius:50%; margin-left:-8px; border:2px solid var(--bg); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:.7rem; color:#fff; }
+  .hero p.lead{ color:var(--ink-dim); font-size:1.14rem; line-height:1.7; max-width:52ch; margin:0 auto; }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:38px; }
+  .hero-stats{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:56px; }
+  .stat-chip{
+    display:flex; align-items:baseline; gap:8px; padding:12px 20px; border-radius:var(--radius-pill);
+  }
+  .stat-chip strong{ font-family:var(--font-display); font-size:1.05rem; color:var(--gold-hi); }
+  .stat-chip span{ font-size:.76rem; color:var(--ink-dim-2); letter-spacing:.03em; }
 
-  /* Hero visual */
-  .hero-visual{ position:relative; height:460px; }
-  .float-card{
-    position:absolute; border-radius:var(--radius-md);
-    background:rgba(255,255,255,.07); border:1px solid var(--line-dark); backdrop-filter:blur(16px);
-    padding:14px 16px; display:flex; align-items:center; gap:10px; color:var(--ink);
-    box-shadow: var(--shadow-lift);
-    will-change:transform;
+  .scroll-cue{
+    position:absolute; left:50%; bottom:38px; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    color:var(--ink-dim-2); font-size:.68rem; letter-spacing:.24em; text-transform:uppercase;
   }
-  .float-card svg{ width:20px; height:20px; color:var(--accent); flex:none; }
-  .float-card strong{ display:block; font-family:var(--font-display); font-size:.86rem; }
-  .float-card span{ display:block; font-size:.72rem; color:var(--ink-dim-2); }
-  .fc-1{ top:6%; left:2%; animation: bob 5.5s var(--ease-in-out) infinite; }
-  .fc-2{ bottom:16%; left:12%; animation: bob 6.5s var(--ease-in-out) infinite 400ms; }
-  .fc-3{ top:44%; right:0%; animation: bob 6s var(--ease-in-out) infinite 800ms; }
-  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
-  @media (prefers-reduced-motion: reduce){ .float-card{ animation:none !important; } }
+  .scroll-cue .line-wrap{ width:1px; height:44px; background:var(--line); overflow:hidden; }
+  .scroll-cue .line-run{ width:100%; height:40%; background:linear-gradient(180deg, transparent, var(--gold)); animation: scrollRun 2.2s var(--ease-in-out) infinite; }
+  @keyframes scrollRun{ 0%{ transform:translateY(-100%);} 100%{ transform:translateY(280%);} }
+  @media (prefers-reduced-motion: reduce){ .scroll-cue .line-run{ animation:none; } }
 
-  .hero-orb{
-    position:absolute; inset:8% 4%; border-radius:50% 50% 46% 46% / 55% 55% 45% 45%;
-    background: conic-gradient(from 210deg, #ff4d23, #ffb703, #ff4d23);
-    filter:blur(0px);
-    opacity:.9;
-    animation: rotateOrb 16s linear infinite;
-  }
-  .hero-orb::after{
-    content:''; position:absolute; inset:3px; border-radius:inherit; background:var(--bg-soft);
-  }
-  @keyframes rotateOrb{ to{ transform:rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce){ .hero-orb{ animation:none; } }
-
-  .hero-panels{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .panel{
-    position:absolute; border-radius:20px; border:1px solid var(--line-dark);
-    background:linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.02));
-  }
-  .panel-a{ width:190px; height:230px; transform:rotate(-9deg) translate(-64px,-8px); box-shadow:var(--shadow-lift); }
-  .panel-b{ width:150px; height:190px; transform:rotate(11deg) translate(70px,26px); box-shadow:var(--shadow-lift); }
-  .panel-icon{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .panel-icon svg{ width:56px; height:56px; color:var(--accent); opacity:.9; }
+  #hero-pin-spacer{ display:block; }
 
   /* ---------- Marquee ---------- */
-  .marquee-wrap{ background:var(--dark); padding:22px 0; overflow:hidden; border-top:1px solid var(--line-dark); border-bottom:1px solid var(--line-dark); }
-  .marquee{ display:flex; width:max-content; animation: marquee 26s linear infinite; }
+  .marquee-wrap{ padding:26px 0; overflow:hidden; border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
+  .marquee{ display:flex; width:max-content; animation: marquee 32s linear infinite; }
   @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-  .marquee-item{ display:flex; align-items:center; gap:14px; padding:0 28px; color:var(--ink-dim); font-family:var(--font-display); font-weight:700; font-size:1.05rem; letter-spacing:.02em; white-space:nowrap; }
-  .marquee-item .sep{ width:6px; height:6px; border-radius:50%; background:var(--accent); }
-  @media (prefers-reduced-motion: reduce){ .marquee{ animation-duration:60s; } }
+  .marquee-item{ display:flex; align-items:center; gap:16px; padding:0 30px; color:var(--ink-dim-2); font-family:var(--font-display); font-weight:500; font-size:1.15rem; letter-spacing:.01em; white-space:nowrap; }
+  .marquee-item .sep{ width:5px; height:5px; border-radius:50%; background:var(--gold); }
+  @media (prefers-reduced-motion: reduce){ .marquee{ animation-duration:80s; } }
 
   /* ---------- Section heading ---------- */
-  .section-head{ max-width:640px; margin-bottom:56px; }
+  .section-head{ max-width:680px; margin-bottom:60px; }
   .section-head.center{ margin-left:auto; margin-right:auto; text-align:center; }
-  .eyebrow-light{ color:var(--accent-deep); background:rgba(230,57,15,.08); border-color:rgba(230,57,15,.18); }
-  .section-title{ font-size:clamp(1.9rem, 3.6vw, 2.8rem); letter-spacing:-0.02em; line-height:1.05; margin:16px 0 14px; color:var(--dark); }
-  .section-sub{ color:var(--dark-dim); font-size:1.03rem; line-height:1.6; }
-  section.on-dark .section-title{ color:var(--ink); }
-  section.on-dark .section-sub{ color:var(--ink-dim); }
+  .section-title{ font-size:clamp(2rem, 4vw, 3.1rem); letter-spacing:-0.01em; line-height:1.08; margin:18px 0 16px; font-weight:400; }
+  .section-sub{ color:var(--ink-dim); font-size:1.04rem; line-height:1.7; }
 
-  /* ---------- Before / After ---------- */
-  .compare-section{ padding:110px 0; background:var(--paper); }
-  .compare-shell{
-    position:relative; max-width:760px; margin:0 auto; aspect-ratio:16/10; border-radius:var(--radius-lg);
-    overflow:hidden; box-shadow:var(--shadow-lift); border:1px solid var(--line-light);
-    cursor:ew-resize; user-select:none; touch-action:none;
+  section.band{ padding:130px 0; }
+  section.band-tight{ padding:100px 0; }
+
+  /* ---------- Fleet ---------- */
+  .fleet-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; perspective:1400px; }
+  @media (max-width:1100px){ .fleet-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:620px){ .fleet-grid{ grid-template-columns:1fr; } }
+  .fleet-card{
+    border-radius:var(--radius-lg); padding:30px 26px 28px;
+    transform-style:preserve-3d; will-change:transform;
+    transition: transform 260ms var(--ease-out), border-color 260ms ease;
+    display:flex; flex-direction:column;
   }
-  .compare-layer{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .compare-before{ background: linear-gradient(160deg,#2b2c30,#1a1a1d); }
-  .compare-after{ background: linear-gradient(160deg,#241209,#0f0a08); clip-path: inset(0 50% 0 0); }
-  .compare-tag{ position:absolute; top:16px; font-family:var(--font-display); font-weight:700; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; padding:6px 12px; border-radius:var(--radius-pill); color:#fff; }
-  .compare-before .compare-tag{ left:16px; background:rgba(255,255,255,.14); backdrop-filter:blur(6px); }
-  .compare-after .compare-tag{ right:16px; background:var(--accent); }
-  .compare-handle{
-    position:absolute; top:0; bottom:0; left:50%; width:0; transform:translateX(-50%);
-    display:flex; align-items:center; justify-content:center;
+  .fleet-tag{ font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-hi); font-weight:700; }
+  .fleet-card h3{ font-size:1.3rem; margin:14px 0 4px; }
+  .fleet-card .fleet-models{ color:var(--ink-dim-2); font-size:.82rem; margin-bottom:22px; line-height:1.5; }
+  .fleet-specs{ margin-top:auto; display:flex; flex-direction:column; gap:10px; padding-top:18px; border-top:1px solid var(--line-soft); }
+  .fleet-spec-row{ display:flex; justify-content:space-between; font-size:.82rem; }
+  .fleet-spec-row span:first-child{ color:var(--ink-dim-2); }
+  .fleet-spec-row span:last-child{ color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+  .fleet-jet-icon{ width:100%; height:52px; margin-bottom:6px; color:var(--gold); opacity:.9; }
+
+  /* ---------- Experience / bento ---------- */
+  .bento{ display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:minmax(200px,auto); gap:18px; }
+  @media (max-width:900px){ .bento{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:600px){ .bento{ grid-template-columns:1fr; } }
+  .bento-card{ border-radius:var(--radius-lg); padding:32px; display:flex; flex-direction:column; justify-content:flex-end; }
+  .bento-feature{ grid-column:span 2; grid-row:span 2; min-height:420px; justify-content:flex-end; position:relative; }
+  @media (max-width:900px){ .bento-feature{ grid-column:span 2; min-height:340px; } }
+  @media (max-width:600px){ .bento-feature{ grid-column:span 1; } }
+  .bento-feature .bento-photo{
+    position:absolute; inset:0; z-index:-1; border-radius:inherit; overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(5,7,12,.15) 0%, rgba(5,7,12,.86) 100%),
+      linear-gradient(120deg, #1c2536, #0c1119 60%, #060810);
   }
-  .compare-handle::before{ content:''; position:absolute; top:0; bottom:0; width:2px; background:rgba(255,255,255,.85); }
-  .compare-grip{
-    width:44px; height:44px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; gap:2px;
-    box-shadow:0 8px 20px rgba(0,0,0,.35); transition: transform 160ms var(--ease-out);
+  .bento-feature .bento-photo img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55; mix-blend-mode:luminosity;
   }
-  .compare-shell:active .compare-grip{ transform:scale(0.94); }
-  .compare-grip svg{ width:14px; height:14px; color:var(--dark); }
-  .compare-hint{ text-align:center; margin-top:20px; color:var(--dark-dim-2); font-size:.85rem; font-weight:600; letter-spacing:.02em; }
+  .bento-feature .bento-photo.photo-fallback img{ display:none; }
+  .bento-icon{ width:44px; height:44px; border-radius:12px; background:rgba(201,168,106,.14); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+  .bento-icon svg{ width:22px; height:22px; color:var(--gold-hi); }
+  .bento-card h3{ font-size:1.28rem; margin-bottom:10px; }
+  .bento-card p{ color:var(--ink-dim); font-size:.92rem; line-height:1.6; max-width:38ch; }
+  .bento-feature h3{ font-size:1.7rem; }
+  .bento-feature p{ max-width:44ch; }
 
-  /* car illustration */
-  .car-illustration{ width:70%; max-width:340px; }
-
-  /* ---------- Services ---------- */
-  .services-section{ padding:110px 0; background:var(--bg); }
-  .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  @media (max-width:900px){ .services-grid{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:600px){ .services-grid{ grid-template-columns:1fr; } }
-  .service-card{
-    position:relative; padding:30px 26px; border-radius:var(--radius-lg);
-    background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
-    border:1px solid var(--line-dark);
-    transform-style:preserve-3d; transition: transform 220ms var(--ease-out), border-color 220ms ease;
-    will-change:transform;
-  }
-  @media (hover:hover) and (pointer:fine){ .service-card:hover{ border-color:rgba(255,77,35,.4); } }
-  .service-icon{ width:52px; height:52px; border-radius:var(--radius-sm); background:rgba(255,77,35,.14); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
-  .service-icon svg{ width:26px; height:26px; color:var(--accent); }
-  .service-card h3{ color:var(--ink); font-size:1.12rem; margin-bottom:10px; letter-spacing:-0.01em; }
-  .service-card p{ color:var(--ink-dim); font-size:.92rem; line-height:1.55; }
-
-  /* ---------- Why us ---------- */
-  .why-section{ padding:110px 0; background:var(--paper); }
-  .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
-  @media (max-width:980px){ .why-grid{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:560px){ .why-grid{ grid-template-columns:1fr; } }
-  .why-card{ padding:28px 22px; border-radius:var(--radius-lg); background:#fff; border:1px solid var(--line-light); box-shadow:0 20px 40px -30px rgba(22,21,26,.25); }
-  .why-num{ font-family:var(--font-display); font-weight:800; font-size:.85rem; color:var(--accent); margin-bottom:14px; }
-  .why-card h3{ font-size:1.02rem; margin-bottom:8px; letter-spacing:-0.01em; }
-  .why-card p{ color:var(--dark-dim); font-size:.88rem; line-height:1.55; }
-
-  /* ---------- Stats ---------- */
-  .stats-section{ padding:80px 0; background:var(--dark); }
+  /* ---------- Stats band ---------- */
+  .stats-band{ padding:96px 0; border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
   .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center; }
-  @media (max-width:760px){ .stats-grid{ grid-template-columns:1fr 1fr; row-gap:40px; } }
-  .stat-value{ font-family:var(--font-display); font-weight:800; font-size:clamp(2rem,4vw,2.8rem); color:var(--ink); letter-spacing:-0.02em; }
-  .stat-label{ color:var(--ink-dim-2); font-size:.82rem; margin-top:8px; font-weight:600; letter-spacing:.02em; }
-  .stat-stars{ position:relative; display:inline-flex; gap:3px; margin-bottom:6px; }
-  .stat-stars svg{ width:20px; height:20px; }
-  .stars-base{ color:rgba(255,255,255,.18); }
-  .stars-fill{ position:absolute; inset:0; display:flex; gap:3px; color:var(--accent-2); overflow:hidden; width:0; transition: width 1200ms var(--ease-out); }
-  .stat-item.is-visible .stars-fill{ width:96%; }
+  @media (max-width:760px){ .stats-grid{ grid-template-columns:1fr 1fr; row-gap:44px; } }
+  .stat-value{ font-family:var(--font-display); font-weight:400; font-size:clamp(2.1rem,4.4vw,3.2rem); color:var(--gold-hi); letter-spacing:-0.01em; }
+  .stat-label{ color:var(--ink-dim-2); font-size:.8rem; margin-top:10px; letter-spacing:.05em; text-transform:uppercase; }
+
+  /* ---------- Destinations map ---------- */
+  .map-shell{ border-radius:var(--radius-xl); padding:clamp(24px,4vw,56px); overflow:hidden; }
+  .map-svg{ width:100%; height:auto; }
+  .map-dot{ fill:var(--gold-hi); }
+  .map-dot-pulse{ fill:none; stroke:var(--gold); stroke-width:1; opacity:0; }
+  html.js-ready .map-dot-pulse{ animation: mapPulse 2.6s var(--ease-in-out) infinite; }
+  @keyframes mapPulse{ 0%{ r:3; opacity:.9; } 100%{ r:16; opacity:0; } }
+  .map-route{ fill:none; stroke:rgba(244,242,236,.22); stroke-width:1; stroke-dasharray:4 6; }
+  .map-route-fly{ fill:none; stroke:var(--gold); stroke-width:1.4; stroke-linecap:round; stroke-dasharray: 6 900; }
+  .map-label{ fill:var(--ink-dim); font-family:var(--font-body); font-size:10px; letter-spacing:.05em; }
 
   /* ---------- Process ---------- */
-  .process-section{ padding:110px 0; background:var(--bg); }
-  .process-list{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
-  @media (max-width:900px){ .process-list{ grid-template-columns:1fr; gap:34px; } }
-  .process-line{ position:absolute; top:27px; left:6%; right:6%; height:2px; background:var(--line-dark); z-index:0; overflow:hidden; }
-  .process-line-fill{ position:absolute; inset:0; background:var(--accent); width:0; transition: width 1400ms var(--ease-in-out) 200ms; }
+  .process-list{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
+  @media (max-width:900px){ .process-list{ grid-template-columns:1fr; gap:36px; } }
+  .process-line{ position:absolute; top:29px; left:6%; right:6%; height:1px; background:var(--line); z-index:0; overflow:hidden; }
+  .process-line-fill{ position:absolute; inset:0; background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi)); width:0; transition: width 1500ms var(--ease-in-out) 150ms; }
   .process-line.is-visible .process-line-fill{ width:100%; }
   @media (max-width:900px){ .process-line{ display:none; } }
   .process-step{ position:relative; z-index:1; }
   .process-index{
-    width:54px; height:54px; border-radius:50%; background:var(--bg-soft-2); border:1px solid var(--line-dark);
-    display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:800; color:var(--accent);
-    margin-bottom:20px;
+    width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:500; color:var(--gold-hi); margin-bottom:22px; font-size:1.05rem;
   }
-  .process-step h3{ color:var(--ink); font-size:1.02rem; margin-bottom:8px; }
-  .process-step p{ color:var(--ink-dim); font-size:.88rem; line-height:1.55; max-width:26ch; }
+  .process-step h3{ font-size:1.06rem; margin-bottom:10px; }
+  .process-step p{ color:var(--ink-dim); font-size:.88rem; line-height:1.6; max-width:28ch; }
 
   /* ---------- Testimonials ---------- */
-  .testimonials-section{ padding:110px 0 130px; background:var(--paper); overflow:hidden; }
-  .t-viewport{ overflow:hidden; }
-  .t-track{ display:flex; transition: transform 520ms var(--ease-in-out); }
-  .t-slide{ flex:0 0 100%; padding:4px; }
-  @media (min-width:760px){ .t-slide{ flex:0 0 50%; } }
-  .t-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); padding:32px; height:100%; box-shadow:0 20px 40px -30px rgba(22,21,26,.25); }
-  .t-stars{ display:flex; gap:3px; margin-bottom:16px; }
-  .t-stars svg{ width:16px; height:16px; color:var(--accent-2); }
-  .t-quote{ font-size:1.02rem; line-height:1.6; color:var(--dark); margin-bottom:20px; }
-  .t-person{ display:flex; align-items:center; gap:12px; }
-  .t-avatar{ width:38px; height:38px; border-radius:50%; background:linear-gradient(160deg,var(--accent),var(--accent-deep)); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:.82rem; }
-  .t-name{ font-weight:700; font-size:.88rem; }
-  .t-source{ color:var(--dark-dim-2); font-size:.78rem; }
-  .t-controls{ display:flex; align-items:center; justify-content:center; gap:18px; margin-top:36px; }
-  .t-arrow{ width:44px; height:44px; border-radius:50%; border:1px solid var(--line-light); display:flex; align-items:center; justify-content:center; transition: transform 160ms var(--ease-out), background 200ms ease; }
-  .t-arrow:active{ transform:scale(0.94); }
-  @media (hover:hover) and (pointer:fine){ .t-arrow:hover{ background:rgba(22,21,26,.06); } }
-  .t-arrow svg{ width:16px; height:16px; }
-  .t-dots{ display:flex; gap:8px; }
-  .t-dot{ width:7px; height:7px; border-radius:50%; background:var(--line-light); transition: transform 200ms var(--ease-out), background 200ms ease; }
-  .t-dot.active{ background:var(--accent); transform:scale(1.3); }
+  .t-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:900px){ .t-grid{ grid-template-columns:1fr; } }
+  .t-card{ border-radius:var(--radius-lg); padding:32px; display:flex; flex-direction:column; }
+  .t-quote-mark{ font-family:var(--font-display); font-size:2.6rem; color:var(--gold); line-height:1; margin-bottom:6px; }
+  .t-quote{ font-size:1.02rem; line-height:1.65; color:var(--ink); margin-bottom:22px; flex:1; }
+  .t-person{ display:flex; flex-direction:column; gap:2px; padding-top:16px; border-top:1px solid var(--line-soft); }
+  .t-name{ font-weight:600; font-size:.86rem; }
+  .t-source{ color:var(--ink-dim-2); font-size:.78rem; }
 
   /* ---------- CTA banner ---------- */
-  .cta-banner{ padding:100px 0; background:linear-gradient(160deg,#1a1108,var(--bg)); position:relative; overflow:hidden; }
-  .cta-banner::before{ content:''; position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle, rgba(255,77,35,.25), transparent 65%); top:-260px; right:-160px; }
-  .cta-inner{ position:relative; text-align:center; max-width:640px; margin:0 auto; }
-  .cta-inner h2{ color:var(--ink); font-size:clamp(2rem,4.4vw,3.1rem); letter-spacing:-0.02em; line-height:1.05; margin-bottom:18px; }
-  .cta-inner p{ color:var(--ink-dim); font-size:1.05rem; margin-bottom:34px; }
+  .cta-banner{ padding:140px 0; position:relative; overflow:hidden; }
+  .cta-inner{ position:relative; text-align:center; max-width:680px; margin:0 auto; }
+  .cta-inner h2{ font-size:clamp(2.2rem,5vw,3.6rem); letter-spacing:-0.01em; line-height:1.06; margin-bottom:20px; font-weight:400; }
+  .cta-inner p{ color:var(--ink-dim); font-size:1.08rem; margin-bottom:38px; }
   .cta-buttons{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
-  .magnetic{ will-change:transform; }
-
-  /* ---------- Location ---------- */
-  .location-section{ padding:110px 0; background:var(--paper); }
-  .location-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
-  @media (max-width:900px){ .location-grid{ grid-template-columns:1fr; } }
-  .loc-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); box-shadow:0 20px 40px -30px rgba(22,21,26,.25); padding:14px; }
-  .map-graphic{ position:relative; aspect-ratio:4/3; border-radius:var(--radius-md); overflow:hidden; background:#e9e5db; }
-  .map-graphic svg{ width:100%; height:100%; }
-  .map-pin{ position:absolute; top:44%; left:52%; transform:translate(-50%,-100%); animation: pinDrop 1.4s var(--ease-out) 200ms both; }
-  .map-pin svg{ width:40px; height:40px; color:var(--accent); filter:drop-shadow(0 10px 14px rgba(0,0,0,.25)); }
-  .map-radar{ position:absolute; top:44%; left:52%; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:rgba(255,77,35,.5); animation: radar 2.2s var(--ease-out) infinite; }
-  @keyframes pinDrop{ 0%{ transform:translate(-50%,-160%); opacity:0; } 60%{ transform:translate(-50%,-92%); opacity:1; } 100%{ transform:translate(-50%,-100%); } }
-  @keyframes radar{ 0%{ transform:scale(1); opacity:.6; } 100%{ transform:scale(6); opacity:0; } }
-  @media (prefers-reduced-motion: reduce){ .map-radar{ animation:none; opacity:0; } .map-pin{ animation:none; } }
-
-  .info-list{ margin-top:8px; }
-  .info-row{ display:flex; gap:16px; padding:18px 0; border-bottom:1px solid var(--line-light); }
-  .info-row:last-child{ border-bottom:none; }
-  .info-icon{ width:40px; height:40px; border-radius:var(--radius-sm); background:rgba(255,77,35,.1); display:flex; align-items:center; justify-content:center; flex:none; }
-  .info-icon svg{ width:19px; height:19px; color:var(--accent); }
-  .info-row strong{ display:block; font-size:.92rem; margin-bottom:3px; }
-  .info-row span, .info-row div{ color:var(--dark-dim); font-size:.88rem; line-height:1.5; }
-  .location-ctas{ display:flex; gap:12px; margin-top:26px; flex-wrap:wrap; }
 
   /* ---------- Footer ---------- */
-  footer{ background:var(--bg); padding:64px 0 28px; border-top:1px solid var(--line-dark); }
-  .footer-top{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; padding-bottom:44px; border-bottom:1px solid var(--line-dark); }
-  .footer-brand p{ color:var(--ink-dim-2); font-size:.86rem; max-width:32ch; margin-top:14px; line-height:1.6; }
-  .footer-cols{ display:flex; gap:56px; flex-wrap:wrap; }
-  .footer-col h4{ color:var(--ink); font-size:.82rem; letter-spacing:.06em; text-transform:uppercase; margin-bottom:16px; }
-  .footer-col a, .footer-col span{ display:block; color:var(--ink-dim); font-size:.88rem; margin-bottom:11px; }
-  @media (hover:hover) and (pointer:fine){ .footer-col a:hover{ color:var(--ink); } }
-  .footer-bottom{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-top:24px; color:var(--ink-dim-2); font-size:.8rem; }
+  footer{ padding:72px 0 30px; border-top:1px solid var(--line-soft); }
+  .footer-top{ display:flex; justify-content:space-between; gap:48px; flex-wrap:wrap; padding-bottom:48px; border-bottom:1px solid var(--line-soft); }
+  .footer-brand{ max-width:340px; }
+  .footer-brand .brand{ margin-bottom:16px; }
+  .footer-brand p{ color:var(--ink-dim-2); font-size:.84rem; line-height:1.7; }
+  .footer-cols{ display:flex; gap:60px; flex-wrap:wrap; }
+  .footer-col h4{ font-family:var(--font-body); color:var(--ink); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; margin-bottom:18px; font-weight:700; }
+  .footer-col a, .footer-col span{ display:block; color:var(--ink-dim); font-size:.87rem; margin-bottom:12px; }
+  @media (hover:hover) and (pointer:fine){ .footer-col a:hover{ color:var(--gold-hi); } }
+  .footer-bottom{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-top:26px; color:var(--ink-dim-2); font-size:.78rem; }
+  .footer-legal-links{ display:flex; gap:20px; }
+  .footer-socials{ display:flex; gap:10px; }
+  .footer-socials a{ width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid var(--line); }
+  .footer-socials svg{ width:14px; height:14px; color:var(--ink-dim); }
 
-  /* ---------- Floating call button ---------- */
-  .floating-call{
-    position:fixed; right:22px; bottom:22px; z-index:150;
-    width:58px; height:58px; border-radius:50%; background:linear-gradient(180deg,var(--accent),var(--accent-deep));
-    display:flex; align-items:center; justify-content:center; box-shadow:0 14px 30px -8px rgba(255,77,35,.6);
-    transition: transform 160ms var(--ease-out);
+  /* ---------- Floating CTA ---------- */
+  .floating-cta{
+    position:fixed; right:24px; bottom:24px; z-index:150;
   }
-  .floating-call:active{ transform:scale(0.93); }
-  .floating-call svg{ width:24px; height:24px; color:#fff; }
-  .floating-call::before{
-    content:''; position:absolute; inset:0; border-radius:50%; background:var(--accent); opacity:.55;
-    animation: ping 2.2s var(--ease-in-out) infinite;
-  }
-  @media (prefers-reduced-motion: reduce){ .floating-call::before{ animation:none; display:none; } }
-  @keyframes ping{ 0%{ transform:scale(1); opacity:.5; } 100%{ transform:scale(1.7); opacity:0; } }
+  .floating-cta .btn{ padding:1em 1.5em; font-size:.82rem; }
+  @media (max-width:640px){ .floating-cta{ left:16px; right:16px; } .floating-cta .btn{ width:100%; } }
 
   @media (max-width:640px){
-    .hero{ padding:150px 0 90px; }
-    .hero-visual{ height:320px; margin-top:20px; }
+    .hero{ padding:130px 0 70px; }
+    section.band{ padding:90px 0; }
   }
 </style>
 </head>
 <body>
 
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<div id="gl-stage" aria-hidden="true">
+  <canvas id="gl-canvas"></canvas>
+</div>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
 <div id="preloader" aria-hidden="true">
-  <div class="preload-badge">
-    <div class="preload-ring"></div>
-    <div class="preload-mark">UC</div>
-  </div>
+  <svg class="pre-mark" viewBox="0 0 64 64" fill="none">
+    <path d="M32 8 L47 40 L34 34.5 L34 52 L30 52 L30 34.5 L17 40 Z" fill="currentColor"/>
+  </svg>
+  <div class="pre-word">Meridian</div>
+  <div class="pre-bar"><div class="pre-bar-fill" id="preBarFill"></div></div>
 </div>
 
 <header id="siteHeader">
+  <div class="header-glass"></div>
   <div class="container">
     <a href="#top" class="brand">
-      <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
-        <circle cx="20" cy="20" r="20" fill="#ff4d23"/>
-        <path d="M11 24l3-8a3 3 0 013-2h6a3 3 0 013 2l3 8" stroke="#0a0a0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M9 24h22v3a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1H14v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3z" fill="#0a0a0c"/>
-        <circle cx="14" cy="27" r="1.6" fill="#ff4d23"/>
-        <circle cx="26" cy="27" r="1.6" fill="#ff4d23"/>
+      <svg class="brand-mark" viewBox="0 0 64 64" fill="none">
+        <path d="M32 8 L47 40 L34 34.5 L34 52 L30 52 L30 34.5 L17 40 Z" fill="currentColor"/>
       </svg>
-      <span class="brand-word">UNITED<span>Collision Center</span></span>
+      <span class="brand-word">Meridian<span>Private Aviation</span></span>
     </a>
     <nav class="primary-nav">
-      <a href="#services">Services</a>
+      <a href="#fleet">Fleet</a>
+      <a href="#experience">Experience</a>
+      <a href="#destinations">Destinations</a>
       <a href="#process">Process</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#location">Location</a>
+      <a href="#contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <a class="header-call" href="tel:+16509886777">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-        <span>(650) 988-6777</span>
+      <a class="btn btn-glass magnetic" href="#contact"><span>Request Availability</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -508,301 +468,271 @@
 </header>
 
 <div class="mobile-drawer" id="mobileDrawer">
-  <a href="#services">Services</a>
+  <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <a href="#fleet">Fleet</a>
+  <a href="#experience">Experience</a>
+  <a href="#destinations">Destinations</a>
   <a href="#process">Process</a>
-  <a href="#reviews">Reviews</a>
-  <a href="#location">Location</a>
-  <a class="btn btn-primary" href="tel:+16509886777">Call (650) 988-6777</a>
+  <a href="#contact">Contact</a>
+  <a class="btn btn-gold" href="#contact">Request Availability</a>
 </div>
 
 <main id="top">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <span class="eyebrow"><span class="dot"></span> Mountain View's Trusted Auto Body Shop</span>
-        <h1>
-          <span class="word"><span style="--d:0ms">Collision</span></span><br>
-          <span class="word"><span style="--d:70ms">happens.</span></span><br>
-          <span class="word"><span style="--d:140ms" class="accent-text">We</span></span>
-          <span class="word"><span style="--d:190ms">erase</span></span>
-          <span class="word"><span style="--d:240ms">it.</span></span>
-        </h1>
-        <p class="lead">Precision bodywork, invisible paint-matching, and a team that actually keeps you posted — rated 4.8★ by 52 Mountain View drivers.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-primary magnetic" href="tel:+16509886777">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            Call (650) 988-6777
-          </a>
-          <a class="btn btn-ghost-dark" href="#location">Get a Free Estimate</a>
-        </div>
-        <div class="hero-trust">
-          <div class="rating-chip">
-            <div class="stars">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-            </div>
-            <div>
-              <strong>4.8 out of 5</strong>
-              <span>&nbsp;·&nbsp;52 Google reviews</span>
-            </div>
-          </div>
-        </div>
+  <div id="hero-pin-spacer">
+  <section class="hero" id="hero">
+    <div class="container hero-inner">
+      <span class="eyebrow center">Global Private Charter · Est. 2011</span>
+      <h1 aria-label="Fly above the expected.">
+        <span class="line"><span style="--d:0ms">Fly above</span></span>
+        <span class="line"><span style="--d:90ms"><em>the expected.</em></span></span>
+      </h1>
+      <p class="lead">On-demand access to the world's finest aircraft — curated in minutes, airborne in hours. One point of contact for every mile you fly.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold magnetic" href="#contact">
+          Request Availability
+        </a>
+        <a class="btn btn-glass magnetic" href="#fleet">Explore the Fleet</a>
       </div>
-
-      <div class="hero-visual" aria-hidden="true">
-        <div class="hero-orb"></div>
-        <div class="hero-panels">
-          <div class="panel panel-a">
-            <div class="panel-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-9 9-6.5 1.5L6 13.5z"/><path d="M12.5 6.5l5 5"/></svg>
-            </div>
-          </div>
-          <div class="panel panel-b">
-            <div class="panel-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="float-card fc-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-          <div><strong>EV &amp; Tesla</strong><span>Certified repair</span></div>
-        </div>
-        <div class="float-card fc-2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          <div><strong>All Insurers</strong><span>Claims handled for you</span></div>
-        </div>
-        <div class="float-card fc-3">
-          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-          <div><strong>4.8★ Rated</strong><span>52 reviews</span></div>
-        </div>
+      <div class="hero-stats">
+        <div class="stat-chip glass"><strong>500+</strong><span>Vetted Aircraft</span></div>
+        <div class="stat-chip glass"><strong>900+</strong><span>Destinations</span></div>
+        <div class="stat-chip glass"><strong>24/7</strong><span>Flight Concierge</span></div>
       </div>
     </div>
+    <div class="scroll-cue">
+      <span>Scroll</span>
+      <div class="line-wrap"><div class="line-run"></div></div>
+    </div>
   </section>
+  </div>
 
   <!-- MARQUEE -->
   <div class="marquee-wrap" aria-hidden="true">
     <div class="marquee" id="marquee">
-      <span class="marquee-item">We work on every make &amp; model<span class="sep"></span></span>
-      <span class="marquee-item">Tesla<span class="sep"></span></span>
-      <span class="marquee-item">BMW<span class="sep"></span></span>
-      <span class="marquee-item">Toyota<span class="sep"></span></span>
-      <span class="marquee-item">Honda<span class="sep"></span></span>
-      <span class="marquee-item">Mercedes-Benz<span class="sep"></span></span>
-      <span class="marquee-item">Subaru<span class="sep"></span></span>
-      <span class="marquee-item">Ford<span class="sep"></span></span>
-      <span class="marquee-item">Audi<span class="sep"></span></span>
-      <span class="marquee-item">Lexus<span class="sep"></span></span>
+      <span class="marquee-item">Gulfstream<span class="sep"></span></span>
+      <span class="marquee-item">Bombardier Global<span class="sep"></span></span>
+      <span class="marquee-item">Dassault Falcon<span class="sep"></span></span>
+      <span class="marquee-item">Embraer Praetor<span class="sep"></span></span>
+      <span class="marquee-item">Cessna Citation<span class="sep"></span></span>
+      <span class="marquee-item">Bombardier Challenger<span class="sep"></span></span>
+      <span class="marquee-item">Boeing BBJ<span class="sep"></span></span>
+      <span class="marquee-item">Airbus ACJ<span class="sep"></span></span>
+      <span class="marquee-item">Gulfstream<span class="sep"></span></span>
+      <span class="marquee-item">Bombardier Global<span class="sep"></span></span>
+      <span class="marquee-item">Dassault Falcon<span class="sep"></span></span>
+      <span class="marquee-item">Embraer Praetor<span class="sep"></span></span>
+      <span class="marquee-item">Cessna Citation<span class="sep"></span></span>
+      <span class="marquee-item">Bombardier Challenger<span class="sep"></span></span>
+      <span class="marquee-item">Boeing BBJ<span class="sep"></span></span>
+      <span class="marquee-item">Airbus ACJ<span class="sep"></span></span>
     </div>
   </div>
 
-  <!-- BEFORE / AFTER -->
-  <section class="compare-section">
+  <!-- FLEET -->
+  <section class="band" id="fleet">
     <div class="container">
       <div class="section-head center" data-reveal>
-        <span class="eyebrow eyebrow-light">The transformation</span>
-        <h2 class="section-title">See the difference</h2>
-        <p class="section-sub">Drag the slider — this is the level of finish we send every car home with.</p>
+        <span class="eyebrow center">The Fleet</span>
+        <h2 class="section-title">Four classes. One standard.</h2>
+        <p class="section-sub">Every aircraft in the Meridian network is independently vetted for safety, service, and silence in the cabin — regardless of size.</p>
       </div>
-      <div class="compare-shell" id="compareShell" data-reveal style="--reveal-delay:120ms">
-        <div class="compare-layer compare-before">
-          <span class="compare-tag">Before</span>
-          <svg class="car-illustration" viewBox="0 0 220 110" aria-hidden="true">
-            <ellipse cx="110" cy="96" rx="92" ry="8" fill="black" opacity=".25"/>
-            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#5c5b5f" stroke="#8a898d" stroke-width="1.5"/>
-            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#3f3e42"/>
-            <line x1="97" y1="27" x2="90" y2="45" stroke="#26262a" stroke-width="1.5"/>
-            <line x1="128" y1="27" x2="133" y2="45" stroke="#26262a" stroke-width="1.5"/>
-            <circle cx="60" cy="73" r="14" fill="#111"/><circle cx="60" cy="73" r="6" fill="#555"/>
-            <circle cx="158" cy="73" r="14" fill="#111"/><circle cx="158" cy="73" r="6" fill="#555"/>
-            <path d="M40 40 l14 20 M120 30 l-6 14 8 10" stroke="#ff4d23" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M28 58 q10 6 0 12" stroke="#111" stroke-width="2" fill="none" opacity=".5"/>
-            <circle cx="42" cy="42" r="3" fill="#ff4d23"/>
-            <g opacity=".7" stroke="#ff4d23" stroke-width="1.4">
-              <line x1="36" y1="36" x2="48" y2="48"/><line x1="48" y1="36" x2="36" y2="48"/>
-            </g>
-          </svg>
+      <div class="fleet-grid">
+        <div class="fleet-card glass" data-reveal data-tilt>
+          <svg class="fleet-jet-icon" viewBox="0 0 200 60" fill="none"><path d="M10 40 C40 40 70 20 100 20 C130 20 150 30 190 32 L172 38 L190 44 C150 42 130 46 108 40 L60 46 L74 38 L40 40 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span class="fleet-tag">Class I</span>
+          <h3>Light Jet</h3>
+          <p class="fleet-models">Citation CJ3+ · Phenom 300E</p>
+          <div class="fleet-specs">
+            <div class="fleet-spec-row"><span>Passengers</span><span>6–8</span></div>
+            <div class="fleet-spec-row"><span>Range</span><span>2,000 nm</span></div>
+            <div class="fleet-spec-row"><span>Cruise</span><span>530 mph</span></div>
+          </div>
         </div>
-        <div class="compare-layer compare-after" id="compareAfter">
-          <span class="compare-tag">After</span>
-          <svg class="car-illustration" viewBox="0 0 220 110" aria-hidden="true">
-            <ellipse cx="110" cy="96" rx="92" ry="8" fill="black" opacity=".3"/>
-            <defs>
-              <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ff7a4d"/>
-                <stop offset=".5" stop-color="#e8390f"/>
-                <stop offset="1" stop-color="#7a1c05"/>
-              </linearGradient>
-            </defs>
-            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="url(#bodyGrad)" stroke="#3c0d02" stroke-width="1.5"/>
-            <path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#1c1414" opacity=".85"/>
-            <path d="M40 46 C70 40 150 40 182 50" stroke="rgba(255,255,255,.55)" stroke-width="4" fill="none" stroke-linecap="round"/>
-            <circle cx="60" cy="73" r="14" fill="#111"/><circle cx="60" cy="73" r="6" fill="#666"/>
-            <circle cx="158" cy="73" r="14" fill="#111"/><circle cx="158" cy="73" r="6" fill="#666"/>
-            <g fill="#ffb703">
-              <path d="M182 30l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/>
-              <path d="M32 62l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/>
-            </g>
-          </svg>
+        <div class="fleet-card glass" data-reveal data-tilt style="--reveal-delay:70ms">
+          <svg class="fleet-jet-icon" viewBox="0 0 200 60" fill="none"><path d="M6 40 C40 40 74 18 104 18 C136 18 156 28 194 32 L176 38 L194 44 C156 42 136 46 112 40 L58 47 L73 38 L36 40 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span class="fleet-tag">Class II</span>
+          <h3>Midsize Jet</h3>
+          <p class="fleet-models">Citation Latitude · Learjet 75</p>
+          <div class="fleet-specs">
+            <div class="fleet-spec-row"><span>Passengers</span><span>7–9</span></div>
+            <div class="fleet-spec-row"><span>Range</span><span>3,000 nm</span></div>
+            <div class="fleet-spec-row"><span>Cruise</span><span>540 mph</span></div>
+          </div>
         </div>
-        <div class="compare-handle" id="compareHandle">
-          <div class="compare-grip">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6M9 6l6 6-6 6" transform="scale(0.6) translate(8,8)"/><path d="M8 5l-5 7 5 7M16 5l5 7-5 7"/></svg>
+        <div class="fleet-card glass" data-reveal data-tilt style="--reveal-delay:140ms">
+          <svg class="fleet-jet-icon" viewBox="0 0 200 60" fill="none"><path d="M4 40 C42 40 78 16 108 16 C142 16 162 27 198 31 L178 38 L198 44 C162 41 142 46 116 40 L56 48 L72 38 L32 40 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span class="fleet-tag">Class III</span>
+          <h3>Super-Midsize</h3>
+          <p class="fleet-models">Praetor 600 · Challenger 350</p>
+          <div class="fleet-specs">
+            <div class="fleet-spec-row"><span>Passengers</span><span>8–10</span></div>
+            <div class="fleet-spec-row"><span>Range</span><span>4,000 nm</span></div>
+            <div class="fleet-spec-row"><span>Cruise</span><span>560 mph</span></div>
+          </div>
+        </div>
+        <div class="fleet-card glass" data-reveal data-tilt style="--reveal-delay:210ms">
+          <svg class="fleet-jet-icon" viewBox="0 0 200 60" fill="none"><path d="M2 40 C46 40 82 14 112 14 C148 14 168 26 200 30 L180 38 L200 44 L166 41 C146 46 118 40 118 40 L54 49 L71 38 L26 40 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span class="fleet-tag">Class IV</span>
+          <h3>Heavy Jet / BBJ</h3>
+          <p class="fleet-models">Gulfstream G650 · Global 7500 · BBJ MAX</p>
+          <div class="fleet-specs">
+            <div class="fleet-spec-row"><span>Passengers</span><span>12–19</span></div>
+            <div class="fleet-spec-row"><span>Range</span><span>6,500+ nm</span></div>
+            <div class="fleet-spec-row"><span>Cruise</span><span>590 mph</span></div>
           </div>
         </div>
       </div>
-      <p class="compare-hint">← Drag to compare →</p>
     </div>
   </section>
 
-  <!-- SERVICES -->
-  <section class="services-section on-dark" id="services">
+  <!-- EXPERIENCE / LIQUID GLASS BENTO -->
+  <section class="band" id="experience">
     <div class="container">
       <div class="section-head" data-reveal>
-        <span class="eyebrow">What we fix</span>
-        <h2 class="section-title">Full-service collision &amp; body repair</h2>
-        <p class="section-sub">From a parking-lot ding to a full structural rebuild — one shop, start to finish.</p>
+        <span class="eyebrow">The Experience</span>
+        <h2 class="section-title">Every detail, arranged in advance.</h2>
+        <p class="section-sub">The aircraft is the easy part. What sets a charter apart happens before you ever reach the tarmac.</p>
       </div>
-      <div class="services-grid">
-        <div class="service-card" data-reveal data-tilt>
-          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l2-6a3 3 0 013-2h8a3 3 0 013 2l2 6"/><path d="M3 13h18v4a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1H6v1a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg></div>
-          <h3>Collision Repair</h3>
-          <p>Full structural and cosmetic repair after any collision — big or small.</p>
+      <div class="bento">
+        <div class="bento-card bento-feature glass" data-reveal>
+          <div class="bento-photo" id="featurePhoto">
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&amp;w=1600&amp;auto=format&amp;fit=crop" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('photo-fallback')">
+          </div>
+          <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <h3>Global Concierge, 24/7</h3>
+          <p>A single flight advisor designs, books, and monitors your itinerary from first call to touchdown — day or night, anywhere in the world.</p>
         </div>
-        <div class="service-card" data-reveal data-tilt style="--reveal-delay:60ms">
-          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 3 6 6.5 6 11a6 6 0 01-12 0c0-4.5 3-8 6-11z"/></svg></div>
-          <h3>Paint &amp; Color Match</h3>
-          <p>Computerized color matching that disappears into your factory finish.</p>
+        <div class="bento-card glass" data-reveal style="--reveal-delay:70ms">
+          <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V8a2 2 0 012-2h10a2 2 0 012 2v3M4 17h16M6 17v2M18 17v2"/></svg></div>
+          <h3>Bespoke Cabin &amp; Catering</h3>
+          <p>Menus curated with your preferences on file — from a favorite vintage to dietary requirements — before you board.</p>
         </div>
-        <div class="service-card" data-reveal data-tilt style="--reveal-delay:120ms">
-          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12a3 3 0 106 0 3 3 0 00-6 0z"/></svg></div>
-          <h3>Dent &amp; Ding Removal</h3>
-          <p>Paintless dent repair for door dings, hail damage, and minor dents.</p>
+        <div class="bento-card glass" data-reveal style="--reveal-delay:140ms">
+          <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17h1l1.5-4.5A2 2 0 018.4 11h7.2a2 2 0 011.9 1.5L19 17h1M6 17a2 2 0 104 0M14 17a2 2 0 104 0M4 17v-2a2 2 0 012-2h12a2 2 0 012 2v2"/></svg></div>
+          <h3>Seamless Ground &amp; Marine</h3>
+          <p>Executive transfer, tarmac-side arrival, and marine connections coordinated so the aircraft is only one leg of the journey.</p>
         </div>
-        <div class="service-card" data-reveal data-tilt>
-          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-6h6v6"/></svg></div>
-          <h3>Frame Straightening</h3>
-          <p>Precision frame pulls that bring your car back to factory spec.</p>
-        </div>
-        <div class="service-card" data-reveal data-tilt style="--reveal-delay:60ms">
-          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
-          <h3>Insurance Claims Support</h3>
-          <p>We work directly with your insurer to keep the whole process simple.</p>
-        </div>
-        <div class="service-card" data-reveal data-tilt style="--reveal-delay:120ms">
-          <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
-          <h3>EV &amp; Tesla Repair</h3>
-          <p>Specialized equipment and training for electric and hybrid vehicles.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY US -->
-  <section class="why-section" id="why">
-    <div class="container">
-      <div class="section-head" data-reveal>
-        <span class="eyebrow eyebrow-light">Why drivers choose us</span>
-        <h2 class="section-title">Straight answers, honest work</h2>
-      </div>
-      <div class="why-grid">
-        <div class="why-card" data-reveal>
-          <div class="why-num">01</div>
-          <h3>Kept in the loop</h3>
-          <p>"Management kept me informed on the progress and provided options to choose from." — Google review</p>
-        </div>
-        <div class="why-card" data-reveal style="--reveal-delay:60ms">
-          <div class="why-num">02</div>
-          <h3>Paint that disappears</h3>
-          <p>Tricoat, pearlescent, factory-exact — our color matches hold up under direct sunlight, not just in the shop.</p>
-        </div>
-        <div class="why-card" data-reveal style="--reveal-delay:120ms">
-          <div class="why-num">03</div>
-          <h3>Fair, honest pricing</h3>
-          <p>"The price was reasonable and the work was top notch." — Google review</p>
-        </div>
-        <div class="why-card" data-reveal style="--reveal-delay:180ms">
-          <div class="why-num">04</div>
-          <h3>Every make, every model</h3>
-          <p>From daily commuters to EVs — including Tesla — repaired to manufacturer standard.</p>
+        <div class="bento-card glass" data-reveal style="--reveal-delay:210ms">
+          <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/></svg></div>
+          <h3>Absolute Privacy</h3>
+          <p>NDA-grade discretion, dedicated FBO lounges, and manifests released on a need-to-know basis only.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- STATS -->
-  <section class="stats-section">
+  <section class="stats-band">
     <div class="container">
       <div class="stats-grid">
-        <div class="stat-item" data-counter>
-          <div class="stat-stars">
-            <span class="stars-base">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-            </span>
-            <span class="stars-fill">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3-5.4 3 1.3-6L1.3 7.2l6.1-.6z"/></svg>
-            </span>
-          </div>
-          <div class="stat-value" data-target="4.8" data-decimals="1">0.0</div>
-          <div class="stat-label">Average rating</div>
+        <div class="stat-item" data-counter data-reveal>
+          <div class="stat-value" data-target="500" data-suffix="+">0</div>
+          <div class="stat-label">Aircraft in Network</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value" data-target="52">0</div>
-          <div class="stat-label">Google reviews</div>
+        <div class="stat-item" data-counter data-reveal style="--reveal-delay:60ms">
+          <div class="stat-value" data-target="900" data-suffix="+">0</div>
+          <div class="stat-label">Destinations Worldwide</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value" data-target="100" data-suffix="%">0%</div>
-          <div class="stat-label">Insurance-friendly process</div>
+        <div class="stat-item" data-counter data-reveal style="--reveal-delay:120ms">
+          <div class="stat-value" data-target="15" data-prefix="&lt;">0</div>
+          <div class="stat-label">Minute Avg. Callback</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">EV Ready</div>
-          <div class="stat-label">Tesla &amp; hybrid certified</div>
+        <div class="stat-item" data-reveal style="--reveal-delay:180ms">
+          <div class="stat-value">Platinum</div>
+          <div class="stat-label">ARGUS Safety Rating</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
-  <section class="process-section on-dark" id="process">
+  <!-- DESTINATIONS -->
+  <section class="band" id="destinations">
     <div class="container">
       <div class="section-head center" data-reveal>
-        <span class="eyebrow">How it works</span>
-        <h2 class="section-title">Four steps back to normal</h2>
+        <span class="eyebrow center">Global Reach</span>
+        <h2 class="section-title">Wherever business — or life — takes you.</h2>
+        <p class="section-sub">A single call reaches every hub on the map, and thousands of airfields it doesn't show.</p>
+      </div>
+      <div class="map-shell glass" data-reveal>
+        <svg class="map-svg" viewBox="0 0 1000 460" role="img" aria-label="World map with Meridian flight routes between major cities">
+          <g opacity=".5" stroke="rgba(244,242,236,.14)" stroke-width="1">
+            <path d="M40 120 Q 250 40 500 90 T 960 130" fill="none"/>
+            <path d="M20 220 Q 260 170 500 210 T 980 240" fill="none"/>
+            <path d="M40 330 Q 260 270 500 320 T 950 350" fill="none"/>
+          </g>
+          <path class="map-route" d="M150 150 Q 400 40 620 130"/>
+          <path class="map-route-fly" id="route1" d="M150 150 Q 400 40 620 130"/>
+          <path class="map-route" d="M620 130 Q 760 180 860 260"/>
+          <path class="map-route-fly" id="route2" d="M620 130 Q 760 180 860 260"/>
+          <path class="map-route" d="M150 150 Q 300 260 430 300"/>
+          <path class="map-route-fly" id="route3" d="M150 150 Q 300 260 430 300"/>
+          <path class="map-route" d="M430 300 Q 520 200 620 130"/>
+          <path class="map-route-fly" id="route4" d="M430 300 Q 520 200 620 130"/>
+          <path class="map-route" d="M150 150 Q 100 260 180 340"/>
+          <path class="map-route-fly" id="route5" d="M150 150 Q 100 260 180 340"/>
+
+          <g>
+            <circle class="map-dot" cx="150" cy="150" r="3.5"/>
+            <circle class="map-dot-pulse" cx="150" cy="150" r="3"/>
+            <text class="map-label" x="160" y="146">New York</text>
+          </g>
+          <g>
+            <circle class="map-dot" cx="620" cy="130" r="3.5"/>
+            <circle class="map-dot-pulse" cx="620" cy="130" r="3"/>
+            <text class="map-label" x="630" y="126">London</text>
+          </g>
+          <g>
+            <circle class="map-dot" cx="860" cy="260" r="3.5"/>
+            <circle class="map-dot-pulse" cx="860" cy="260" r="3"/>
+            <text class="map-label" x="825" y="285">Dubai</text>
+          </g>
+          <g>
+            <circle class="map-dot" cx="430" cy="300" r="3.5"/>
+            <circle class="map-dot-pulse" cx="430" cy="300" r="3"/>
+            <text class="map-label" x="440" y="318">Monaco</text>
+          </g>
+          <g>
+            <circle class="map-dot" cx="180" cy="340" r="3.5"/>
+            <circle class="map-dot-pulse" cx="180" cy="340" r="3"/>
+            <text class="map-label" x="128" y="360">Aspen</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="band" id="process">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow center">How It Works</span>
+        <h2 class="section-title">From request to wheels-up.</h2>
       </div>
       <div style="position:relative;">
         <div class="process-line" data-reveal-line><div class="process-line-fill"></div></div>
         <div class="process-list">
           <div class="process-step" data-reveal>
-            <div class="process-index">01</div>
-            <h3>Free Estimate</h3>
-            <p>Bring your car in or send photos — we'll walk you through the damage and next steps.</p>
+            <div class="process-index glass">01</div>
+            <h3>Request</h3>
+            <p>Share your route, dates, and party size — by phone, app, or a single message.</p>
           </div>
           <div class="process-step" data-reveal style="--reveal-delay:80ms">
-            <div class="process-index">02</div>
-            <h3>Approved Repair Plan</h3>
-            <p>We coordinate directly with your insurer and lock in a clear plan and timeline.</p>
+            <div class="process-index glass">02</div>
+            <h3>Curated Options</h3>
+            <p>Receive vetted aircraft and transparent pricing, typically within the hour.</p>
           </div>
           <div class="process-step" data-reveal style="--reveal-delay:160ms">
-            <div class="process-index">03</div>
-            <h3>Expert Repair &amp; Paint</h3>
-            <p>Technicians rebuild, refinish, and color-match every panel to factory spec.</p>
+            <div class="process-index glass">03</div>
+            <h3>Confirm &amp; Prepare</h3>
+            <p>We lock the flight and quietly handle catering, ground transfer, and paperwork.</p>
           </div>
           <div class="process-step" data-reveal style="--reveal-delay:240ms">
-            <div class="process-index">04</div>
-            <h3>Ready for Pickup</h3>
-            <p>A final quality check and a wash — your car looks like nothing ever happened.</p>
+            <div class="process-index glass">04</div>
+            <h3>Board &amp; Depart</h3>
+            <p>Arrive fifteen minutes prior. No lines, no gates, no waiting.</p>
           </div>
         </div>
       </div>
@@ -810,129 +740,44 @@
   </section>
 
   <!-- TESTIMONIALS -->
-  <section class="testimonials-section" id="reviews">
+  <section class="band">
     <div class="container">
       <div class="section-head center" data-reveal>
-        <span class="eyebrow eyebrow-light">52 Google reviews · 4.8★</span>
-        <h2 class="section-title">What Mountain View drivers say</h2>
+        <span class="eyebrow center">In Their Words</span>
+        <h2 class="section-title">Trusted by those who value time.</h2>
       </div>
-
-      <div class="t-viewport">
-        <div class="t-track" id="tTrack">
-          <div class="t-slide">
-            <div class="t-card">
-              <div class="t-stars">★★★★★</div>
-              <p class="t-quote">"Good service, quality workmanship, and a positive attitude from start to finish."</p>
-              <div class="t-person"><div class="t-avatar">GR</div><div><div class="t-name">Verified Reviewer</div><div class="t-source">Google review</div></div></div>
-            </div>
-          </div>
-          <div class="t-slide">
-            <div class="t-card">
-              <div class="t-stars">★★★★★</div>
-              <p class="t-quote">"Management kept me informed on the progress and provided options to choose from."</p>
-              <div class="t-person"><div class="t-avatar">GR</div><div><div class="t-name">Verified Reviewer</div><div class="t-source">Google review</div></div></div>
-            </div>
-          </div>
-          <div class="t-slide">
-            <div class="t-card">
-              <div class="t-stars">★★★★★</div>
-              <p class="t-quote">"The price was reasonable and the work was top notch."</p>
-              <div class="t-person"><div class="t-avatar">GR</div><div><div class="t-name">Verified Reviewer</div><div class="t-source">Google review</div></div></div>
-            </div>
-          </div>
-          <div class="t-slide">
-            <div class="t-card">
-              <div class="t-stars">★★★★★</div>
-              <p class="t-quote">"Six months after finishing my Tesla, I got side-swiped four days later. I brought it straight back — the team was incredibly responsive, and the owner is one of the nicest guys you'll meet."</p>
-              <div class="t-person"><div class="t-avatar">CL</div><div><div class="t-name">Christopher L.</div><div class="t-source">Local Guide · Google review</div></div></div>
-            </div>
-          </div>
-          <div class="t-slide">
-            <div class="t-card">
-              <div class="t-stars">★★★★★</div>
-              <p class="t-quote">"They repainted multiple panels with a tricoat pearlescent finish — notoriously hard to match. However closely I look, I can't spot a difference. Straightforward to deal with, especially Marlon."</p>
-              <div class="t-person"><div class="t-avatar">MN</div><div><div class="t-name">Mukuntha N.</div><div class="t-source">Google review</div></div></div>
-            </div>
-          </div>
+      <div class="t-grid">
+        <div class="t-card glass" data-reveal>
+          <div class="t-quote-mark">"</div>
+          <p class="t-quote">Meridian turned a same-day family emergency into a non-issue. Wheels-up in ninety minutes, no questions asked.</p>
+          <div class="t-person"><div class="t-name">Family Office Principal</div><div class="t-source">New York, NY</div></div>
         </div>
-      </div>
-
-      <div class="t-controls">
-        <button class="t-arrow" id="tPrev" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <div class="t-dots" id="tDots"></div>
-        <button class="t-arrow" id="tNext" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+        <div class="t-card glass" data-reveal style="--reveal-delay:70ms">
+          <div class="t-quote-mark">"</div>
+          <p class="t-quote">The level of discretion is unmatched. My team never has to explain who's on board, and neither does the crew.</p>
+          <div class="t-person"><div class="t-name">Touring Recording Artist</div><div class="t-source">Los Angeles, CA</div></div>
+        </div>
+        <div class="t-card glass" data-reveal style="--reveal-delay:140ms">
+          <div class="t-quote-mark">"</div>
+          <p class="t-quote">I've used three other brokers. None of them call back in fifteen minutes. Meridian always does.</p>
+          <div class="t-person"><div class="t-name">Managing Partner</div><div class="t-source">Private Equity, Chicago</div></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA BANNER -->
-  <section class="cta-banner">
-    <div class="container cta-inner" data-reveal>
-      <h2>Ready to get your car back to new?</h2>
-      <p>Free estimates, direct insurance coordination, and a shop Mountain View actually trusts.</p>
+  <!-- CTA -->
+  <section class="cta-banner" id="contact">
+    <div class="container cta-inner">
+      <span class="eyebrow center">Ready When You Are</span>
+      <h2>Your next departure is a message away.</h2>
+      <p>Speak with a flight advisor now — day or night, anywhere in the world.</p>
       <div class="cta-buttons">
-        <a class="btn btn-primary magnetic" href="tel:+16509886777">Call (650) 988-6777</a>
-        <a class="btn btn-ghost-dark" href="#location">Visit the Shop</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- LOCATION -->
-  <section class="location-section" id="location">
-    <div class="container">
-      <div class="section-head" data-reveal>
-        <span class="eyebrow eyebrow-light">Find us</span>
-        <h2 class="section-title">Stop by or send us photos</h2>
-      </div>
-      <div class="location-grid">
-        <div class="loc-card" data-reveal>
-          <div class="map-graphic">
-            <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="300" fill="#eae6db"/>
-              <g stroke="#d8d2c3" stroke-width="2">
-                <line x1="0" y1="60" x2="400" y2="60"/>
-                <line x1="0" y1="140" x2="400" y2="140"/>
-                <line x1="0" y1="220" x2="400" y2="220"/>
-                <line x1="90" y1="0" x2="90" y2="300"/>
-                <line x1="230" y1="0" x2="230" y2="300"/>
-                <line x1="320" y1="0" x2="320" y2="300"/>
-              </g>
-              <path d="M0 172 H400" stroke="#f4b53a" stroke-width="10"/>
-              <path d="M208 0 V300" stroke="#fff" stroke-width="10"/>
-              <g fill="#d8d2c3">
-                <rect x="20" y="20" width="50" height="26"/>
-                <rect x="120" y="80" width="70" height="40"/>
-                <rect x="260" y="20" width="40" height="26"/>
-                <rect x="20" y="180" width="50" height="26"/>
-                <rect x="250" y="240" width="60" height="30"/>
-              </g>
-            </svg>
-            <div class="map-pin">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 110-6 3 3 0 010 6z"/></svg>
-            </div>
-            <div class="map-radar"></div>
-          </div>
-        </div>
-        <div>
-          <div class="info-list">
-            <div class="info-row" data-reveal>
-              <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 13-9 13s-9-7-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-              <div><strong>Address</strong><div>2235 Old Middlefield Way #J<br>Mountain View, CA 94043</div></div>
-            </div>
-            <div class="info-row" data-reveal style="--reveal-delay:60ms">
-              <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-              <div><strong>Hours</strong><div>Monday – Friday · 8:00 AM – 5:00 PM<br>Saturday &amp; Sunday · Closed</div></div>
-            </div>
-            <div class="info-row" data-reveal style="--reveal-delay:120ms">
-              <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-              <div><strong>Phone</strong><div>(650) 988-6777</div></div>
-            </div>
-          </div>
-          <div class="location-ctas">
-            <a class="btn btn-primary" href="https://www.google.com/maps/dir/?api=1&destination=2235+Old+Middlefield+Way+%23J+Mountain+View+CA+94043" target="_blank" rel="noopener">Get Directions</a>
-            <a class="btn btn-ghost-light" href="tel:+16509886777">Call the Shop</a>
-          </div>
-        </div>
+        <a class="btn btn-gold magnetic" href="mailto:fly@meridian-aviation.example">Request Availability</a>
+        <a class="btn btn-glass magnetic" href="tel:+13105550142">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          +1 (310) 555-0142
+        </a>
       </div>
     </div>
   </section>
@@ -942,251 +787,408 @@
 <footer>
   <div class="container">
     <div class="footer-top">
-      <div class="footer-brand" style="max-width:320px;">
+      <div class="footer-brand">
         <a href="#top" class="brand">
-          <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
-            <circle cx="20" cy="20" r="20" fill="#ff4d23"/>
-            <path d="M11 24l3-8a3 3 0 013-2h6a3 3 0 013 2l3 8" stroke="#0a0a0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9 24h22v3a2 2 0 01-2 2h-1a2 2 0 01-2-2v-1H14v1a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3z" fill="#0a0a0c"/>
+          <svg class="brand-mark" viewBox="0 0 64 64" fill="none">
+            <path d="M32 8 L47 40 L34 34.5 L34 52 L30 52 L30 34.5 L17 40 Z" fill="currentColor"/>
           </svg>
-          <span class="brand-word">UNITED<span>Collision Center</span></span>
+          <span class="brand-word">Meridian<span>Private Aviation</span></span>
         </a>
-        <p>Mountain View's 4.8★ rated auto body shop. Collision repair, paint matching, and EV-certified service.</p>
+        <p>Meridian Aviation is a global air charter broker connecting clients to a vetted network of independently operated aircraft. Meridian does not own or operate aircraft.</p>
       </div>
       <div class="footer-cols">
         <div class="footer-col">
-          <h4>Explore</h4>
-          <a href="#services">Services</a>
-          <a href="#process">Process</a>
-          <a href="#reviews">Reviews</a>
-          <a href="#location">Location</a>
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#fleet">Fleet</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <a href="#">On-Demand Charter</a>
+          <a href="#">Jet Card</a>
+          <a href="#">Aircraft Acquisition</a>
+          <a href="#">Empty Legs</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
-          <a href="tel:+16509886777">(650) 988-6777</a>
-          <span>2235 Old Middlefield Way #J</span>
-          <span>Mountain View, CA 94043</span>
+          <span>+1 (310) 555-0142</span>
+          <span>fly@meridian-aviation.example</span>
+          <span>Teterboro, NJ · By Appointment</span>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="year"></span> United Collision Center. All rights reserved.</span>
-      <span>4.8★ · 52 Google reviews</span>
+      <span>&copy; <span id="year"></span> Meridian Aviation. All rights reserved.</span>
+      <div class="footer-legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="8" y1="10" x2="8" y2="17"/><line x1="8" y1="7" x2="8" y2="7"/><line x1="12" y1="17" x2="12" y2="10"/><path d="M12 13a3 3 0 016 0v4"/></svg></a>
+      </div>
     </div>
   </div>
 </footer>
 
-<a class="floating-call" href="tel:+16509886777" aria-label="Call United Collision Center">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-</a>
+<div class="floating-cta" id="floatingCta">
+  <a class="btn btn-gold magnetic" href="#contact">Request Availability</a>
+</div>
 
-<script>
-(function(){
-  "use strict";
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+<!-- GSAP (classic, blocking) — loaded before the module script below so window.gsap exists first -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@latest/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@latest/dist/ScrollTrigger.min.js"></script>
 
-  /* Preloader */
-  window.addEventListener('load', function(){
-    var p = document.getElementById('preloader');
-    setTimeout(function(){ p.classList.add('hide'); }, reduceMotion ? 0 : 350);
+<script type="module">
+document.documentElement.classList.add('js-ready');
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasFineCursor = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+if (hasFineCursor) document.body.classList.add('has-fine-cursor');
+
+/* ---------------- Preloader ---------------- */
+(function preload(){
+  const fill = document.getElementById('preBarFill');
+  const pre = document.getElementById('preloader');
+  let p = 0;
+  const t = setInterval(()=>{
+    p = Math.min(96, p + Math.random()*18);
+    fill.style.width = p + '%';
+  }, 140);
+  window.addEventListener('load', ()=>{
+    clearInterval(t);
+    fill.style.width = '100%';
+    setTimeout(()=>{ pre.classList.add('hide'); }, 380);
   });
+  setTimeout(()=>{ clearInterval(t); fill.style.width='100%'; pre.classList.add('hide'); }, 3200);
+})();
 
-  /* Header scroll state */
-  var header = document.getElementById('siteHeader');
-  var onScroll = function(){
-    if (window.scrollY > 24) header.classList.add('is-scrolled');
-    else header.classList.remove('is-scrolled');
-  };
-  document.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+/* ---------------- Header scroll state ---------------- */
+const header = document.getElementById('siteHeader');
+const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
+document.addEventListener('scroll', onScroll, { passive:true });
+onScroll();
 
-  /* Mobile drawer */
-  var toggle = document.getElementById('menuToggle');
-  var drawer = document.getElementById('mobileDrawer');
-  function closeDrawer(){
-    drawer.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-  }
-  toggle.addEventListener('click', function(){
-    var open = drawer.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+/* ---------------- Mobile drawer ---------------- */
+const menuToggle = document.getElementById('menuToggle');
+const drawerClose = document.getElementById('drawerClose');
+const drawer = document.getElementById('mobileDrawer');
+function setDrawer(open){
+  drawer.classList.toggle('open', open);
+  menuToggle.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+menuToggle.addEventListener('click', ()=> setDrawer(true));
+drawerClose.addEventListener('click', ()=> setDrawer(false));
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=> setDrawer(false)));
 
-  /* Scroll year */
-  document.getElementById('year').textContent = new Date().getFullYear();
+/* ---------------- Reveal on scroll (IntersectionObserver, JS-independent from GSAP) ---------------- */
+const revealItems = document.querySelectorAll('[data-reveal]');
+if ('IntersectionObserver' in window){
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+  }, { threshold:.16, rootMargin:'0px 0px -8% 0px' });
+  revealItems.forEach(el => io.observe(el));
 
-  /* IntersectionObserver reveals */
-  var revealTargets = document.querySelectorAll('[data-reveal]');
-  var lineTargets = document.querySelectorAll('[data-reveal-line]');
-  var statItems = document.querySelectorAll('[data-counter], .stat-item');
+  const lines = document.querySelectorAll('[data-reveal-line]');
+  const lio = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('is-visible'); lio.unobserve(e.target); } });
+  }, { threshold:.5 });
+  lines.forEach(el => lio.observe(el));
 
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting){
-        entry.target.classList.add('is-visible');
-        io.unobserve(entry.target);
+  const counters = document.querySelectorAll('[data-counter] .stat-value[data-target]');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      cio.unobserve(e.target);
+      const el = e.target;
+      const target = parseFloat(el.dataset.target);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const dur = reduceMotion ? 0 : 1400;
+      const start = performance.now();
+      function tick(now){
+        const p = dur === 0 ? 1 : Math.min(1, (now-start)/dur);
+        const eased = 1 - Math.pow(1-p, 3);
+        el.textContent = prefix + Math.round(target*eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
       }
+      requestAnimationFrame(tick);
     });
-  }, { threshold: 0.2, rootMargin: '-40px' });
+  }, { threshold:.6 });
+  counters.forEach(el => cio.observe(el));
+} else {
+  revealItems.forEach(el => el.classList.add('is-visible'));
+}
 
-  revealTargets.forEach(function(el){ io.observe(el); });
-  lineTargets.forEach(function(el){ io.observe(el); });
+/* ---------------- 3D tilt on fleet cards ---------------- */
+if (hasFineCursor && !reduceMotion){
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - .5;
+      const py = (e.clientY - r.top) / r.height - .5;
+      card.style.transform = `rotateY(${px*10}deg) rotateX(${-py*10}deg) translateZ(0)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
+  });
+}
 
-  /* Stat counters + star fill (run once) */
-  var counterIo = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      var valueEl = entry.target.querySelector('[data-target]');
-      if (valueEl){
-        var target = parseFloat(valueEl.getAttribute('data-target'));
-        var decimals = parseInt(valueEl.getAttribute('data-decimals') || '0', 10);
-        var suffix = valueEl.getAttribute('data-suffix') || '';
-        if (reduceMotion){
-          valueEl.textContent = target.toFixed(decimals) + suffix;
-        } else {
-          var start = null, duration = 1300;
-          function step(ts){
-            if (!start) start = ts;
-            var progress = Math.min((ts - start) / duration, 1);
-            var eased = 1 - Math.pow(1 - progress, 3);
-            var val = target * eased;
-            valueEl.textContent = val.toFixed(decimals) + suffix;
-            if (progress < 1) requestAnimationFrame(step);
-          }
-          requestAnimationFrame(step);
-        }
+/* ---------------- Custom cursor ---------------- */
+if (hasFineCursor){
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+  window.addEventListener('mousemove', (e)=>{ mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`; });
+  function loop(){
+    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+  document.querySelectorAll('a, button, [data-tilt]').forEach(el=>{
+    el.addEventListener('mouseenter', ()=> ring.classList.add('is-active'));
+    el.addEventListener('mouseleave', ()=> ring.classList.remove('is-active'));
+  });
+
+  if (!reduceMotion && window.gsap){
+    document.querySelectorAll('.magnetic').forEach(el=>{
+      el.addEventListener('mousemove', (e)=>{
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width/2) * 0.35;
+        const y = (e.clientY - r.top - r.height/2) * 0.35;
+        gsap.to(el, { x, y, duration:.3, ease:'power2.out' });
+      });
+      el.addEventListener('mouseleave', ()=> gsap.to(el, { x:0, y:0, duration:.5, ease:'elastic.out(1,0.4)' }));
+    });
+  }
+}
+
+/* ---------------- Floating CTA visibility ---------------- */
+const floatingCta = document.getElementById('floatingCta');
+const contactSection = document.getElementById('contact');
+if ('IntersectionObserver' in window){
+  const fio = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { floatingCta.style.opacity = e.isIntersecting ? '0' : '1'; floatingCta.style.pointerEvents = e.isIntersecting ? 'none' : 'auto'; });
+  }, { threshold:.1 });
+  fio.observe(contactSection);
+  const heroEl = document.getElementById('hero');
+  const hio = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if (e.isIntersecting){ floatingCta.style.opacity='0'; floatingCta.style.pointerEvents='none'; } });
+  }, { threshold:.2 });
+  hio.observe(heroEl);
+}
+floatingCta.style.transition = 'opacity 300ms ease';
+
+/* ---------------- Flight-route draw animation (SVG) ---------------- */
+if (window.gsap && window.ScrollTrigger){
+  gsap.registerPlugin(ScrollTrigger);
+  const routes = ['#route1','#route2','#route3','#route4','#route5'];
+  routes.forEach((sel,i)=>{
+    const path = document.querySelector(sel);
+    if (!path) return;
+    const len = path.getTotalLength();
+    gsap.set(path, { strokeDasharray: `${Math.max(6,len*0.12)} ${len}`, strokeDashoffset: 0 });
+    gsap.fromTo(path, { strokeDashoffset: len }, {
+      strokeDashoffset: -len,
+      duration: 3.4,
+      repeat: -1,
+      delay: i*0.5,
+      ease: 'none',
+      scrollTrigger: { trigger: '#destinations', start:'top bottom', toggleActions:'play pause resume pause' }
+    });
+  });
+} else {
+  document.querySelectorAll('.map-route-fly').forEach(p => p.style.opacity = '0');
+}
+
+/* ================================================================
+   WebGL scene — real-time three.js hero: particle atmosphere field,
+   a physically-based glass icosahedron (liquid glass, refractive),
+   scroll-driven camera, and light bloom postprocessing.
+   ================================================================ */
+(async function initScene(){
+  const canvas = document.getElementById('gl-canvas');
+  const stage = document.getElementById('gl-stage');
+  if (!canvas || !window.matchMedia) return;
+
+  let supportsWebGL = true;
+  try {
+    const test = document.createElement('canvas');
+    supportsWebGL = !!(test.getContext('webgl2') || test.getContext('webgl'));
+  } catch(e){ supportsWebGL = false; }
+  if (!supportsWebGL) return;
+
+  const isTouch = !hasFineCursor;
+
+  let THREE, EffectComposer, RenderPass, UnrealBloomPass, RoomEnvironment;
+  try {
+    const mod = await import('three');
+    THREE = mod;
+    ({ EffectComposer } = await import('three/addons/postprocessing/EffectComposer.js'));
+    ({ RenderPass } = await import('three/addons/postprocessing/RenderPass.js'));
+    ({ UnrealBloomPass } = await import('three/addons/postprocessing/UnrealBloomPass.js'));
+    ({ RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js'));
+  } catch (err){
+    console.warn('Meridian: 3D scene unavailable, falling back to CSS backdrop.', err);
+    return;
+  }
+
+  let renderer, scene, camera, composer, glassMesh, cloudPoints, farStars, bloomPass;
+  let running = false;
+  let scrollProgress = 0;
+
+  function makeGlowTexture(){
+    const size = 128;
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    const g = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(0.4, 'rgba(255,255,255,.6)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,size,size);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+
+  function buildScene(){
+    renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, isTouch ? 1.5 : 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x05070c, 0.03);
+
+    camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 200);
+    camera.position.set(0, 0, 13);
+
+    scene.add(new THREE.AmbientLight(0x8fa3c8, 0.55));
+    const key = new THREE.DirectionalLight(0xffe3bd, 2.4);
+    key.position.set(6, 8, 5);
+    scene.add(key);
+    const rim = new THREE.PointLight(0x6fa9ff, 3.2, 50);
+    rim.position.set(-9, -3, -4);
+    scene.add(rim);
+    const gold = new THREE.PointLight(0xc9a86a, 2.4, 30);
+    gold.position.set(4, -2, 4);
+    scene.add(gold);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+    const glowTex = makeGlowTexture();
+
+    function makeField(count, radius, spread, size, color, opacity){
+      const geo = new THREE.BufferGeometry();
+      const positions = new Float32Array(count*3);
+      for (let i=0;i<count;i++){
+        const r = THREE.MathUtils.randFloat(radius*0.3, radius);
+        const theta = Math.random()*Math.PI*2;
+        const y = THREE.MathUtils.randFloatSpread(spread);
+        positions[i*3] = Math.cos(theta)*r;
+        positions[i*3+1] = y;
+        positions[i*3+2] = Math.sin(theta)*r - 18;
       }
-      counterIo.unobserve(entry.target);
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll('.stat-item').forEach(function(el){ counterIo.observe(el); });
-
-  /* Before / After compare slider */
-  var shell = document.getElementById('compareShell');
-  var after = document.getElementById('compareAfter');
-  var handle = document.getElementById('compareHandle');
-  var dragging = false;
-
-  function setPercent(pct){
-    pct = Math.max(2, Math.min(98, pct));
-    after.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
-    handle.style.left = pct + '%';
-  }
-  function pctFromEvent(clientX){
-    var rect = shell.getBoundingClientRect();
-    return ((clientX - rect.left) / rect.width) * 100;
-  }
-  shell.addEventListener('pointerdown', function(e){
-    dragging = true;
-    shell.setPointerCapture(e.pointerId);
-    setPercent(pctFromEvent(e.clientX));
-  });
-  shell.addEventListener('pointermove', function(e){
-    if (!dragging) return;
-    setPercent(pctFromEvent(e.clientX));
-  });
-  ['pointerup','pointercancel','pointerleave'].forEach(function(ev){
-    shell.addEventListener(ev, function(){ dragging = false; });
-  });
-  setPercent(50);
-
-  /* Auto-nudge the slider once on first view, for discoverability */
-  var nudged = false;
-  var nudgeIo = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting && !nudged && !reduceMotion){
-        nudged = true;
-        var t = 0;
-        var nudgeTimer = setInterval(function(){
-          t += 1;
-          setPercent(50 + Math.sin(t/3) * 14 * Math.max(0, 1 - t/24));
-          if (t > 24) { clearInterval(nudgeTimer); setPercent(50); }
-        }, 30);
-      }
-    });
-  }, { threshold: 0.6 });
-  nudgeIo.observe(shell);
-
-  /* Card tilt */
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion){
-    document.querySelectorAll('[data-tilt]').forEach(function(card){
-      card.addEventListener('mousemove', function(e){
-        var rect = card.getBoundingClientRect();
-        var x = (e.clientX - rect.left) / rect.width - 0.5;
-        var y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = 'perspective(600px) rotateY(' + (x * 8) + 'deg) rotateX(' + (y * -8) + 'deg) translateY(-4px)';
+      geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+      const mat = new THREE.PointsMaterial({
+        size, map: glowTex, transparent:true, depthWrite:false,
+        color, opacity, blending: THREE.AdditiveBlending, sizeAttenuation:true
       });
-      card.addEventListener('mouseleave', function(){
-        card.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateY(0)';
-      });
-    });
-  }
-
-  /* Magnetic buttons */
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion){
-    document.querySelectorAll('.magnetic').forEach(function(btn){
-      btn.addEventListener('mousemove', function(e){
-        var rect = btn.getBoundingClientRect();
-        var x = (e.clientX - rect.left - rect.width / 2) * 0.25;
-        var y = (e.clientY - rect.top - rect.height / 2) * 0.35;
-        btn.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-      });
-      btn.addEventListener('mouseleave', function(){
-        btn.style.transform = 'translate(0,0)';
-      });
-    });
-  }
-
-  /* Testimonials carousel */
-  var track = document.getElementById('tTrack');
-  var slides = track.children.length;
-  var perView = window.matchMedia('(min-width: 760px)').matches ? 2 : 1;
-  var index = 0;
-  var dotsWrap = document.getElementById('tDots');
-  var maxIndex = Math.max(0, slides - perView);
-
-  function buildDots(){
-    dotsWrap.innerHTML = '';
-    for (var i = 0; i <= maxIndex; i++){
-      var d = document.createElement('button');
-      d.className = 't-dot' + (i === index ? ' active' : '');
-      d.setAttribute('aria-label', 'Go to review ' + (i+1));
-      (function(i){ d.addEventListener('click', function(){ goTo(i); }); })(i);
-      dotsWrap.appendChild(d);
+      return new THREE.Points(geo, mat);
     }
+
+    cloudPoints = makeField(isTouch ? 500 : 1300, 34, 40, 1.5, 0xbfd4ff, 0.75);
+    scene.add(cloudPoints);
+    farStars = makeField(isTouch ? 260 : 600, 70, 60, 0.7, 0xffffff, 0.5);
+    scene.add(farStars);
+
+    const glassGeo = new THREE.IcosahedronGeometry(2.05, 8);
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff, metalness:0, roughness:0.05,
+      transmission:1, thickness:1.7, ior:1.45,
+      clearcoat:1, clearcoatRoughness:0.06,
+      iridescence:0.4, iridescenceIOR:1.3,
+      envMapIntensity:1.35
+    });
+    glassMesh = new THREE.Mesh(glassGeo, glassMat);
+    glassMesh.position.set(2.6, 0.2, -1.5);
+    scene.add(glassMesh);
+
+    composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), isTouch ? 0.4 : 0.55, 0.75, 0.3);
+    composer.addPass(bloomPass);
   }
-  function goTo(i){
-    index = Math.max(0, Math.min(maxIndex, i));
-    var slideWidth = track.children[0].getBoundingClientRect().width;
-    track.style.transform = 'translateX(' + (-index * slideWidth) + 'px)';
-    Array.prototype.forEach.call(dotsWrap.children, function(d, di){
-      d.classList.toggle('active', di === index);
+
+  function resize(){
+    if (!renderer) return;
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+    composer.setSize(innerWidth, innerHeight);
+  }
+
+  const clock = new THREE.Clock();
+  function animate(){
+    if (!running) return;
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    if (!reduceMotion){
+      glassMesh.rotation.x = t*0.12 + scrollProgress*1.1;
+      glassMesh.rotation.y = t*0.18 + scrollProgress*1.6;
+      cloudPoints.rotation.y = t*0.015 + scrollProgress*0.5;
+      farStars.rotation.y = -t*0.008;
+    }
+    camera.position.z = 13 - scrollProgress*9.5;
+    camera.position.y = scrollProgress*1.3;
+    camera.rotation.z = scrollProgress*0.025;
+    glassMesh.position.z = -1.5 + scrollProgress*3.2;
+    composer.render();
+  }
+
+  buildScene();
+  window.addEventListener('resize', resize);
+
+  const glIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if (e.isIntersecting && !running){ running = true; animate(); }
+      else if (!e.isIntersecting){ running = false; }
+    });
+  }, { threshold:0 });
+  glIO.observe(document.getElementById('hero-pin-spacer'));
+
+  running = true;
+  animate();
+  if (reduceMotion) composer.render();
+
+  if (window.gsap && window.ScrollTrigger && !reduceMotion){
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.create({
+      trigger: '#hero-pin-spacer',
+      start: 'top top',
+      end: '+=120%',
+      pin: true,
+      scrub: 1,
+      onUpdate(self){ scrollProgress = self.progress; },
+      onLeave(){ stage.classList.add('is-dim'); },
+      onEnterBack(){ stage.classList.remove('is-dim'); }
+    });
+    ScrollTrigger.create({
+      trigger: '#contact',
+      start: 'top 70%',
+      onEnter(){ stage.classList.remove('is-dim'); },
+      onLeaveBack(){ stage.classList.add('is-dim'); }
     });
   }
-  document.getElementById('tPrev').addEventListener('click', function(){ goTo(index - 1 < 0 ? maxIndex : index - 1); });
-  document.getElementById('tNext').addEventListener('click', function(){ goTo(index + 1 > maxIndex ? 0 : index + 1); });
-  buildDots();
-  goTo(0);
-
-  var autoplay;
-  function startAutoplay(){
-    if (reduceMotion) return;
-    autoplay = setInterval(function(){ goTo(index + 1 > maxIndex ? 0 : index + 1); }, 4500);
-  }
-  function stopAutoplay(){ clearInterval(autoplay); }
-  startAutoplay();
-  var testimonialsSection = document.querySelector('.testimonials-section');
-  testimonialsSection.addEventListener('mouseenter', stopAutoplay);
-  testimonialsSection.addEventListener('mouseleave', startAutoplay);
-
-  window.addEventListener('resize', function(){
-    perView = window.matchMedia('(min-width: 760px)').matches ? 2 : 1;
-    maxIndex = Math.max(0, slides - perView);
-    buildDots();
-    goTo(Math.min(index, maxIndex));
-  });
 })();
 </script>
 </body>
