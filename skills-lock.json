@@ -31,6 +31,22 @@
       "skillPath": "skills/ask-sonner/SKILL.md",
       "computedHash": "23f724e97247b2003ccc479f3a9b3af8e4191a0e133b94ee6b73f8405349687f"
     },
+    "brandkit": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/brandkit/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "b312f982ce73a711688cd68c381fc1912dd03302e775a9ddae2f4886ae9bd926",
+      "locallyModified": true
+    },
+    "design-taste-frontend": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "138a4c64036ab1bcdcab7554fd2e467ff8fbe99bcc86f6d157ac9f9e812d955f",
+      "locallyModified": true
+    },
     "emil-design-eng": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
@@ -43,11 +59,74 @@
       "skillPath": "skills/find-animation-opportunities/SKILL.md",
       "computedHash": "8fb8492eb8fbed1313cb430b5831d925d9b8964ca24f3c41a6244cbd1fd98732"
     },
+    "full-output-enforcement": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/output-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "e5bf48b1ae561511439cf71672209a10a88cee0968cc925909ff861dfa0a96a7"
+    },
+    "gpt-taste": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/gpt-tasteskill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "67af56d4861abadbb396fc020ef8852e2d942e42353abfa86e05040ba6a8082a",
+      "locallyModified": true
+    },
+    "high-end-visual-design": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/soft-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "8c928914ce177d5dd21fe77e9a64c16a8bf4bf2275d4ee47d8ab6bc0a3ba4694",
+      "locallyModified": true
+    },
+    "image-to-code": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/image-to-code-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "c1a40d9fef48dd27ff2acadc4bd49fa7392c53cf55cce19e6b4e48e14dcee3ef",
+      "locallyModified": true
+    },
+    "imagegen-frontend-mobile": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/imagegen-frontend-mobile/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "af0cc7a450067bc015c553e68300c19e21eb6d4aa29092f6f221e67f587ef306",
+      "locallyModified": true
+    },
+    "imagegen-frontend-web": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/imagegen-frontend-web/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "a5e9610d71a381cb5b76e8c515cc551e736b298a32d81cb19f72a27739712525",
+      "locallyModified": true
+    },
     "improve-animations": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/improve-animations/SKILL.md",
       "computedHash": "eeb219a407e325b687af88db25771cc3018e3148245604112f5ac6990b6fd79c"
+    },
+    "industrial-brutalist-ui": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/brutalist-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "5b519a2e8c37963bd24c68a4eaec2c2be2aeb7377507de44abae6afb2cfa63db",
+      "locallyModified": true
+    },
+    "minimalist-ui": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/minimalist-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "d28587212c1559716883216678bc55fb33678e0acda37f0b7125528ea5012222",
+      "locallyModified": true
     },
     "pick-ui-library": {
       "source": "emilkowalski/skills",
@@ -61,11 +140,27 @@
       "skillPath": "skills/prototype/SKILL.md",
       "computedHash": "f246d1f47566481d9207e1aa574bdee5454257d862919a6591283e9af2f57eab"
     },
+    "redesign-existing-projects": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/redesign-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "1fa4b3ab73aa6995150e61333fdbeb42b62e648a8f408a16345a4638cf065f5b",
+      "locallyModified": true
+    },
     "review-animations": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/review-animations/SKILL.md",
       "computedHash": "b9f669af5ae280c19a592a94611520335a81de25c88f225bf60ae4b2d66c8c7c"
+    },
+    "stitch-design-taste": {
+      "source": "leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/stitch-skill/SKILL.md",
+      "upstreamRef": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "installedSha256": "9473759689185ff4751c0fd28262b016f3128391cdbc58751f3fa9df3e093858",
+      "locallyModified": true
     },
     "write-swift": {
       "source": "emilkowalski/skills",
@@ -73,5 +168,8 @@
       "skillPath": "skills/write-swift/SKILL.md",
       "computedHash": "ccbb74cac81765fcf2912ceba8d188fddbd75393ecb808aa1a4f6f58d9c2c828"
     }
+  },
+  "notes": {
+    "leonxlnx/taste-skill": "Entries from this source use 'installedSha256' (plain sha256 of the vendored SKILL.md) rather than 'computedHash'. The upstream installer's hash function was not reproducible here, and entries marked locallyModified deliberately diverge from upstream, so an upstream-content hash would misrepresent them. See .agents/skills/MODIFICATIONS.md for the exact changes."
   }
 }
