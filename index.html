@@ -62,6 +62,23 @@
 
   ::selection{ background:var(--accent); color:#fff; }
 
+  /* ---------- Focus ---------- */
+  /* One designed ring instead of the UA default, which changes shape and
+     colour depending on whether it lands on dark or light sections. */
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+  .btn:focus-visible, .header-call:focus-visible, .floating-call:focus-visible,
+  nav.primary-nav a:focus-visible, .t-arrow:focus-visible, .t-dot:focus-visible,
+  .menu-toggle:focus-visible, .brand:focus-visible{
+    outline-offset:4px;
+    border-radius:var(--radius-pill);
+  }
+
+  /* Anchor targets clear the fixed header instead of tucking under it. */
+  section[id], main[id]{ scroll-margin-top:96px; }
+
   /* ---------- Buttons ---------- */
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:.55em;
@@ -97,8 +114,8 @@
      entirely and is still compositor-only. */
   [data-reveal]{
     opacity:0;
-    transform: translateY(28px);
-    transition: transform 700ms var(--ease-out), opacity 600ms var(--ease-out);
+    transform: translateY(18px);
+    transition: transform 520ms var(--ease-out), opacity 420ms var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
   }
   [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
@@ -106,27 +123,6 @@
     [data-reveal]{ opacity:0; transform:none; transition: opacity 300ms ease; }
     [data-reveal].is-visible{ opacity:1; }
   }
-
-  /* ---------- Preloader ---------- */
-  #preloader{
-    position:fixed; inset:0; z-index:999; background:var(--bg);
-    display:flex; align-items:center; justify-content:center;
-    transition: opacity 500ms var(--ease-out), visibility 500ms var(--ease-out);
-  }
-  #preloader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
-  .preload-badge{ position:relative; width:76px; height:76px; }
-  .preload-ring{
-    position:absolute; inset:0; border-radius:50%;
-    border:3px solid rgba(255,255,255,.12);
-    border-top-color:var(--accent);
-    animation: spin 900ms linear infinite;
-  }
-  .preload-mark{
-    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-display); font-weight:800; color:var(--ink); font-size:1.05rem; letter-spacing:.02em;
-  }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce){ .preload-ring{ animation:none; } }
 
   /* ---------- Header ---------- */
   header{
@@ -168,9 +164,10 @@
     background:#08080a;
     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
     transform:translateY(-100%);
-    transition: transform 480ms var(--ease-drawer);
+    visibility:hidden;
+    transition: transform 480ms var(--ease-drawer), visibility 480ms var(--ease-drawer);
   }
-  .mobile-drawer.open{ transform:translateY(0); }
+  .mobile-drawer.open{ transform:translateY(0); visibility:visible; }
   .mobile-drawer a{ color:var(--ink); font-family:var(--font-display); font-weight:700; font-size:1.6rem; padding:14px 0; }
   .mobile-drawer .btn{ margin-top:18px; }
 
@@ -249,34 +246,33 @@
   .float-card svg{ width:20px; height:20px; color:var(--accent); flex:none; }
   .float-card strong{ display:block; font-family:var(--font-display); font-size:.86rem; }
   .float-card span{ display:block; font-size:.72rem; color:var(--ink-dim-2); }
-  .fc-1{ top:6%; left:2%; animation: bob 5.5s var(--ease-in-out) infinite; }
-  .fc-2{ bottom:16%; left:12%; animation: bob 6.5s var(--ease-in-out) infinite 400ms; }
-  .fc-3{ top:44%; right:0%; animation: bob 6s var(--ease-in-out) infinite 800ms; }
-  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-12px); } }
+  .fc-1{ top:2%; left:0%; animation: bob 7s var(--ease-in-out) infinite; }
+  .fc-2{ bottom:6%; left:4%; animation: bob 8s var(--ease-in-out) infinite 600ms; }
+  .fc-3{ top:6%; right:0%; animation: bob 7.5s var(--ease-in-out) infinite 1200ms; }
+  /* Halved amplitude: enough to read as alive, not enough to pull the eye
+     away from the headline every few seconds. */
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
   @media (prefers-reduced-motion: reduce){ .float-card{ animation:none !important; } }
 
-  .hero-orb{
-    position:absolute; inset:8% 4%; border-radius:50% 50% 46% 46% / 55% 55% 45% 45%;
-    background: conic-gradient(from 210deg, #ff4d23, #ffb703, #ff4d23);
-    filter:blur(0px);
-    opacity:.9;
-    animation: rotateOrb 16s linear infinite;
+  /* Hero car — the shop's actual subject, in the same illustration language
+     as the before/after slider below, so the page reads as one drawing. */
+  .hero-stage{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .hero-glow{
+    position:absolute; width:78%; aspect-ratio:1; border-radius:50%;
+    background: radial-gradient(circle, rgba(255,77,35,.30), rgba(255,77,35,.08) 48%, transparent 68%);
+    filter:blur(14px);
   }
-  .hero-orb::after{
-    content:''; position:absolute; inset:3px; border-radius:inherit; background:var(--bg-soft);
-  }
-  @keyframes rotateOrb{ to{ transform:rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce){ .hero-orb{ animation:none; } }
+  .hero-car{ position:relative; width:100%; max-width:520px; }
 
-  .hero-panels{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .panel{
-    position:absolute; border-radius:20px; border:1px solid var(--line-dark);
-    background:linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.02));
+  /* One gloss sweep on arrival — a finished-paint cue, not a loop. */
+  .gloss-sweep{
+    animation: glossSweep 1900ms var(--ease-out) 900ms both;
   }
-  .panel-a{ width:190px; height:230px; transform:rotate(-9deg) translate(-64px,-8px); box-shadow:var(--shadow-lift); }
-  .panel-b{ width:150px; height:190px; transform:rotate(11deg) translate(70px,26px); box-shadow:var(--shadow-lift); }
-  .panel-icon{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .panel-icon svg{ width:56px; height:56px; color:var(--accent); opacity:.9; }
+  @keyframes glossSweep{
+    from{ transform: skewX(-16deg) translateX(-150px); }
+    to{ transform: skewX(-16deg) translateX(600px); }
+  }
+  @media (prefers-reduced-motion: reduce){ .gloss-sweep{ animation:none; opacity:0; } }
 
   /* ---------- Marquee ---------- */
   .marquee-wrap{ background:var(--dark); padding:22px 0; overflow:hidden; border-top:1px solid var(--line-dark); border-bottom:1px solid var(--line-dark); }
@@ -388,7 +384,7 @@
   .t-slide{ flex:0 0 100%; padding:4px; }
   @media (min-width:760px){ .t-slide{ flex:0 0 50%; } }
   .t-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); padding:32px; height:100%; box-shadow:0 20px 40px -30px rgba(22,21,26,.25); }
-  .t-stars{ display:flex; gap:3px; margin-bottom:16px; }
+  .t-stars{ display:flex; gap:3px; margin-bottom:16px; color:var(--accent-2); font-size:1rem; letter-spacing:.14em; line-height:1; }
   .t-stars svg{ width:16px; height:16px; color:var(--accent-2); }
   .t-quote{ font-size:1.02rem; line-height:1.6; color:var(--dark); margin-bottom:20px; }
   .t-person{ display:flex; align-items:center; gap:12px; }
@@ -470,13 +466,6 @@
 </head>
 <body>
 
-<div id="preloader" aria-hidden="true">
-  <div class="preload-badge">
-    <div class="preload-ring"></div>
-    <div class="preload-mark">UC</div>
-  </div>
-</div>
-
 <header id="siteHeader">
   <div class="container">
     <a href="#top" class="brand">
@@ -555,18 +544,51 @@
       </div>
 
       <div class="hero-visual" aria-hidden="true">
-        <div class="hero-orb"></div>
-        <div class="hero-panels">
-          <div class="panel panel-a">
-            <div class="panel-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-9 9-6.5 1.5L6 13.5z"/><path d="M12.5 6.5l5 5"/></svg>
-            </div>
-          </div>
-          <div class="panel panel-b">
-            <div class="panel-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-            </div>
-          </div>
+        <div class="hero-stage">
+          <div class="hero-glow"></div>
+          <svg class="hero-car" viewBox="0 0 440 220" fill="none">
+            <defs>
+              <linearGradient id="heroBody" x1="60" y1="44" x2="380" y2="150" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ff8a5c"/>
+                <stop offset=".45" stop-color="#e8390f"/>
+                <stop offset="1" stop-color="#7f1d04"/>
+              </linearGradient>
+              <linearGradient id="heroGloss" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+                <stop offset=".5" stop-color="#fff" stop-opacity=".45"/>
+                <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+              </linearGradient>
+              <clipPath id="heroBodyClip">
+                <path d="M40 144 V116 C40 102 56 90 76 90 H112 C128 64 156 44 192 44 H260 C296 44 320 66 332 90 H364 C384 90 396 102 396 116 V144 Z"/>
+              </clipPath>
+            </defs>
+
+            <ellipse cx="218" cy="186" rx="166" ry="9" fill="#000" opacity=".4"/>
+
+            <path d="M40 144 V116 C40 102 56 90 76 90 H112 C128 64 156 44 192 44 H260 C296 44 320 66 332 90 H364 C384 90 396 102 396 116 V144 Z" fill="url(#heroBody)"/>
+
+            <g clip-path="url(#heroBodyClip)">
+              <rect class="gloss-sweep" x="0" y="10" width="66" height="200" fill="url(#heroGloss)"/>
+            </g>
+
+            <path d="M62 106 C150 92 300 92 384 110" stroke="#fff" stroke-opacity=".42" stroke-width="5" stroke-linecap="round"/>
+
+            <path d="M126 90 C140 66 164 52 194 52 H256 C284 52 304 68 316 90 Z" fill="#0d0b0b"/>
+            <path d="M196 53 V89 M254 53 V89" stroke="#4a3a33" stroke-width="2.5" stroke-linecap="round"/>
+
+            <path d="M222 94 V142" stroke="#000" stroke-opacity=".3" stroke-width="2" stroke-linecap="round"/>
+            <rect x="234" y="110" width="22" height="6" rx="3" fill="#000" opacity=".32"/>
+
+            <path d="M40 114 H58 a7 7 0 017 7 v3 a7 7 0 01-7 7 H40 Z" fill="#fff4da"/>
+            <rect x="378" y="114" width="18" height="16" rx="5" fill="#ff2d1a"/>
+
+            <circle cx="120" cy="146" r="28" fill="#0c0c0e"/>
+            <circle cx="120" cy="146" r="14" fill="#2c2c31"/>
+            <circle cx="120" cy="146" r="5" fill="#71717a"/>
+            <circle cx="316" cy="146" r="28" fill="#0c0c0e"/>
+            <circle cx="316" cy="146" r="14" fill="#2c2c31"/>
+            <circle cx="316" cy="146" r="5" fill="#71717a"/>
+          </svg>
         </div>
         <div class="float-card fc-1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
@@ -985,12 +1007,6 @@
   "use strict";
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Preloader */
-  window.addEventListener('load', function(){
-    var p = document.getElementById('preloader');
-    setTimeout(function(){ p.classList.add('hide'); }, reduceMotion ? 0 : 350);
-  });
-
   /* Header scroll state */
   var header = document.getElementById('siteHeader');
   var onScroll = function(){
@@ -1012,6 +1028,12 @@
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
   drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && drawer.classList.contains('open')){
+      closeDrawer();
+      toggle.focus();
+    }
+  });
 
   /* Scroll year */
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -1098,12 +1120,16 @@
     entries.forEach(function(entry){
       if (entry.isIntersecting && !nudged && !reduceMotion){
         nudged = true;
-        var t = 0;
-        var nudgeTimer = setInterval(function(){
-          t += 1;
-          setPercent(50 + Math.sin(t/3) * 14 * Math.max(0, 1 - t/24));
-          if (t > 24) { clearInterval(nudgeTimer); setPercent(50); }
-        }, 30);
+        // rAF rather than setInterval: stays on the browser's frame cadence
+        // and pauses with the tab instead of drifting.
+        var startTs = null, DURATION = 900;
+        (function nudge(ts){
+          if (startTs === null) startTs = ts;
+          var t = (ts - startTs) / DURATION;
+          if (t >= 1){ setPercent(50); return; }
+          setPercent(50 + Math.sin(t * Math.PI * 2.4) * 14 * (1 - t));
+          requestAnimationFrame(nudge);
+        })(performance.now());
       }
     });
   }, { threshold: 0.6 });
@@ -1113,13 +1139,17 @@
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion){
     document.querySelectorAll('[data-tilt]').forEach(function(card){
       card.addEventListener('mousemove', function(e){
+        // Skip until the card has finished revealing, otherwise this inline
+        // transform overwrites the reveal's translateY mid-flight.
+        if (!card.classList.contains('is-visible')) return;
         var rect = card.getBoundingClientRect();
         var x = (e.clientX - rect.left) / rect.width - 0.5;
         var y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = 'perspective(600px) rotateY(' + (x * 8) + 'deg) rotateX(' + (y * -8) + 'deg) translateY(-4px)';
+        card.style.transform = 'perspective(700px) rotateY(' + (x * 3) + 'deg) rotateX(' + (y * -3) + 'deg) translateY(-3px)';
       });
       card.addEventListener('mouseleave', function(){
-        card.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateY(0)';
+        // Clear rather than zero it out, so the stylesheet owns the transform again.
+        card.style.transform = '';
       });
     });
   }
@@ -1128,13 +1158,15 @@
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion){
     document.querySelectorAll('.magnetic').forEach(function(btn){
       btn.addEventListener('mousemove', function(e){
+        // Weak pull. At the old strength the primary CTA slid out from under
+        // the cursor on approach, which costs clicks on a phone-number button.
         var rect = btn.getBoundingClientRect();
-        var x = (e.clientX - rect.left - rect.width / 2) * 0.25;
-        var y = (e.clientY - rect.top - rect.height / 2) * 0.35;
+        var x = (e.clientX - rect.left - rect.width / 2) * 0.1;
+        var y = (e.clientY - rect.top - rect.height / 2) * 0.14;
         btn.style.transform = 'translate(' + x + 'px,' + y + 'px)';
       });
       btn.addEventListener('mouseleave', function(){
-        btn.style.transform = 'translate(0,0)';
+        btn.style.transform = '';
       });
     });
   }
@@ -1180,6 +1212,9 @@
   var testimonialsSection = document.querySelector('.testimonials-section');
   testimonialsSection.addEventListener('mouseenter', stopAutoplay);
   testimonialsSection.addEventListener('mouseleave', startAutoplay);
+  // Same courtesy for anyone tabbing through the reviews.
+  testimonialsSection.addEventListener('focusin', stopAutoplay);
+  testimonialsSection.addEventListener('focusout', startAutoplay);
 
   window.addEventListener('resize', function(){
     perView = window.matchMedia('(min-width: 760px)').matches ? 2 : 1;
