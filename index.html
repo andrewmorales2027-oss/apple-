@@ -430,6 +430,136 @@
     .story-seg{ opacity:1; }
   }
 
+  /* ---------- Photography ---------- */
+  /* Every photo slot ships with the illustration it replaces still underneath.
+     The photo only takes over once its file actually decodes, so a missing or
+     slow image degrades to the drawing instead of a broken frame. */
+  .photo{ position:absolute; inset:0; opacity:0; transition:opacity 600ms var(--ease-out); }
+  .has-photo .photo{ opacity:1; }
+  .has-photo .photo-fallback{ opacity:0; }
+  .photo-fallback{ transition:opacity 400ms var(--ease-out); }
+  .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .needs-photo{ display:none; }
+
+  /* Scroll reveal for photographs: a wipe up from the base, which suits a
+     photograph better than the translate used on text blocks. */
+  [data-photo-reveal] .photo-wipe{
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 950ms var(--ease-in-out);
+  }
+  [data-photo-reveal].is-visible .photo-wipe{ clip-path: inset(0 0 0 0); }
+  @media (prefers-reduced-motion: reduce){
+    [data-photo-reveal] .photo-wipe{ clip-path:none; transition:none; }
+  }
+
+  /* ---------- Hero photograph ---------- */
+  .hero-photo{
+    position:absolute; top:50%; left:0; right:0; transform:translateY(-50%);
+    aspect-ratio:16/10; margin:0;
+    border-radius:var(--radius-lg); overflow:hidden;
+    border:1px solid var(--line-dark);
+    box-shadow: var(--shadow-lift);
+  }
+  .hero-photo img{
+    transform:scale(1.04);
+    animation: kenBurns 24s var(--ease-in-out) infinite alternate;
+  }
+  /* Slow enough to read as depth rather than movement. */
+  @keyframes kenBurns{
+    from{ transform:scale(1.04) translate3d(0,0,0); }
+    to{   transform:scale(1.12) translate3d(-1.5%,-1%,0); }
+  }
+  .hero-photo::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,10,12,.10) 0%, rgba(10,10,12,.05) 45%, rgba(10,10,12,.72) 100%);
+  }
+  @media (prefers-reduced-motion: reduce){ .hero-photo img{ animation:none; } }
+
+  /* ---------- Full-bleed shop band ---------- */
+  .band-section{ position:relative; height:clamp(360px, 56vh, 620px); overflow:hidden; background:var(--dark); }
+  .band-media{ position:absolute; inset:-12% 0; will-change:transform; }
+  .band-media img{ width:100%; height:100%; object-fit:cover; }
+  .band-section::after{
+    content:''; position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(10,10,12,.72) 0%, rgba(10,10,12,.35) 42%, rgba(10,10,12,.88) 100%),
+      radial-gradient(70% 60% at 50% 50%, transparent 30%, rgba(10,10,12,.45) 100%);
+  }
+  .band-inner{
+    position:relative; z-index:2; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    gap:14px; padding:0 clamp(20px,5vw,48px);
+  }
+  .band-inner h2{ color:var(--ink); font-size:clamp(1.7rem,3.6vw,2.9rem); letter-spacing:-0.02em; max-width:18ch; text-wrap:balance; }
+  .band-inner p{ color:var(--ink-dim); font-size:1.02rem; max-width:52ch; }
+
+  /* ---------- 3D work gallery ---------- */
+  .gallery-section{ padding:110px 0 120px; background:var(--bg); overflow:hidden; }
+  .gallery-stage{
+    position:relative;
+    height:clamp(300px, 40vw, 460px);
+    perspective:1500px;
+    perspective-origin:50% 46%;
+    touch-action:pan-y;
+    cursor:grab;
+  }
+  .gallery-stage:active{ cursor:grabbing; }
+  .gallery-track{
+    position:absolute; inset:0;
+    transform-style:preserve-3d;
+    transition: transform 500ms var(--ease-out);
+  }
+  .g-card{
+    position:absolute; top:50%; left:50%;
+    width:clamp(258px, 44vw, 600px);
+    aspect-ratio:16/9;
+    margin:0;
+    border-radius:var(--radius-lg); overflow:hidden;
+    border:1px solid var(--line-dark);
+    background:var(--bg-soft);
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.85);
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    will-change:transform, opacity;
+    transition: transform 620ms var(--ease-out), opacity 620ms var(--ease-out);
+  }
+  .g-card img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .g-card figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:34px 22px 18px;
+    background:linear-gradient(180deg, transparent, rgba(8,8,10,.9));
+    color:var(--ink);
+    font-family:var(--font-body); font-size:.86rem; font-weight:600;
+    display:flex; align-items:center; gap:10px;
+  }
+  .g-tag{
+    font-size:.62rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    padding:4px 9px; border-radius:var(--radius-pill); flex:none;
+    background:rgba(255,77,35,.18); color:#ff8a63; border:1px solid rgba(255,77,35,.32);
+  }
+  .g-card:not(.is-active){ cursor:pointer; }
+  .gallery-controls{ display:flex; align-items:center; justify-content:center; gap:18px; margin-top:38px; }
+  .g-arrow{
+    width:46px; height:46px; border-radius:50%; color:var(--ink);
+    border:1px solid var(--line-dark); background:rgba(255,255,255,.05);
+    display:flex; align-items:center; justify-content:center;
+    transition: background 200ms ease, transform 160ms var(--ease-out);
+  }
+  .g-arrow:active{ transform:scale(0.94); }
+  @media (hover:hover) and (pointer:fine){ .g-arrow:hover{ background:rgba(255,255,255,.12); } }
+  .g-arrow svg{ width:17px; height:17px; }
+  .g-dots{ display:flex; gap:8px; }
+  .g-dot{ width:7px; height:7px; border-radius:50%; background:var(--line-dark); transition: transform 200ms var(--ease-out), background 200ms ease; }
+  .g-dot.active{ background:var(--accent); transform:scale(1.35); }
+
+  /* Reduced motion: a plain scroll-snap row, no perspective and no depth. */
+  @media (prefers-reduced-motion: reduce){
+    .gallery-stage{ perspective:none; height:auto; cursor:auto; }
+    .gallery-track{ position:static; display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; transform:none !important; transition:none; }
+    .g-card{ position:relative; top:auto; left:auto; flex:0 0 min(84vw, 480px); transform:none !important; opacity:1 !important; scroll-snap-align:center; }
+    .gallery-controls{ display:none; }
+  }
+
   /* ---------- Testimonials ---------- */
   .testimonials-section{ padding:110px 0 130px; background:var(--paper); overflow:hidden; }
   .t-viewport{ overflow:hidden; }
@@ -599,7 +729,10 @@
       <div class="hero-visual" aria-hidden="true">
         <div class="hero-stage">
           <div class="hero-glow"></div>
-          <svg class="hero-car" viewBox="0 0 440 220" fill="none">
+          <figure class="hero-photo photo" data-photo>
+            <img src="images/lotus-555-rear.jpg" alt="A freshly finished Lotus Elise in the United Collision Center workshop." width="2000" height="1030" fetchpriority="high" decoding="async">
+          </figure>
+          <svg class="hero-car photo-fallback" viewBox="0 0 440 220" fill="none">
             <defs>
               <linearGradient id="heroBody" x1="60" y1="44" x2="380" y2="150" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stop-color="#ff8a5c"/>
@@ -674,6 +807,17 @@
       <span class="marquee-item">Lexus<span class="sep"></span></span>
     </div>
   </div>
+
+  <!-- SHOP BAND -->
+  <section class="band-section needs-photo" data-band data-photo-reveal aria-label="Inside the shop">
+    <div class="band-media photo-wipe" data-band-media>
+      <img src="images/shop-floor.jpg" alt="The United Collision Center workshop floor, with vehicles in various stages of repair." width="2000" height="1080" loading="lazy" decoding="async">
+    </div>
+    <div class="band-inner">
+      <h2 data-reveal>This is the floor your car sits on</h2>
+      <p data-reveal style="--reveal-delay:80ms">Everything happens here in Mountain View — estimate, teardown, paint, and the final wash. No third-party farm-outs, no mystery.</p>
+    </div>
+  </section>
 
   <!-- BEFORE / AFTER -->
   <section class="compare-section">
@@ -774,6 +918,40 @@
           <p>Specialized equipment and training for electric and hybrid vehicles.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 3D WORK GALLERY -->
+  <section class="gallery-section on-dark needs-photo" id="work" data-gallery aria-label="Cars we have had in">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">The work</span>
+        <h2 class="section-title">Cars we&rsquo;ve had in</h2>
+        <p class="section-sub">Drag to look around — everything here came through the Old Middlefield bay.</p>
+      </div>
+    </div>
+
+    <div class="gallery-stage" data-gallery-stage>
+      <div class="gallery-track" data-gallery-track>
+        <figure class="g-card" data-g-card>
+          <img src="images/cobra.jpg" alt="A dark red AC Cobra replica parked outside the shop." width="2000" height="1030" loading="lazy" decoding="async">
+          <figcaption><span class="g-tag">In the lot</span>AC Cobra replica</figcaption>
+        </figure>
+        <figure class="g-card" data-g-card>
+          <img src="images/lotus-555-detail.jpg" alt="Close detail of an orange Lotus Elise front wheel arch and wheel." width="2000" height="1030" loading="lazy" decoding="async">
+          <figcaption><span class="g-tag">In the shop</span>Lotus Elise, track&#8209;prepped</figcaption>
+        </figure>
+        <figure class="g-card" data-g-card>
+          <img src="images/bmw-damage.jpg" alt="A white BMW 3 Series with front-end collision damage to the bumper and fender." width="1265" height="1200" loading="lazy" decoding="async">
+          <figcaption><span class="g-tag">Intake</span>BMW 3 Series, front&#8209;end damage</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="gallery-controls">
+      <button class="g-arrow" data-g-prev aria-label="Previous car"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="g-dots" data-g-dots></div>
+      <button class="g-arrow" data-g-next aria-label="Next car"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     </div>
   </section>
 
@@ -1176,8 +1354,10 @@
     });
   }, { threshold: 0.2, rootMargin: '-40px' });
 
+  var photoTargets = document.querySelectorAll('[data-photo-reveal]');
   revealTargets.forEach(function(el){ io.observe(el); });
   lineTargets.forEach(function(el){ io.observe(el); });
+  photoTargets.forEach(function(el){ io.observe(el); });
 
   /* Stat counters + star fill (run once) */
   var counterIo = new IntersectionObserver(function(entries){
@@ -1378,6 +1558,159 @@
     window.addEventListener('load', remeasure);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
     render();
+  })();
+
+  /* Photographs. A slot keeps its illustration until the photo has actually
+     decoded, so a missing or slow file degrades to the drawing rather than a
+     broken frame. Detection uses a separate probe so the in-page images can
+     stay lazy without deadlocking the sections that start hidden. */
+  (function(){
+    function whenLoaded(img, cb){
+      if (img.complete && img.naturalWidth > 0) { cb(); return; }
+      var probe = new Image();
+      probe.onload = cb;
+      probe.src = img.currentSrc || img.getAttribute('src');
+    }
+
+    document.querySelectorAll('[data-photo]').forEach(function(fig){
+      var img = fig.querySelector('img');
+      var host = fig.closest('.hero-stage') || fig.parentNode;
+      if (img) whenLoaded(img, function(){ host.classList.add('has-photo'); });
+    });
+
+    // Sections that exist only to carry photographs stay out of the page until
+    // one of their images is confirmed present.
+    document.querySelectorAll('.needs-photo').forEach(function(sec){
+      var shown = false;
+      function reveal(){
+        if (shown) return;
+        shown = true;
+        sec.classList.remove('needs-photo');
+        // Geometry the story section measured while this was display:none is stale.
+        window.dispatchEvent(new Event('resize'));
+      }
+      sec.querySelectorAll('img').forEach(function(img){ whenLoaded(img, reveal); });
+    });
+  })();
+
+  /* Shop band: the photograph drifts against the scroll to give the section depth. */
+  (function(){
+    var band = document.querySelector('[data-band]');
+    var media = document.querySelector('[data-band-media]');
+    if (!band || !media || reduceMotion) return;
+    var ticking = false;
+    function place(){
+      var r = band.getBoundingClientRect();
+      var vh = window.innerHeight;
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      // -1 .. 1 as the band crosses the viewport; the media has 12% of headroom.
+      var p = (r.top + r.height / 2 - vh / 2) / vh;
+      media.style.transform = 'translate3d(0,' + (p * 8).toFixed(2) + '%,0)';
+    }
+    document.addEventListener('scroll', function(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){ place(); ticking = false; });
+    }, { passive: true });
+    window.addEventListener('resize', place);
+    place();
+  })();
+
+  /* 3D work gallery. Real perspective projection: the cards are siblings in a
+     preserve-3d space, pushed back along Z and rotated about Y by their distance
+     from the active card, and the whole stack tilts toward the pointer. CSS
+     transforms only — a WebGL scene would cost 500KB+ to say the same thing. */
+  (function(){
+    var section = document.querySelector('[data-gallery]');
+    if (!section || reduceMotion) return;
+    var stage = section.querySelector('[data-gallery-stage]');
+    var track = section.querySelector('[data-gallery-track]');
+    var cards = Array.prototype.slice.call(section.querySelectorAll('[data-g-card]'));
+    var dotsWrap = section.querySelector('[data-g-dots]');
+    if (!stage || !track || !cards.length) return;
+
+    var index = 0;
+    var tiltX = 0, tiltY = 0;
+
+    function layout(){
+      cards.forEach(function(card, i){
+        var d = i - index;
+        var abs = Math.abs(d);
+        card.style.transform =
+          'translate(-50%,-50%)' +
+          ' translateX(' + (d * 54) + '%)' +
+          ' translateZ(' + (-abs * 230) + 'px)' +
+          ' rotateY(' + (-d * 32) + 'deg)';
+        card.style.opacity = abs > 2 ? '0' : String(1 - abs * 0.28);
+        card.style.zIndex = String(50 - abs);
+        card.style.pointerEvents = abs > 2 ? 'none' : 'auto';
+        card.classList.toggle('is-active', d === 0);
+      });
+      Array.prototype.forEach.call(dotsWrap.children, function(dot, i){
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    function goTo(i){
+      index = Math.max(0, Math.min(cards.length - 1, i));
+      layout();
+    }
+
+    cards.forEach(function(card, i){
+      card.addEventListener('click', function(){ if (i !== index) goTo(i); });
+    });
+
+    for (var i = 0; i < cards.length; i++){
+      (function(i){
+        var dot = document.createElement('button');
+        dot.className = 'g-dot';
+        dot.setAttribute('aria-label', 'Show car ' + (i + 1) + ' of ' + cards.length);
+        dot.addEventListener('click', function(){ goTo(i); });
+        dotsWrap.appendChild(dot);
+      })(i);
+    }
+
+    section.querySelector('[data-g-prev]').addEventListener('click', function(){ goTo(index - 1); });
+    section.querySelector('[data-g-next]').addEventListener('click', function(){ goTo(index + 1); });
+
+    /* Drag, with the stack following the finger before it settles. */
+    var dragging = false, startX = 0, moved = 0;
+    stage.addEventListener('pointerdown', function(e){
+      dragging = true; startX = e.clientX; moved = 0;
+      stage.setPointerCapture(e.pointerId);
+      track.style.transition = 'none';
+    });
+    stage.addEventListener('pointermove', function(e){
+      if (dragging){
+        moved = e.clientX - startX;
+        applyTilt(tiltX, tiltY, moved * 0.06);
+        return;
+      }
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      var r = stage.getBoundingClientRect();
+      tiltY = ((e.clientX - r.left) / r.width - 0.5) * 7;
+      tiltX = ((e.clientY - r.top) / r.height - 0.5) * -5;
+      applyTilt(tiltX, tiltY, 0);
+    });
+    function endDrag(){
+      if (!dragging) return;
+      dragging = false;
+      track.style.transition = '';
+      if (Math.abs(moved) > 55) goTo(index + (moved < 0 ? 1 : -1));
+      applyTilt(tiltX, tiltY, 0);
+    }
+    ['pointerup','pointercancel','pointerleave'].forEach(function(ev){
+      stage.addEventListener(ev, endDrag);
+    });
+    stage.addEventListener('mouseleave', function(){
+      tiltX = 0; tiltY = 0; applyTilt(0, 0, 0);
+    });
+
+    function applyTilt(rx, ry, dx){
+      track.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + (ry + dx).toFixed(2) + 'deg)';
+    }
+
+    layout();
   })();
 
   /* Testimonials carousel */
