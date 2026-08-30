@@ -552,6 +552,14 @@
   .g-dot{ width:7px; height:7px; border-radius:50%; background:var(--line-dark); transition: transform 200ms var(--ease-out), background 200ms ease; }
   .g-dot.active{ background:var(--accent); transform:scale(1.35); }
 
+  /* Gallery cards carry a drawing until their photograph decodes. */
+  .g-illus{
+    position:absolute; inset:0; margin:auto; width:74%; height:auto;
+    filter: drop-shadow(0 24px 30px rgba(0,0,0,.5));
+  }
+  .g-card{ background:linear-gradient(158deg, var(--bg-soft-2), var(--bg)); }
+  .g-card .photo{ position:absolute; inset:0; }
+
   /* Reduced motion: a plain scroll-snap row, no perspective and no depth. */
   @media (prefers-reduced-motion: reduce){
     .gallery-stage{ perspective:none; height:auto; cursor:auto; }
@@ -922,28 +930,46 @@
   </section>
 
   <!-- 3D WORK GALLERY -->
-  <section class="gallery-section on-dark needs-photo" id="work" data-gallery aria-label="Cars we have had in">
+  <section class="gallery-section on-dark" id="work" data-gallery aria-label="What comes through the bay">
     <div class="container">
       <div class="section-head center" data-reveal>
         <span class="eyebrow">The work</span>
-        <h2 class="section-title">Cars we&rsquo;ve had in</h2>
-        <p class="section-sub">Drag to look around — everything here came through the Old Middlefield bay.</p>
+        <h2 class="section-title">What comes through the bay</h2>
+        <p class="section-sub">Drag to look around. From weekend toys to the daily commute — it all comes through the Old Middlefield bay.</p>
       </div>
     </div>
 
     <div class="gallery-stage" data-gallery-stage>
       <div class="gallery-track" data-gallery-track>
         <figure class="g-card" data-g-card>
-          <img src="images/cobra.jpg" alt="A dark red AC Cobra replica parked outside the shop." width="2000" height="1030" loading="lazy" decoding="async">
-          <figcaption><span class="g-tag">In the lot</span>AC Cobra replica</figcaption>
+          <svg class="g-illus photo-fallback" viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <defs><linearGradient id="gIllusA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a4d"/><stop offset=".5" stop-color="#e8390f"/><stop offset="1" stop-color="#7a1c05"/></linearGradient></defs>
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="url(#gIllusA)"/><path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#1c1414"/>
+            <path d="M38 47 C74 41 148 41 180 50" stroke="rgba(255,255,255,.6)" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#6a6a72"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#6a6a72"/>
+          </svg>
+          <span class="photo" data-photo><img src="images/cobra.jpg" alt="A dark red AC Cobra replica parked outside the shop." width="2000" height="1030" loading="lazy" decoding="async"></span>
+          <figcaption><span class="g-tag">Sports &amp; exotics</span>Cobras, Lotus, weekend cars</figcaption>
         </figure>
         <figure class="g-card" data-g-card>
-          <img src="images/lotus-555-detail.jpg" alt="Close detail of an orange Lotus Elise front wheel arch and wheel." width="2000" height="1030" loading="lazy" decoding="async">
-          <figcaption><span class="g-tag">In the shop</span>Lotus Elise, track&#8209;prepped</figcaption>
+          <svg class="g-illus photo-fallback" viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#5a6270"/><path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#23262c"/>
+            <path d="M38 47 C74 41 148 41 180 50" stroke="rgba(255,255,255,.34)" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#5a5a62"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#5a5a62"/>
+          </svg>
+          <span class="photo" data-photo><img src="images/lotus-555-detail.jpg" alt="Close detail of an orange Lotus Elise front wheel arch and wheel." width="2000" height="1030" loading="lazy" decoding="async"></span>
+          <figcaption><span class="g-tag">Daily drivers</span>BMW, Toyota, Honda, Subaru</figcaption>
         </figure>
         <figure class="g-card" data-g-card>
-          <img src="images/bmw-damage.jpg" alt="A white BMW 3 Series with front-end collision damage to the bumper and fender." width="1265" height="1200" loading="lazy" decoding="async">
-          <figcaption><span class="g-tag">Intake</span>BMW 3 Series, front&#8209;end damage</figcaption>
+          <svg class="g-illus photo-fallback" viewBox="0 0 220 96" fill="none" aria-hidden="true">
+            <path d="M20 72 V58 C20 51 28 45 38 45 H56 C64 32 78 22 96 22 H130 C148 22 160 33 166 45 H182 C192 45 198 51 198 58 V72 Z" fill="#4c4b50"/><path d="M63 45 C70 33 82 26 97 26 H128 C142 26 152 34 158 45 Z" fill="#2b2a2e"/>
+            <path d="M28 56 q9 6 0 12" stroke="#141316" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M40 40 l11 15 M116 30 l-5 12 7 9" stroke="#ff4d23" stroke-width="2.4" stroke-linecap="round"/>
+            <g stroke="#ff4d23" stroke-width="2" opacity=".9"><line x1="34" y1="33" x2="46" y2="45"/><line x1="46" y1="33" x2="34" y2="45"/></g>
+            <circle cx="60" cy="73" r="13" fill="#131316"/><circle cx="60" cy="73" r="5" fill="#4a4a50"/><circle cx="158" cy="73" r="13" fill="#131316"/><circle cx="158" cy="73" r="5" fill="#4a4a50"/>
+          </svg>
+          <span class="photo" data-photo><img src="images/bmw-damage.jpg" alt="A white BMW 3 Series with front-end collision damage." width="1265" height="1200" loading="lazy" decoding="async"></span>
+          <figcaption><span class="g-tag">Collision intake</span>Straight off the tow truck</figcaption>
         </figure>
       </div>
     </div>
