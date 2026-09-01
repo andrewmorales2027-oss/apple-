@@ -1,0 +1,720 @@
+/* ------------------------------------------------------------------ tokens */
+:root {
+  --ink: #0a0605;
+  --ink-soft: #14100e;
+  --paper: #f2ece2;
+  --paper-dim: rgba(242, 236, 226, 0.58);
+  --paper-faint: rgba(242, 236, 226, 0.3);
+  --accent: #c81e2c;
+
+  --display: "Barlow Condensed", "Oswald", "Haettenschweiler", "Arial Narrow", sans-serif;
+  --body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Section scroll lengths. Every beat's pacing is tunable from right here. */
+  --h-hero: 100svh;
+  --h-build: 240svh;
+  --h-cold: 170svh;
+  --h-panel: 115svh;
+  --h-order: 150svh;
+
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+}
+
+/* ------------------------------------------------------------------- reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------- 3D canvas */
+/* Fixed behind the document. The page above it scrolls natively — there is no pin,
+   no scroll lock, and nothing for keyboard scrolling to fight. */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Pointer events reach the canvas only in the final shot, where the user is invited
+   to spin the meal. Everywhere else the canvas is inert so text selection, links and
+   scrolling behave normally. */
+html[data-orbit="on"] .scene {
+  pointer-events: auto;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------------ chrome */
+.skip-link {
+  position: fixed;
+  z-index: 40;
+  top: 0.7rem;
+  left: var(--gutter);
+  padding: 0.34rem 0.7rem;
+  font-family: var(--display);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  background: rgba(10, 6, 5, 0.72);
+  border: 1px solid rgba(242, 236, 226, 0.14);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.skip-link:hover,
+.skip-link:focus-visible {
+  color: var(--paper);
+  border-color: var(--accent);
+  background: rgba(200, 30, 44, 0.18);
+}
+
+.masthead {
+  position: fixed;
+  z-index: 30;
+  inset: 0 0 auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 3.7rem var(--gutter) 0.9rem;
+  mix-blend-mode: difference;
+}
+
+.masthead__brand {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.masthead__nav {
+  display: flex;
+  gap: clamp(0.9rem, 2.4vw, 2rem);
+  font-family: var(--display);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.masthead__nav a {
+  color: var(--paper-dim);
+  transition: color 0.25s;
+  will-change: transform;
+}
+
+.masthead__nav a:hover {
+  color: var(--paper);
+}
+
+/* ------------------------------------------------------------------ layout */
+.section {
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 4.8rem var(--gutter) 3.2rem;
+}
+
+/* Directional scrim behind every copy block. It sits inside .content's stacking context,
+   so z-index: -1 puts it under the text but still over the canvas. */
+.sticky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(10, 6, 5, 0.93) 0%,
+    rgba(10, 6, 5, 0.78) 24%,
+    rgba(10, 6, 5, 0) 58%
+  );
+}
+
+.sticky[data-scrim="right"]::before {
+  background: linear-gradient(
+    260deg,
+    rgba(10, 6, 5, 0.93) 0%,
+    rgba(10, 6, 5, 0.78) 24%,
+    rgba(10, 6, 5, 0) 58%
+  );
+}
+
+.sticky[data-scrim="bottom"]::before {
+  background: linear-gradient(
+    to top,
+    rgba(10, 6, 5, 0.97) 0%,
+    rgba(10, 6, 5, 0.9) 30%,
+    rgba(10, 6, 5, 0.6) 48%,
+    rgba(10, 6, 5, 0) 76%
+  );
+}
+
+.sticky[data-scrim="none"]::before {
+  background: none;
+}
+
+.eyebrow {
+  font-family: var(--display);
+  /* Small accent-red type can land on a lit part of the scene where the scrim is thin. */
+  text-shadow: 0 0 0.9em rgba(10, 6, 5, 0.95);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lede {
+  max-width: 42ch;
+  color: var(--paper-dim);
+  text-wrap: pretty;
+}
+
+/* -------------------------------------------------------------------- hero */
+#hero {
+  height: var(--h-hero);
+}
+
+.hero__inner {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  padding: clamp(5.5rem, 12vh, 8rem) var(--gutter) 0;
+}
+
+.hero__wordmark {
+  font-size: clamp(2.7rem, 11.5vw, 9rem);
+  letter-spacing: -0.02em;
+  margin: 0.4rem 0 0;
+  text-shadow: 0 0.05em 0.5em rgba(10, 6, 5, 0.9), 0 0 1.6em rgba(10, 6, 5, 0.75);
+}
+
+.hero__wordmark span {
+  display: block;
+}
+
+.hero__wordmark .accent {
+  color: var(--accent);
+}
+
+.hero__sub {
+  margin-top: 1.4rem;
+  text-shadow: 0 0.1em 0.9em rgba(10, 6, 5, 0.95);
+  max-width: 34ch;
+  margin-inline: auto;
+  color: var(--paper-dim);
+}
+
+.hero__hint {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+.hero__hint::after {
+  content: "";
+  width: 1px;
+  height: 2.6rem;
+  background: linear-gradient(var(--paper-faint), transparent);
+  animation: hint 2.4s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes hint {
+  0%,
+  100% {
+    scale: 1 0.35;
+    opacity: 0.35;
+  }
+  50% {
+    scale: 1 1;
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------- build */
+#build {
+  height: var(--h-build);
+}
+
+.build__panel {
+  max-width: 29rem;
+}
+
+.build__panel .lede {
+  font-size: 0.94em;
+}
+
+.build__title {
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  margin: 0.35rem 0 0.7rem;
+}
+
+.build__list {
+  list-style: none;
+  margin: 1.3rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.1rem;
+  counter-reset: layer;
+}
+
+.build__list li {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.26rem 0;
+  border-top: 1px solid rgba(242, 236, 226, 0.09);
+  color: var(--paper-faint);
+  font-family: var(--display);
+  font-size: clamp(0.88rem, 1.3vw, 1.05rem);
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.35s ease, border-color 0.35s ease;
+}
+
+.build__list li::before {
+  counter-increment: layer;
+  content: counter(layer, decimal-leading-zero);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--paper-faint);
+  transition: color 0.35s ease;
+}
+
+.build__note {
+  font-family: var(--body);
+  font-size: 0.72em;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.62;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.build__list li[data-state="landed"] {
+  color: var(--paper);
+  border-color: rgba(242, 236, 226, 0.22);
+}
+
+.build__list li[data-state="landing"] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.build__list li[data-state="landing"]::before {
+  color: var(--accent);
+}
+
+/* -------------------------------------------------------------------- cold */
+#cold {
+  height: var(--h-cold);
+}
+
+.cold__inner {
+  justify-content: flex-end;
+}
+
+.cold__panel {
+  max-width: 28rem;
+  text-align: right;
+}
+
+.cold__quote {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  margin: 0.7rem 0 1.2rem;
+  text-wrap: balance;
+}
+
+.cold__quote em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------- breakdown */
+.panel {
+  height: var(--h-panel);
+}
+
+.panel__inner {
+  align-items: flex-end;
+  padding-bottom: 5rem;
+}
+
+.panel__card {
+  max-width: 26rem;
+}
+
+.panel__inner[data-align="right"] {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.panel__index {
+  font-family: var(--display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--paper-faint);
+}
+
+.panel__title {
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  margin: 0.4rem 0 0.9rem;
+}
+
+.panel__spec {
+  margin-top: 1.1rem;
+  font-family: var(--display);
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+/* Progressive enhancement: browsers with scroll-driven animations get the reveal for
+   free, on the compositor, with no JS. Everywhere else the copy is simply already
+   visible — the fallback is the finished state, never a blank panel. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .panel__card {
+      animation: panel-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 12% cover 38%;
+    }
+  }
+}
+
+@keyframes panel-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(2.5rem);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* ------------------------------------------------------------------- order */
+#order {
+  height: var(--h-order);
+}
+
+.order__inner {
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding-bottom: 4.5rem;
+}
+
+.order__title {
+  font-size: clamp(2.6rem, 7.5vw, 5.6rem);
+}
+
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+  padding: 1rem 2.4rem;
+  font-family: var(--display);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--accent);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  will-change: transform;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0 0 rgba(200, 30, 44, 0);
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: #d92435;
+  box-shadow: 0 0.9rem 3rem rgba(200, 30, 44, 0.42);
+}
+
+.order__note {
+  color: var(--paper-faint);
+  font-size: 0.85rem;
+}
+
+.order__hint {
+  font-family: var(--display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+/* ------------------------------------------------------------------ footer */
+.footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 2.4rem var(--gutter) 2.8rem;
+  border-top: 1px solid rgba(242, 236, 226, 0.1);
+  background: var(--ink);
+  font-family: var(--display);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+}
+
+/* ------------------------------------------------------------------ cursor */
+.cursor,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  pointer-events: none;
+  border-radius: 999px;
+  translate: -50% -50%;
+  mix-blend-mode: difference;
+}
+
+.cursor {
+  width: 6px;
+  height: 6px;
+  background: var(--paper);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(242, 236, 226, 0.5);
+}
+
+/* Native cursor stays put on touch and for reduced motion. */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none;
+  }
+}
+
+
+/* --------------------------------------------------------------- narrow */
+/* On a phone there is no "beside the subject" — the copy sits on top of the meal, so the
+   directional scrims become a single top-weighted wash and the alternating panel sides
+   collapse to one column. */
+@media (max-width: 860px) {
+  .sticky {
+    align-items: flex-start;
+    padding-top: 6.5rem;
+  }
+
+  .sticky::before,
+  .sticky[data-scrim="right"]::before,
+  .sticky[data-scrim="left"]::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 6, 5, 0.96) 0%,
+      rgba(10, 6, 5, 0.92) 48%,
+      rgba(10, 6, 5, 0.55) 72%,
+      rgba(10, 6, 5, 0) 100%
+    );
+  }
+
+  .cold__inner,
+  .panel__inner[data-align="right"] {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .cold__panel {
+    text-align: left;
+  }
+
+  .cold__panel .lede {
+    margin-left: 0 !important;
+  }
+
+  .panel__inner {
+    align-items: flex-start;
+  }
+
+  .order__inner {
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 6.5rem;
+  }
+
+  .masthead {
+    padding-top: 3.2rem;
+  }
+
+  .masthead__brand,
+  .masthead__nav {
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+  }
+
+  .masthead__nav {
+    gap: 0.85rem;
+  }
+}
+
+@media (max-width: 560px) {
+  /* The descriptor is a nicety; the ingredient name is the content. */
+  .build__note {
+    display: none;
+  }
+
+  .masthead__brand .masthead__long {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------- reduced motion */
+/* Everything scroll-driven, floating, or looping stops. The 3D scene stays — it is
+   just no longer animated: a static, fully assembled hero shot the user can still
+   spin by hand if they want to. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  :root {
+    --h-hero: 100svh;
+    --h-build: 100svh;
+    --h-cold: 100svh;
+    --h-panel: 100svh;
+    --h-order: 100svh;
+  }
+
+  .hero__hint::after {
+    animation: none;
+    scale: 1 1;
+    opacity: 0.5;
+  }
+
+  .hero__wordmark {
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  .build__list li {
+    color: var(--paper);
+    border-color: rgba(242, 236, 226, 0.22);
+  }
+
+  .cursor,
+  .cursor-ring {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
