@@ -1,0 +1,768 @@
+/* ============================================================================
+   ECLIPSE NOIR — Maison Vesper
+   Near-black ground, one off-white ink, one warm gold. The gold appears on the
+   cap, the corona and the CTA rule. Nowhere else.
+   ========================================================================= */
+
+:root {
+  --bg: #07080b;
+  --ink: #f0f0ec;
+  --ink-dim: rgba(240, 240, 236, 0.58);
+  --ink-faint: rgba(240, 240, 236, 0.34);
+  --ink-ghost: rgba(240, 240, 236, 0.14);
+  --gold: #c8a04a;
+  --line: rgba(240, 240, 236, 0.11);
+
+  --font-display: 'Archivo', 'Archivo Narrow', 'Helvetica Neue Condensed',
+    'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'Source Sans 3', ui-sans-serif, system-ui, 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --gutter: clamp(1.25rem, 5vw, 5.5rem);
+  --rail: clamp(1.25rem, 5vw, 4rem);
+
+  /* Section scroll heights. Together ≈ 6.7 viewports of directed sequence. */
+  --h-hero: 104vh;
+  --h-totality: 152vh;
+  --h-corona: 110vh;
+  --h-notes: 198vh;
+  --h-product: 106vh;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* No scroll-jacking, no smooth-scroll library, no scroller proxy. The page
+     scrolls natively so keyboard and AT behave exactly as the OS expects. */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.94rem + 0.28vw, 1.125rem);
+  line-height: 1.62;
+  font-weight: 350;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body.cursor-custom,
+body.cursor-custom * {
+  cursor: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 78%;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- shared type ------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-stretch: 82%;
+  font-size: 0.74rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+.eyebrow--gold {
+  color: var(--gold);
+}
+
+.lede {
+  max-width: 34ch;
+  color: var(--ink-dim);
+  font-size: 1.06em;
+}
+
+.rule {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--line);
+}
+
+/* --- layer stacking ---------------------------------------------------- */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* Pointer events are handed to the canvas only in the final section, where
+     OrbitControls is live. Everywhere else the page owns the pointer. */
+  pointer-events: none;
+}
+
+.stage[data-interactive='true'] {
+  pointer-events: auto;
+}
+
+.stage canvas {
+  display: block;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  /* Sections are full-bleed boxes with a lot of empty space in them. Letting
+     that empty space swallow the pointer would both eat OrbitControls drags in
+     the final section and start a text selection every time someone drags over
+     the scene. Content blocks opt back in. */
+  pointer-events: none;
+}
+
+.page section > * {
+  pointer-events: auto;
+}
+
+.section {
+  position: relative;
+  padding: 0 var(--gutter);
+}
+
+/* --- skip link --------------------------------------------------------- */
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 80;
+  padding: 0.65rem 1.1rem;
+  background: var(--ink);
+  color: #07080b;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.24s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* --- nav --------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(1rem, 2.4vw, 1.9rem) var(--rail);
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.nav > * {
+  pointer-events: auto;
+}
+
+.nav__brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 78%;
+  font-size: 0.8rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.6vw, 2.4rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-stretch: 82%;
+  font-size: 0.74rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  opacity: 0.72;
+  transition: opacity 0.3s var(--ease-out);
+  will-change: transform;
+}
+
+.nav__link:hover {
+  opacity: 1;
+}
+
+@media (max-width: 620px) {
+  .nav__links li:first-child {
+    display: none;
+  }
+}
+
+/* --- 1. hero ----------------------------------------------------------- */
+
+.hero {
+  min-height: var(--h-hero);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: clamp(2rem, 6vh, 4.5rem);
+  padding-top: 22vh;
+}
+
+.hero__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vh, 2rem);
+}
+
+.hero__wordmark {
+  font-size: clamp(3.1rem, 12.4vw, 10.5rem);
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  font-stretch: 68%;
+  will-change: filter, opacity, transform;
+}
+
+.hero__wordmark .word {
+  display: block;
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.1rem;
+}
+
+.hero__meta p {
+  color: var(--ink-dim);
+  font-size: 0.95rem;
+}
+
+.hero__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: clamp(1.5rem, 5vh, 3.5rem);
+}
+
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.scroll-hint__track {
+  position: relative;
+  width: 1px;
+  height: 3.2rem;
+  background: var(--ink-ghost);
+  overflow: hidden;
+}
+
+.scroll-hint__track::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 34%;
+  background: var(--gold);
+  animation: hint-travel 2.6s var(--ease-out) infinite;
+}
+
+@keyframes hint-travel {
+  0% {
+    transform: translateY(-100%);
+  }
+  70%,
+  100% {
+    transform: translateY(300%);
+  }
+}
+
+.skip-visible {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-ghost);
+  padding-bottom: 0.35rem;
+  transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.skip-visible:hover {
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+/* --- 2. totality ------------------------------------------------------- */
+
+.totality {
+  min-height: var(--h-totality);
+  display: grid;
+  align-content: center;
+}
+
+/* Pushed below the optical centre so that at the eclipse — which lands when
+   this section's midpoint meets the viewport's — the corona sits high in the
+   plate and the caption sits under it, rather than across it. */
+.totality__inner {
+  justify-self: center;
+  width: min(100%, 62rem);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: clamp(1.25rem, 3vh, 2.25rem);
+  transform: translateY(21vh);
+}
+
+.totality__heading {
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+}
+
+.totality__copy {
+  max-width: 46ch;
+  color: var(--ink-dim);
+}
+
+.totality__clock {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+/* --- 3. corona --------------------------------------------------------- */
+
+.corona {
+  min-height: var(--h-corona);
+  display: grid;
+  align-content: center;
+}
+
+.corona__copy {
+  margin-left: auto;
+  max-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.corona__line {
+  font-size: clamp(2rem, 5.2vw, 4rem);
+  line-height: 1;
+  text-transform: none;
+  font-stretch: 82%;
+  font-weight: 400;
+}
+
+.corona__line em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+@media (max-width: 899px) {
+  .corona__copy {
+    margin-left: 0;
+    margin-top: 42vh;
+  }
+}
+
+/* --- 4. notes ---------------------------------------------------------- */
+
+.notes {
+  min-height: var(--h-notes);
+  position: relative;
+}
+
+.notes__index {
+  position: sticky;
+  top: 50vh;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+}
+
+.notes__index li[data-current='true'] {
+  color: var(--gold);
+}
+
+.note-panel {
+  min-height: calc(var(--h-notes) / 3);
+  display: flex;
+  align-items: center;
+  max-width: 32rem;
+}
+
+.note-panel__card {
+  position: sticky;
+  top: 50vh;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-block: 1rem;
+  will-change: transform, opacity;
+}
+
+.note-panel__stage {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.note-panel__num {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+
+.note-panel__title {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+.note-panel__desc {
+  color: var(--ink-dim);
+  max-width: 32ch;
+}
+
+.note-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.note-list li {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.98rem;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.note-list li span {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+}
+
+/* Progressive enhancement: native scroll-driven reveals for the note lines.
+   Chrome/Edge and Safari 17.5+ get them free on the compositor; Firefox and
+   anything older simply keeps the fully-visible fallback state below. */
+.note-list li {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .note-list li {
+      animation: note-line-in linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 28%;
+    }
+  }
+}
+
+@keyframes note-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* --- 5. product close -------------------------------------------------- */
+
+.product {
+  min-height: var(--h-product);
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  text-align: center;
+  gap: clamp(1.1rem, 2.6vh, 2rem);
+  padding-bottom: clamp(3rem, 10vh, 7rem);
+}
+
+.product__heading {
+  font-size: clamp(2.6rem, 9vw, 7rem);
+}
+
+.product__spec {
+  color: var(--ink-dim);
+  max-width: 40ch;
+  font-size: 0.98rem;
+}
+
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.05rem 2.2rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-stretch: 82%;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  will-change: transform;
+  transition: color 0.4s var(--ease-out);
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.cta:hover::before,
+.cta:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.cta:hover,
+.cta:focus-visible {
+  color: #07080b;
+}
+
+.cta span {
+  position: relative;
+}
+
+.spin-hint {
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* --- footer ------------------------------------------------------------ */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  padding: clamp(2rem, 5vh, 3.5rem) var(--rail);
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+.footer strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-stretch: 78%;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-size: 0.76rem;
+}
+
+/* --- custom cursor ----------------------------------------------------- */
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  background: var(--ink);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid var(--ink-ghost);
+  transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out),
+    margin 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
+.cursor-ring[data-active='true'] {
+  width: 58px;
+  height: 58px;
+  margin: -29px 0 0 -29px;
+  border-color: var(--gold);
+}
+
+/* --- reduced motion ---------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Everything below is the static, legible version of the same page: the
+     camera rig, the grain, the cursor and every reveal are already disabled in
+     JS — this is the belt to that pair of braces. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .hero__wordmark {
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .scroll-hint__track::after {
+    display: none;
+  }
+
+  .note-panel__card,
+  .notes__index {
+    position: static;
+    transform: none;
+  }
+
+  .note-panel {
+    align-items: flex-start;
+    min-height: 0;
+    padding-block: clamp(2rem, 8vh, 5rem);
+  }
+
+  .notes {
+    min-height: 0;
+  }
+
+  .totality__inner {
+    transform: none;
+  }
+
+  .totality,
+  .corona,
+  .product,
+  .hero {
+    min-height: 0;
+    padding-block: clamp(4rem, 14vh, 9rem);
+  }
+
+  .corona__copy {
+    margin-left: 0;
+  }
+}
