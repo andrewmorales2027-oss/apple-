@@ -221,6 +221,7 @@ export function Bottle({
       <mesh geometry={glassGeo} castShadow>
         {q.transmission ? (
           <MeshTransmissionMaterial
+            name="bottle-glass"
             transmission={0.97}
             thickness={0.16}
             roughness={0.06}
@@ -240,6 +241,7 @@ export function Bottle({
           />
         ) : (
           <meshPhysicalMaterial
+            name="bottle-glass"
             color="#8fa89b"
             roughness={0.08}
             metalness={0}

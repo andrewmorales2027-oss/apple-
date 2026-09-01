@@ -2,6 +2,7 @@ import { useMemo, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { scrollState } from "./scrollState";
+import { getStyle } from "./style";
 import { clamp01, easeOutBack, smoothstep } from "./easing";
 import { BottomBun, TopBun } from "./parts/Buns";
 import { Patties } from "./parts/Patty";
@@ -157,7 +158,10 @@ export function Burger({ reduced, handles }: Props) {
       )}
       {wrap("sauce", <Sauce />)}
       {wrap("topBun", <TopBun />)}
-      {!reduced && <Steam intensity={steamIntensity} />}
+      {/* Steam is a photographic device — soft additive haze. Under a posteriser it
+          resolves into flat ink blobs floating over the burger, so the flat directions
+          go without it. */}
+      {!reduced && getStyle().shading !== "toon" && <Steam intensity={steamIntensity} />}
     </group>
   );
 }

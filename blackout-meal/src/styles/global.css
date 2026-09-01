@@ -1,10 +1,16 @@
 /* ------------------------------------------------------------------ tokens */
 :root {
+  /* The style preset (src/scene/style.ts) overwrites these at runtime. The rgb triples
+     exist because rgba() can't take a hex var, and every scrim and hairline on the page
+     is a translucent tint of one of them — hardcoding them meant a light-paper direction
+     washed out every panel. */
   --ink: #0a0605;
-  --ink-soft: #14100e;
+  --ink-rgb: 10, 6, 5;
+  --paper-rgb: 242, 236, 226;
+  --accent-rgb: 200, 30, 44;
   --paper: #f2ece2;
-  --paper-dim: rgba(242, 236, 226, 0.58);
-  --paper-faint: rgba(242, 236, 226, 0.3);
+  --paper-dim: rgba(var(--paper-rgb), 0.58);
+  --paper-faint: rgba(var(--paper-rgb), 0.3);
   --accent: #c81e2c;
 
   --display: "Barlow Condensed", "Oswald", "Haettenschweiler", "Arial Narrow", sans-serif;
@@ -29,6 +35,7 @@
 
 html {
   background: var(--ink);
+  /* Set from the style preset — the print direction is a light page. */
   color-scheme: dark;
   scroll-behavior: smooth;
 }
@@ -91,9 +98,9 @@ a {
     pointer-events: none;
     background: radial-gradient(
       ellipse 78% 68% at 50% 46%,
-      rgba(10, 6, 5, 0) 55%,
-      rgba(10, 6, 5, 0.55) 82%,
-      rgba(10, 6, 5, 0.88) 100%
+      rgba(var(--ink-rgb), 0) 55%,
+      rgba(var(--ink-rgb), 0.55) 82%,
+      rgba(var(--ink-rgb), 0.88) 100%
     );
   }
 }
@@ -123,8 +130,8 @@ html[data-orbit="on"] .scene {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--paper-dim);
-  background: rgba(10, 6, 5, 0.72);
-  border: 1px solid rgba(242, 236, 226, 0.14);
+  background: rgba(var(--ink-rgb), 0.72);
+  border: 1px solid rgba(var(--paper-rgb), 0.14);
   border-radius: 999px;
   backdrop-filter: blur(6px);
   transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -134,7 +141,7 @@ html[data-orbit="on"] .scene {
 .skip-link:focus-visible {
   color: var(--paper);
   border-color: var(--accent);
-  background: rgba(200, 30, 44, 0.18);
+  background: rgba(var(--accent-rgb), 0.18);
 }
 
 .masthead {
@@ -201,28 +208,28 @@ html[data-orbit="on"] .scene {
   pointer-events: none;
   background: linear-gradient(
     100deg,
-    rgba(10, 6, 5, 0.93) 0%,
-    rgba(10, 6, 5, 0.78) 24%,
-    rgba(10, 6, 5, 0) 58%
+    rgba(var(--ink-rgb), 0.93) 0%,
+    rgba(var(--ink-rgb), 0.78) 24%,
+    rgba(var(--ink-rgb), 0) 58%
   );
 }
 
 .sticky[data-scrim="right"]::before {
   background: linear-gradient(
     260deg,
-    rgba(10, 6, 5, 0.93) 0%,
-    rgba(10, 6, 5, 0.78) 24%,
-    rgba(10, 6, 5, 0) 58%
+    rgba(var(--ink-rgb), 0.93) 0%,
+    rgba(var(--ink-rgb), 0.78) 24%,
+    rgba(var(--ink-rgb), 0) 58%
   );
 }
 
 .sticky[data-scrim="bottom"]::before {
   background: linear-gradient(
     to top,
-    rgba(10, 6, 5, 0.97) 0%,
-    rgba(10, 6, 5, 0.9) 30%,
-    rgba(10, 6, 5, 0.6) 48%,
-    rgba(10, 6, 5, 0) 76%
+    rgba(var(--ink-rgb), 0.97) 0%,
+    rgba(var(--ink-rgb), 0.9) 30%,
+    rgba(var(--ink-rgb), 0.6) 48%,
+    rgba(var(--ink-rgb), 0) 76%
   );
 }
 
@@ -233,7 +240,7 @@ html[data-orbit="on"] .scene {
 .eyebrow {
   font-family: var(--display);
   /* Small accent-red type can land on a lit part of the scene where the scrim is thin. */
-  text-shadow: 0 0 0.9em rgba(10, 6, 5, 0.95);
+  text-shadow: 0 0 0.9em rgba(var(--ink-rgb), 0.95);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.34em;
@@ -267,7 +274,7 @@ html[data-orbit="on"] .scene {
   font-size: clamp(2.7rem, 11.5vw, 9rem);
   letter-spacing: -0.02em;
   margin: 0.4rem 0 0;
-  text-shadow: 0 0.05em 0.5em rgba(10, 6, 5, 0.9), 0 0 1.6em rgba(10, 6, 5, 0.75);
+  text-shadow: 0 0.05em 0.5em rgba(var(--ink-rgb), 0.9), 0 0 1.6em rgba(var(--ink-rgb), 0.75);
 }
 
 .hero__wordmark span {
@@ -280,7 +287,7 @@ html[data-orbit="on"] .scene {
 
 .hero__sub {
   margin-top: 1.4rem;
-  text-shadow: 0 0.1em 0.9em rgba(10, 6, 5, 0.95);
+  text-shadow: 0 0.1em 0.9em rgba(var(--ink-rgb), 0.95);
   max-width: 34ch;
   margin-inline: auto;
   color: var(--paper-dim);
@@ -356,7 +363,7 @@ html[data-orbit="on"] .scene {
   align-items: baseline;
   gap: 0.6rem;
   padding: 0.26rem 0;
-  border-top: 1px solid rgba(242, 236, 226, 0.09);
+  border-top: 1px solid rgba(var(--paper-rgb), 0.09);
   color: var(--paper-faint);
   font-family: var(--display);
   font-size: clamp(0.88rem, 1.3vw, 1.05rem);
@@ -399,7 +406,7 @@ html[data-orbit="on"] .scene {
 
 .build__list li[data-state="landed"] {
   color: var(--paper);
-  border-color: rgba(242, 236, 226, 0.22);
+  border-color: rgba(var(--paper-rgb), 0.22);
 }
 
 .build__list li[data-state="landing"] {
@@ -541,13 +548,13 @@ html[data-orbit="on"] .scene {
   cursor: pointer;
   will-change: transform;
   transition: box-shadow 0.3s ease, background 0.3s ease;
-  box-shadow: 0 0 0 rgba(200, 30, 44, 0);
+  box-shadow: 0 0 0 rgba(var(--accent-rgb), 0);
 }
 
 .cta:hover,
 .cta:focus-visible {
-  background: #d92435;
-  box-shadow: 0 0.9rem 3rem rgba(200, 30, 44, 0.42);
+  background: color-mix(in srgb, var(--accent) 86%, var(--paper));
+  box-shadow: 0 0.9rem 3rem rgba(var(--accent-rgb), 0.42);
 }
 
 .order__note {
@@ -574,7 +581,7 @@ html[data-orbit="on"] .scene {
   justify-content: space-between;
   gap: 0.8rem;
   padding: 2.4rem var(--gutter) 2.8rem;
-  border-top: 1px solid rgba(242, 236, 226, 0.1);
+  border-top: 1px solid rgba(var(--paper-rgb), 0.1);
   background: var(--ink);
   font-family: var(--display);
   font-size: 0.74rem;
@@ -606,7 +613,7 @@ html[data-orbit="on"] .scene {
 .cursor-ring {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(242, 236, 226, 0.5);
+  border: 1px solid rgba(var(--paper-rgb), 0.5);
 }
 
 /* Native cursor stays put on touch and for reduced motion. */
@@ -633,10 +640,10 @@ html[data-orbit="on"] .scene {
   .sticky[data-scrim="left"]::before {
     background: linear-gradient(
       to bottom,
-      rgba(10, 6, 5, 0.96) 0%,
-      rgba(10, 6, 5, 0.92) 48%,
-      rgba(10, 6, 5, 0.55) 72%,
-      rgba(10, 6, 5, 0) 100%
+      rgba(var(--ink-rgb), 0.96) 0%,
+      rgba(var(--ink-rgb), 0.92) 48%,
+      rgba(var(--ink-rgb), 0.55) 72%,
+      rgba(var(--ink-rgb), 0) 100%
     );
   }
 
@@ -720,7 +727,7 @@ html[data-orbit="on"] .scene {
 
   .build__list li {
     color: var(--paper);
-    border-color: rgba(242, 236, 226, 0.22);
+    border-color: rgba(var(--paper-rgb), 0.22);
   }
 
   .cursor,

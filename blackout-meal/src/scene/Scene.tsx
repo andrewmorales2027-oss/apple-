@@ -12,6 +12,8 @@ import { onSectionProgress, scrollState } from "./scrollState";
 import { clamp01, smoothstep } from "./easing";
 import { getQuality } from "../lib/quality";
 import { GROUND_Y } from "./layout";
+import { getStyle } from "./style";
+import { StyleOverride } from "./StyleOverride";
 
 /** Shared by the rig's final aim and OrbitControls, so the handover is seamless. */
 const ORBIT_TARGET: [number, number, number] = [0, -0.45, 0];
@@ -86,8 +88,10 @@ function PropDirector({
 function Grade() {
   const { gl } = useThree();
   useEffect(() => {
-    gl.toneMapping = THREE.ACESFilmicToneMapping;
-    gl.toneMappingExposure = 1.15;
+    const style = getStyle();
+    gl.toneMapping =
+      style.toneMapping === "linear" ? THREE.LinearToneMapping : THREE.ACESFilmicToneMapping;
+    gl.toneMappingExposure = style.exposure;
     // Soft shadow edges. The default hard PCF gives a stair-stepped terminator that
     // reads as CG immediately, and the key light here is a large source.
     gl.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -97,6 +101,7 @@ function Grade() {
 
 function Contents({ reduced }: { reduced: boolean }) {
   const q = getQuality();
+  const style = getStyle();
   const assembly = useRef(reduced ? 1 : 0);
   const condensation = useRef(reduced ? 0.85 : 0.15);
   const friesSpread = useRef(reduced ? 1 : 0);
@@ -147,8 +152,8 @@ function Contents({ reduced }: { reduced: boolean }) {
   return (
     <>
       <Grade />
-      <color attach="background" args={["#0a0605"]} />
-      <fog attach="fog" args={["#0a0605", 10, 30]} />
+      <color attach="background" args={[style.background]} />
+      <fog attach="fog" args={[style.background, style.fog[0], style.fog[1]]} />
 
       <Lighting />
 
@@ -169,17 +174,23 @@ function Contents({ reduced }: { reduced: boolean }) {
           specular pool and gives the meal something to sit on. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, GROUND_Y - 0.001, 0]} receiveShadow>
         <circleGeometry args={[60, 64]} />
-        <meshStandardMaterial
-          color="#0b0706"
-          roughness={0.78}
-          metalness={0.06}
-          // The table takes only a fraction of the environment: at full strength a
-          // 60-unit disc under a bright studio dome becomes a glowing grey floor.
-          envMapIntensity={0.3}
-        />
+        {style.shading === "toon" ? (
+          // Unlit and flat. A lit 60-unit disc under a posteriser reads as concentric
+          // contour rings; the flat directions want the ground to be paper, not a surface.
+          <meshBasicMaterial color={style.background} />
+        ) : (
+          <meshStandardMaterial
+            color="#0b0706"
+            roughness={0.78}
+            metalness={style.shading === "chrome" ? 0.4 : 0.06}
+            // The table takes only a fraction of the environment: at full strength a
+            // 60-unit disc under a bright studio dome becomes a glowing grey floor.
+            envMapIntensity={0.3}
+          />
+        )}
       </mesh>
 
-      {q.shadows && (
+      {q.shadows && style.shadows && (
         <ContactShadows
           position={[0, GROUND_Y + 0.004, 0]}
           opacity={0.75}
@@ -210,6 +221,9 @@ function Contents({ reduced }: { reduced: boolean }) {
       )}
 
       {!reduced && <Effects />}
+
+      {/* Last, so its first sweep sees every sibling's materials already mounted. */}
+      <StyleOverride />
     </>
   );
 }
