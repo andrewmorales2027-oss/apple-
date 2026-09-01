@@ -81,7 +81,7 @@ function ribbonGeometry(
 }
 
 export function Bacon() {
-  const { geometryDetail } = getQuality();
+  const { geometryDetail, richMaterials } = getQuality();
 
   const strips = useMemo(() => {
     const rand = seeded(777);
@@ -107,14 +107,17 @@ export function Bacon() {
 
   const material = useMemo(
     () =>
-      new THREE.MeshStandardMaterial({
+      new THREE.MeshPhysicalMaterial({
         color: "#7d2614",
-        roughness: 0.5,
+        roughness: 0.52,
         metalness: 0.03,
+        // Bacon comes off the grill still glossed in its own fat.
+        clearcoat: richMaterials ? 0.45 : 0,
+        clearcoatRoughness: 0.35,
         normalMap: baconNormal(),
         normalScale: new THREE.Vector2(1.2, 1.2),
       }),
-    [],
+    [richMaterials],
   );
 
   return (

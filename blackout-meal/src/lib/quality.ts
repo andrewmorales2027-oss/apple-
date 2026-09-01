@@ -3,7 +3,7 @@
  * that would push a low-end phone under that gets cut here rather than at render time.
  *
  * Cut order, cheapest win first: steam particles -> depth of field -> transmission
- * bottle -> bloom. DepthOfField is off on every tier by default (see DOF_ENABLED).
+ * bottle -> bloom. DepthOfField runs on the high tier only (see the note below).
  */
 
 export type Tier = "low" | "mid" | "high";
@@ -28,10 +28,28 @@ export interface Quality {
   geometryDetail: number;
   /** Contact shadows under the meal. */
   shadows: boolean;
+  /** Width of the generated HDR equirect map, before PMREM prefiltering. */
+  envResolution: number;
+  /** Edge length of the generated normal/roughness maps. */
+  textureSize: number;
+  /** Depth of field. High tier only — see the note below. */
+  dof: boolean;
+  /**
+   * Clearcoat and sheen lobes across the food materials. These are what read as wet fat,
+   * waxy leaf and brined pickle rather than flat paint, but each one compiles an extra
+   * BRDF lobe into the shader, so the low tier goes without.
+   */
+  richMaterials: boolean;
 }
 
 function detectTier(): Tier {
   if (typeof navigator === "undefined") return "mid";
+
+  // Manual override for QA: ?tier=low|mid|high. Device detection is a heuristic and the
+  // top tier in particular is hard to reach on a CI or headless machine, so there has to
+  // be a way to look at each tier deliberately.
+  const forced = new URLSearchParams(window.location.search).get("tier");
+  if (forced === "low" || forced === "mid" || forced === "high") return forced;
 
   const cores = navigator.hardwareConcurrency ?? 4;
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4;
@@ -46,12 +64,16 @@ function detectTier(): Tier {
 }
 
 /**
- * DepthOfField is deliberately not shipped on. It costs ~4-6ms/frame at 1080p on
- * integrated graphics, which is the difference between 60fps and 45fps on the exact
- * mid-tier hardware this page is aimed at, and the scene already reads as filmic from
- * the hard key light plus tight bloom. Flip this to true only after profiling.
+ * DepthOfField ships on the high tier only.
+ *
+ * It costs ~4-6ms/frame at 1080p on integrated graphics, which is the whole difference
+ * between 60fps and 45fps on mid-tier hardware — so mid and low do without, and the
+ * scene still reads filmic from the HDR key and the tight bloom. On a discrete GPU
+ * there is headroom for it, and a shallow focal plane is one of the strongest
+ * photographic cues available, so the top tier gets it.
+ *
+ * This is still the first thing to cut if the budget tightens again.
  */
-export const DOF_ENABLED = false;
 
 const PRESETS: Record<Tier, Omit<Quality, "tier">> = {
   low: {
@@ -64,10 +86,14 @@ const PRESETS: Record<Tier, Omit<Quality, "tier">> = {
     postprocessing: false,
     geometryDetail: 0.5,
     shadows: false,
+    envResolution: 128,
+    textureSize: 256,
+    dof: false,
+    richMaterials: false,
   },
   mid: {
     dpr: [1, 1.75],
-    steamCount: 26,
+    steamCount: 16,
     sesameCount: 120,
     dropletCount: 90,
     transmission: true,
@@ -75,10 +101,14 @@ const PRESETS: Record<Tier, Omit<Quality, "tier">> = {
     postprocessing: true,
     geometryDetail: 1,
     shadows: true,
+    envResolution: 256,
+    textureSize: 512,
+    dof: false,
+    richMaterials: true,
   },
   high: {
     dpr: [1, 2],
-    steamCount: 44,
+    steamCount: 24,
     sesameCount: 170,
     dropletCount: 140,
     transmission: true,
@@ -86,6 +116,10 @@ const PRESETS: Record<Tier, Omit<Quality, "tier">> = {
     postprocessing: true,
     geometryDetail: 1.5,
     shadows: true,
+    envResolution: 512,
+    textureSize: 1024,
+    dof: true,
+    richMaterials: true,
   },
 };
 

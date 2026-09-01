@@ -55,7 +55,7 @@ interface FrySpec {
  * component rather than as set dressing behind the burger.
  */
 export function Fries({ spread, shown }: { spread: RefObject<number>; shown: RefObject<number> }) {
-  const { geometryDetail } = getQuality();
+  const { geometryDetail, richMaterials } = getQuality();
   const count = geometryDetail <= 0.5 ? 11 : 17;
   const refs = useRef<(THREE.Group | null)[]>([]);
   const root = useRef<THREE.Group>(null);
@@ -133,7 +133,14 @@ export function Fries({ spread, shown }: { spread: RefObject<number>; shown: Ref
           ]}
         >
           <mesh geometry={f.geo} castShadow receiveShadow>
-            <meshStandardMaterial color={f.color} roughness={f.roughness} metalness={0.02} />
+            {/* A thin film of frying oil, which is most of what makes a fry look hot. */}
+            <meshPhysicalMaterial
+              color={f.color}
+              roughness={f.roughness}
+              metalness={0.02}
+              clearcoat={richMaterials ? 0.3 : 0}
+              clearcoatRoughness={0.4}
+            />
           </mesh>
         </group>
       ))}

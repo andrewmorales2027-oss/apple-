@@ -80,6 +80,24 @@ a {
   pointer-events: none;
 }
 
+/* Under reduced motion the postprocessing chain isn't mounted, so the scene loses the
+   vignette that normally contains the rim lights' pools on the table. This is the same
+   falloff, done in CSS, and it sits inside .scene so it stays under the copy. */
+@media (prefers-reduced-motion: reduce) {
+  .scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 78% 68% at 50% 46%,
+      rgba(10, 6, 5, 0) 55%,
+      rgba(10, 6, 5, 0.55) 82%,
+      rgba(10, 6, 5, 0.88) 100%
+    );
+  }
+}
+
 /* Pointer events reach the canvas only in the final shot, where the user is invited
    to spin the meal. Everywhere else the canvas is inert so text selection, links and
    scrolling behave normally. */

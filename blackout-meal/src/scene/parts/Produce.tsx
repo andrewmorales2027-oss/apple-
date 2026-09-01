@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import { lettuceNormal } from "../textures";
 import { seeded } from "../easing";
+import { getQuality } from "../../lib/quality";
 
 /** Frilled, rippling leaf: a disc with a wavy edge and a subnormal-mapped surface. */
 function leafGeometry(radius: number, seed: number) {
@@ -31,6 +32,7 @@ function leafGeometry(radius: number, seed: number) {
 }
 
 export function Lettuce() {
+  const { richMaterials } = getQuality();
   const leaves = useMemo(() => {
     const rand = seeded(4242);
     return Array.from({ length: 5 }, (_, i) => ({
@@ -47,10 +49,17 @@ export function Lettuce() {
     <group position={[0, -0.63, 0]}>
       {leaves.map((l, i) => (
         <mesh key={i} geometry={l.geo} rotation={l.rot} position={l.pos} castShadow receiveShadow>
-          <meshStandardMaterial
+          <meshPhysicalMaterial
             color={new THREE.Color("#39561a").multiplyScalar(l.shade)}
-            roughness={0.85}
+            roughness={0.72}
             metalness={0}
+            // A leaf's waxy cuticle scatters light at grazing angles — sheen is the
+            // cheapest honest stand-in for it, and it kills the "painted card" look.
+            sheen={richMaterials ? 0.7 : 0}
+            sheenRoughness={0.5}
+            sheenColor="#b8d98a"
+            clearcoat={richMaterials ? 0.25 : 0}
+            clearcoatRoughness={0.55}
             side={THREE.DoubleSide}
             normalMap={normal}
             normalScale={new THREE.Vector2(0.9, 0.9)}
@@ -62,22 +71,40 @@ export function Lettuce() {
 }
 
 export function Tomato() {
+  const { richMaterials } = getQuality();
   return (
     <group position={[0, 0.31, 0]} rotation={[0, 0.6, 0.01]}>
       <mesh castShadow receiveShadow>
         <cylinderGeometry args={[0.98, 0.96, 0.09, 48]} />
-        <meshStandardMaterial color="#7d0f16" roughness={0.44} metalness={0} />
+        <meshPhysicalMaterial
+          color="#7d0f16"
+          roughness={0.44}
+          metalness={0}
+          clearcoat={richMaterials ? 0.35 : 0}
+          clearcoatRoughness={0.4}
+        />
       </mesh>
       {/* Cut face: seed pockets are lighter and wetter than the skin. */}
       <mesh position={[0, 0.046, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.94, 48]} />
-        <meshStandardMaterial color="#9e242c" roughness={0.28} metalness={0} />
+        {/* The cut face is wet and slightly translucent — the glossiest thing in the stack
+            after the cheese. */}
+        <meshPhysicalMaterial
+          color="#9e242c"
+          roughness={0.24}
+          metalness={0}
+          clearcoat={richMaterials ? 0.7 : 0}
+          clearcoatRoughness={0.15}
+          sheen={richMaterials ? 0.3 : 0}
+          sheenColor="#ff7a6a"
+        />
       </mesh>
     </group>
   );
 }
 
 export function Onion() {
+  const { richMaterials } = getQuality();
   const rings = useMemo(() => {
     const rand = seeded(31337);
     return [
@@ -96,7 +123,15 @@ export function Onion() {
           castShadow
         >
           <torusGeometry args={[r.r, r.tube, 12, 64]} />
-          <meshStandardMaterial color="#8d8189" roughness={0.52} metalness={0} />
+          <meshPhysicalMaterial
+            color="#8d8189"
+            roughness={0.44}
+            metalness={0}
+            clearcoat={richMaterials ? 0.4 : 0}
+            clearcoatRoughness={0.3}
+            sheen={richMaterials ? 0.4 : 0}
+            sheenColor="#e8dced"
+          />
         </mesh>
       ))}
     </group>
@@ -104,6 +139,7 @@ export function Onion() {
 }
 
 export function Pickles() {
+  const { richMaterials } = getQuality();
   const chips = useMemo(() => {
     const rand = seeded(8080);
     return Array.from({ length: 3 }, () => ({
@@ -118,7 +154,14 @@ export function Pickles() {
       {chips.map((c, i) => (
         <mesh key={i} position={c.pos} rotation={c.rot} castShadow>
           <cylinderGeometry args={[c.r, c.r, 0.055, 24]} />
-          <meshStandardMaterial color="#46601a" roughness={0.34} metalness={0} />
+          {/* Straight out of the brine, so: wet. */}
+          <meshPhysicalMaterial
+            color="#46601a"
+            roughness={0.3}
+            metalness={0}
+            clearcoat={richMaterials ? 0.75 : 0}
+            clearcoatRoughness={0.14}
+          />
         </mesh>
       ))}
     </group>
@@ -127,6 +170,7 @@ export function Pickles() {
 
 /** House sauce: an irregular puddle, glossy, spreading unevenly toward one side. */
 export function Sauce() {
+  const { richMaterials } = getQuality();
   const geo = useMemo(() => {
     const g = new THREE.SphereGeometry(0.64, 48, 24);
     const pos = g.attributes.position as THREE.BufferAttribute;
@@ -146,7 +190,13 @@ export function Sauce() {
 
   return (
     <mesh geometry={geo} position={[0.03, 0.57, -0.02]} scale={[1, 0.075, 1]} castShadow>
-      <meshStandardMaterial color="#95642a" roughness={0.24} metalness={0.02} />
+      <meshPhysicalMaterial
+        color="#95642a"
+        roughness={0.26}
+        metalness={0.02}
+        clearcoat={richMaterials ? 0.8 : 0}
+        clearcoatRoughness={0.12}
+      />
     </mesh>
   );
 }

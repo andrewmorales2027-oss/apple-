@@ -13,6 +13,17 @@ import { clamp01, smoothstep } from "./easing";
 import { getQuality } from "../lib/quality";
 import { GROUND_Y } from "./layout";
 
+/** Shared by the rig's final aim and OrbitControls, so the handover is seamless. */
+const ORBIT_TARGET: [number, number, number] = [0, -0.45, 0];
+
+/**
+ * Reduced motion mounts OrbitControls straight away, and OrbitControls aims at its own
+ * target — so this has to match StaticCamera's lookAt or the still framing is silently
+ * overridden and the meal drifts back under the wordmark. Above the meal, so the meal
+ * sits in the lower half with the copy clear above it.
+ */
+const STILL_ORBIT_TARGET: [number, number, number] = [0.9, 2.2, 0];
+
 /**
  * Turns raw scroll into the handful of numbers the props actually consume. Lives inside
  * the Canvas so it runs on the frame loop, never on React's render path.
@@ -76,7 +87,10 @@ function Grade() {
   const { gl } = useThree();
   useEffect(() => {
     gl.toneMapping = THREE.ACESFilmicToneMapping;
-    gl.toneMappingExposure = 1.12;
+    gl.toneMappingExposure = 1.15;
+    // Soft shadow edges. The default hard PCF gives a stair-stepped terminator that
+    // reads as CG immediately, and the key light here is a large source.
+    gl.shadowMap.type = THREE.PCFSoftShadowMap;
   }, [gl]);
   return null;
 }
@@ -119,6 +133,17 @@ function Contents({ reduced }: { reduced: boolean }) {
     document.documentElement.dataset.orbit = orbit ? "on" : "off";
   }, [orbit]);
 
+  // Hand the camera over the moment OrbitControls mounts, not on first drag. Both were
+  // writing camera.position every frame in between — OrbitControls re-aiming at its own
+  // target while the rig re-aimed at the pose's — which knocked the closing shot
+  // off-centre. Aim parity (ORBIT_TARGET) makes the handover invisible.
+  useEffect(() => {
+    scrollState.userControlled = orbit;
+    return () => {
+      scrollState.userControlled = false;
+    };
+  }, [orbit]);
+
   return (
     <>
       <Grade />
@@ -144,7 +169,14 @@ function Contents({ reduced }: { reduced: boolean }) {
           specular pool and gives the meal something to sit on. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, GROUND_Y - 0.001, 0]} receiveShadow>
         <circleGeometry args={[60, 64]} />
-        <meshStandardMaterial color="#0b0706" roughness={0.62} metalness={0.12} />
+        <meshStandardMaterial
+          color="#0b0706"
+          roughness={0.78}
+          metalness={0.06}
+          // The table takes only a fraction of the environment: at full strength a
+          // 60-unit disc under a bright studio dome becomes a glowing grey floor.
+          envMapIntensity={0.3}
+        />
       </mesh>
 
       {q.shadows && (
@@ -165,7 +197,7 @@ function Contents({ reduced }: { reduced: boolean }) {
           makeDefault
           enableZoom={false}
           enablePan={false}
-          target={[0, 0.15, 0]}
+          target={reduced ? STILL_ORBIT_TARGET : ORBIT_TARGET}
           minPolarAngle={0.55}
           maxPolarAngle={1.62}
           rotateSpeed={0.55}

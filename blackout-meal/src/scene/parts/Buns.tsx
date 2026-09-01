@@ -16,16 +16,22 @@ import { getQuality } from "../../lib/quality";
  * like a brim, so each half is a hemisphere capped at full radius by its cut face.
  */
 export function BottomBun() {
+  const { richMaterials } = getQuality();
   const normal = bunNormal();
   return (
     <group position={[0, -0.68, 0]}>
       <mesh scale={[1, 0.4, 1]} castShadow receiveShadow>
         {/* Lower hemisphere: phiStart PI/2, phiLength PI/2. */}
         <sphereGeometry args={[1.05, 64, 28, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]} />
-        <meshStandardMaterial
+        <meshPhysicalMaterial
           color="#8a5326"
-          roughness={0.6}
+          roughness={0.58}
           metalness={0}
+          // Egg-washed brioche has a faint satin skin, not a lacquer.
+          clearcoat={richMaterials ? 0.22 : 0}
+          clearcoatRoughness={0.6}
+          sheen={richMaterials ? 0.25 : 0}
+          sheenColor="#c98c46"
           normalMap={normal}
           normalScale={new THREE.Vector2(0.6, 0.6)}
         />
@@ -35,7 +41,7 @@ export function BottomBun() {
         <circleGeometry args={[1.05, 64]} />
         <meshStandardMaterial
           color="#c19a63"
-          roughness={0.88}
+          roughness={0.92}
           normalMap={normal}
           normalScale={new THREE.Vector2(0.35, 0.35)}
         />
@@ -61,7 +67,7 @@ function useSesameMesh(count: number) {
 
     const mesh = new THREE.InstancedMesh(
       new THREE.SphereGeometry(1, 8, 6),
-      new THREE.MeshStandardMaterial({ color: "#4a3a2e", roughness: 0.34, metalness: 0.05 }),
+      new THREE.MeshStandardMaterial({ color: "#4a3a2e", roughness: 0.28, metalness: 0.04 }),
       count,
     );
 
@@ -94,7 +100,7 @@ function useSesameMesh(count: number) {
 }
 
 export function TopBun() {
-  const { sesameCount } = getQuality();
+  const { sesameCount, richMaterials } = getQuality();
   const normal = bunNormal();
   const sesame = useSesameMesh(sesameCount);
 
@@ -105,11 +111,12 @@ export function TopBun() {
         <sphereGeometry args={[CROWN_R, 64, 30, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshPhysicalMaterial
           color="#191110"
-          roughness={0.42}
+          roughness={0.5}
           metalness={0}
-          clearcoat={0.85}
-          clearcoatRoughness={0.22}
-          sheen={0.5}
+          // Satin, not lacquered: a broad soft highlight is what bread crust does.
+          clearcoat={richMaterials ? 0.3 : 0}
+          clearcoatRoughness={0.55}
+          sheen={richMaterials ? 0.4 : 0}
           sheenColor="#6b4326"
           normalMap={normal}
           normalScale={new THREE.Vector2(0.55, 0.55)}
@@ -121,7 +128,7 @@ export function TopBun() {
         <circleGeometry args={[CROWN_R, 64]} />
         <meshStandardMaterial
           color="#b8905c"
-          roughness={0.9}
+          roughness={0.94}
           normalMap={normal}
           normalScale={new THREE.Vector2(0.35, 0.35)}
         />

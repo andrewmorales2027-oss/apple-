@@ -88,6 +88,28 @@ reduced-motion is not asking you to remove.
 - The ingredient list is real text that highlights as each layer lands — the assembly
   sequence has a legible non-visual equivalent.
 
+## Lighting model
+
+The scene is lit by a **generated HDR environment**, not by lamps alone. `src/scene/environment.ts`
+paints an equirectangular studio map into a `Float32Array` — a key softbox, a tall narrow
+strip light, a warm kicker, a small hard accent — with radiance values running up to ~14,
+then runs it through `PMREMGenerator` so roughness blurs it correctly.
+
+That number is the point. An LDR environment caps every highlight at 1.0, which is
+mid-grey after tone mapping, and no amount of material tuning makes a surface look
+photographed when its brightest specular is grey. The strip light does the most visible
+work: a tall narrow source is what draws the continuous specular streak down the side of
+the bottle and across the bun crown.
+
+A handful of real lights remain for what an environment can't do — the hard key shadow,
+the rim separating a near-black bun from a near-black background, and the short-throw
+backlight that makes the cola read as cola rather than as a silhouette.
+
+Materials use clearcoat and sheen lobes to separate wet from dry: rendered fat on the
+patty crust, the waxy cuticle on lettuce, brine on the pickles, frying oil on the fries.
+These are gated behind `richMaterials` (off on the low tier), since each lobe compiles
+extra work into the shader.
+
 ## Performance
 
 Budget target: 60fps on a mid-tier laptop (integrated graphics) and a mid-range phone,
@@ -95,36 +117,46 @@ not just a dev machine. `src/lib/quality.ts` tiers the device from
 `hardwareConcurrency`, `deviceMemory`, pointer type and viewport, then scales everything
 from one place.
 
+Append `?tier=low`, `?tier=mid` or `?tier=high` to the URL to force a tier — device
+detection is a heuristic, and the top tier is unreachable on most CI machines.
+
 | | low | mid | high |
 | --- | --- | --- | --- |
 | DPR ceiling | 1.25 | 1.75 | 2 |
+| HDR env map width | 128 | 256 | 512 |
+| Normal / roughness maps | 256px | 512px | 1024px |
+| Clearcoat + sheen lobes | ✗ | ✓ | ✓ |
 | Steam particles | 0 | 26 | 44 |
 | Sesame seeds | 60 | 120 | 170 |
 | Condensation droplets | 40 | 90 | 140 |
 | Transmission bottle | ✗ (physical-material fallback) | ✓ 256px | ✓ 512px |
 | Postprocessing | ✗ | ✓ | ✓ |
+| Depth of field | ✗ | ✗ | ✓ |
 | Shadows | ✗ | ✓ 1024 | ✓ 2048 |
 
 **Cut order if you need more headroom**, cheapest win first:
 
 1. **Steam particles** — `steamCount: 0`. Additive instanced planes with `depthWrite:
    false` are pure overdraw; they are the first thing to go and the least missed.
-2. **DepthOfField** — already off on every tier. It costs roughly 4–6ms/frame at 1080p on
-   integrated graphics, which is the entire difference between 60 and 45fps on exactly the
-   hardware this page targets, and the scene reads as filmic from the hard key light and
-   the tight bloom without it. `DOF_ENABLED` in `lib/quality.ts` documents the decision;
-   flip it only after profiling real headroom, and expect to drop it again first.
-3. **The transmission bottle** — `MeshTransmissionMaterial` re-renders the scene into an
+2. **DepthOfField** — already high-tier only. It costs roughly 4–6ms/frame at 1080p on
+   integrated graphics, which is the entire difference between 60 and 45fps on the
+   hardware this page targets. It stays the first effect to cut.
+3. **Rich materials** — `richMaterials: false` drops the clearcoat and sheen lobes.
+4. **The transmission bottle** — `MeshTransmissionMaterial` re-renders the scene into an
    off-screen buffer for real refraction. Low tier already falls back to a
    `meshPhysicalMaterial` approximation. Dropping `transmissionResolution` to 128 buys
    most of the cost back before you have to abandon it entirely.
-4. **Bloom** — last, and only if the rest wasn't enough.
+5. **Env map resolution**, then **bloom** — last, and only if the rest wasn't enough.
 
 Other choices made for the budget: bloom's luminance threshold is high (0.72) so it only
 catches the cheese emissive and the specular hits on the glass and condensation; the
 composer runs with `multisampling: 0` and no normal pass; contact shadows render one frame
 and stop under reduced motion; and the whole page is a single persistent canvas rather than
 one per section.
+
+Depth of field auto-focuses on each beat's **subject**, not on the camera's aim point —
+those are deliberately different, since the cold beat aims well to the right of the bottle
+for composition. Focus racks between subjects rather than cutting. See `src/scene/focus.ts`.
 
 ## Swapping in real models later
 

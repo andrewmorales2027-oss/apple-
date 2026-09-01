@@ -2,6 +2,7 @@ import { useMemo, useRef, type RefObject } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { clamp01, easeOutWobble, seeded } from "../easing";
+import { getQuality } from "../../lib/quality";
 
 const CHEESE_Y = 0.09;
 const SLAB_R = 1.06;
@@ -63,20 +64,27 @@ function useDrips(): Drip[] {
  * to length. `progress` is this layer's own 0..1 window, written by the Burger rig.
  */
 export function Cheese({ progress }: { progress: RefObject<number> }) {
+  const { richMaterials } = getQuality();
   const slab = useSlabGeometry();
   const drips = useDrips();
   const refs = useRef<(THREE.Group | null)[]>([]);
 
   const material = useMemo(
     () =>
-      new THREE.MeshStandardMaterial({
+      new THREE.MeshPhysicalMaterial({
         color: "#c8811d",
-        roughness: 0.42,
+        roughness: 0.45,
         metalness: 0.02,
+        // Molten cheese is wet: a glossy coat over a fairly rough body, which is what
+        // gives melt its characteristic tight highlight riding on a soft one.
+        clearcoat: richMaterials ? 0.65 : 0,
+        clearcoatRoughness: 0.2,
+        sheen: richMaterials ? 0.3 : 0,
+        sheenColor: new THREE.Color("#ffca6b"),
         emissive: new THREE.Color("#6b3406"),
         emissiveIntensity: 0.22,
       }),
-    [],
+    [richMaterials],
   );
 
   useFrame(({ clock }) => {

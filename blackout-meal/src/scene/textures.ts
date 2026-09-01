@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { getQuality } from "../lib/quality";
 
 /**
  * Everything the scene needs in the way of surface detail is generated here, in a 2D
@@ -92,11 +93,18 @@ function grayscale(h: Float32Array, size: number, lo = 0, hi = 1) {
   return canvas;
 }
 
+/** Map resolution follows the device tier: 256 on low, 512 on mid, 1024 on high. */
+function mapSize() {
+  return getQuality().textureSize;
+}
+
 function tex(canvas: HTMLCanvasElement, repeat = 1) {
   const t = new THREE.CanvasTexture(canvas);
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   t.repeat.set(repeat, repeat);
-  t.anisotropy = 4;
+  // Surfaces are seen at grazing angles constantly as the camera orbits; without
+  // anisotropy the patty crust smears into mush along the silhouette.
+  t.anisotropy = 8;
   return t;
 }
 
@@ -107,19 +115,22 @@ function memo<T>(fn: () => T): () => T {
 
 /** Charred, cratered smash-patty crust — coarse blotches over a fine grain. */
 export const pattyNormal = memo(() => {
-  const size = 256;
+  const size = mapSize();
+  const octaves = size >= 512 ? 5 : 4;
   const h = heightField(size, (u, v) => {
-    const coarse = fbm(u * 7, v * 7, 4, 1.2);
+    const coarse = fbm(u * 7, v * 7, octaves, 1.2);
     const craters = Math.pow(fbm(u * 14, v * 14, 3, 9.4), 2.2);
-    const grain = fbm(u * 48, v * 48, 2, 3.1) * 0.25;
-    return coarse * 0.55 + craters * 0.3 + grain;
+    const grain = fbm(u * 48, v * 48, 3, 3.1) * 0.25;
+    // Fine blistered crust, only resolvable once the map is 512 or better.
+    const blister = size >= 512 ? Math.pow(fbm(u * 110, v * 110, 2, 12.6), 3) * 0.18 : 0;
+    return coarse * 0.5 + craters * 0.28 + grain + blister;
   });
   return tex(normalFromHeight(h, size, 9), 1);
 });
 
 /** Roughness break-up for the patty: the char is matte, the rendered fat is not. */
 export const pattyRoughness = memo(() => {
-  const size = 256;
+  const size = mapSize();
   const h = heightField(size, (u, v) => {
     const blotch = fbm(u * 9, v * 9, 3, 5.7);
     return 0.45 + blotch * 0.55;
@@ -129,14 +140,20 @@ export const pattyRoughness = memo(() => {
 
 /** Brioche crumb — tight, shallow, evenly distributed. */
 export const bunNormal = memo(() => {
-  const size = 256;
-  const h = heightField(size, (u, v) => fbm(u * 26, v * 26, 3, 21.3) * 0.7 + fbm(u * 70, v * 70, 2, 4.4) * 0.3);
+  const size = mapSize();
+  const h = heightField(size, (u, v) => {
+    const crumb = fbm(u * 26, v * 26, 3, 21.3) * 0.62;
+    const fine = fbm(u * 70, v * 70, 2, 4.4) * 0.26;
+    // Individual crumb pores; below 512 they alias into noise, so they're gated.
+    const pores = size >= 512 ? Math.pow(fbm(u * 150, v * 150, 2, 31.7), 2.5) * 0.2 : 0.12;
+    return crumb + fine + pores;
+  });
   return tex(normalFromHeight(h, size, 4.5), 2);
 });
 
 /** Lettuce ripple — long directional waves crossed with a fine leaf grain. */
 export const lettuceNormal = memo(() => {
-  const size = 256;
+  const size = mapSize();
   const h = heightField(size, (u, v) => {
     const ribs = Math.sin(u * Math.PI * 9 + fbm(u * 3, v * 3, 2, 8) * 5) * 0.5 + 0.5;
     const grain = fbm(u * 40, v * 40, 2, 17) * 0.35;
@@ -147,7 +164,7 @@ export const lettuceNormal = memo(() => {
 
 /** Streaky bacon grain running along the strip. */
 export const baconNormal = memo(() => {
-  const size = 256;
+  const size = mapSize();
   const h = heightField(size, (u, v) => {
     const streak = fbm(u * 3, v * 22, 3, 33);
     return streak * 0.8 + fbm(u * 30, v * 30, 2, 6) * 0.2;

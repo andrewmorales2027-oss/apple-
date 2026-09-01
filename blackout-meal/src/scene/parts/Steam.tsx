@@ -25,7 +25,7 @@ export function Steam({ intensity }: { intensity: RefObject<number> }) {
       phase: rand(),
       speed: 0.16 + rand() * 0.16,
       rise: 1.5 + rand() * 1.6,
-      size: 0.35 + rand() * 0.65,
+      size: 0.55 + rand() * 0.85,
       drift: (rand() - 0.5) * 0.5,
       warm: 0.75 + rand() * 0.25,
     }));
@@ -70,7 +70,7 @@ export function Steam({ intensity }: { intensity: RefObject<number> }) {
 
       // Additive: fading means darkening. Bell curve in, bell curve out.
       const fade = Math.sin(life * Math.PI) * (1 - life * 0.35);
-      const b = fade * amount * 0.5;
+      const b = fade * amount * 0.16;
       scratch.color.setRGB(b * p.warm, b * 0.93 * p.warm, b * 0.86);
       mesh.setColorAt(i, scratch.color);
     }

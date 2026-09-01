@@ -3,7 +3,8 @@ import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { scrollState, type SectionKey } from "./scrollState";
 import { clamp01, easeInOutCubic, smoothstep } from "./easing";
-import { BOTTLE_CENTER, BURGER_CENTER } from "./layout";
+import { BOTTLE_CENTER, BURGER_CENTER, FRIES_POS } from "./layout";
+import { focusTarget } from "./focus";
 
 /**
  * A narrow viewport sees far less horizontally at the same distance, so every pose gets
@@ -22,13 +23,30 @@ function orbit(center: THREE.Vector3, angle: number, radius: number, height: num
   );
 }
 
-function poseFor(section: SectionKey, p: number, k: number, pos: THREE.Vector3, look: THREE.Vector3) {
+/**
+ * Fills the camera pose for a section, plus the position of that beat's actual subject.
+ *
+ * These are deliberately two different points. The aim point is a composition decision —
+ * the cold beat aims well to the right of the bottle so the glass sits in the left third
+ * and the copy gets the rest of the frame. The subject is where the thing being sold
+ * actually is. Focus follows the subject; if it followed the aim point, the hero product
+ * would be the one object out of focus in its own shot.
+ */
+function poseFor(
+  section: SectionKey,
+  p: number,
+  k: number,
+  pos: THREE.Vector3,
+  look: THREE.Vector3,
+  subject: THREE.Vector3,
+) {
   switch (section) {
     case "hero": {
       // Held on the lone crown, and aimed above it so the wordmark owns the upper half
       // of the frame. Barely moves — the withholding is the point.
       pos.set(0.1, 2.0 + p * 0.18, (5.5 - p * 0.35) * k);
       look.set(0, 2.05, 0);
+      subject.set(0, 1.45, 0);
       break;
     }
     case "build": {
@@ -36,6 +54,7 @@ function poseFor(section: SectionKey, p: number, k: number, pos: THREE.Vector3, 
       const e = easeInOutCubic(p);
       orbit(BURGER_CENTER, -0.52 + e * 1.12, (7.6 - e * 1.5) * k, 3.0 - e * 1.85, pos);
       look.set(0, 0.7 - e * 0.55, 0);
+      subject.copy(BURGER_CENTER);
       break;
     }
     case "cold": {
@@ -44,22 +63,31 @@ function poseFor(section: SectionKey, p: number, k: number, pos: THREE.Vector3, 
       const e = easeInOutCubic(p);
       orbit(BOTTLE_CENTER, -0.62 + e * 0.8, (5.3 - e * 0.7) * k, -0.15 + e * 0.4, pos);
       look.set(BOTTLE_CENTER.x + 1.85, 0.25 + e * 0.2, BOTTLE_CENTER.z);
+      subject.copy(BOTTLE_CENTER);
       break;
     }
     case "breakdown": {
       // Pull back to hold all three, reframing gently toward whichever panel is up.
-      const focus =
-        THREE.MathUtils.lerp(0, -1.15, smoothstep(0.28, 0.5, p)) +
-        THREE.MathUtils.lerp(0, 2.5, smoothstep(0.58, 0.8, p));
+      const toFries = smoothstep(0.28, 0.5, p) * (1 - smoothstep(0.58, 0.8, p));
+      const toCola = smoothstep(0.58, 0.8, p);
+      const focus = -1.15 * toFries + 2.5 * toCola;
       pos.set(focus * 0.45, 1.35, (9.2 - p * 0.5) * k);
       look.set(focus, -0.1, 0);
+      // Focus racks between the three components as their panels come up.
+      subject
+        .copy(BURGER_CENTER)
+        .lerp(FRIES_POS, toFries)
+        .lerp(BOTTLE_CENTER, toCola);
       break;
     }
     case "order": {
       // Final hero shot, aimed low so the meal sits above the closing copy.
       const e = easeInOutCubic(clamp01(p * 1.4));
-      orbit(BURGER_CENTER, 0.3 - e * 0.3, (7.6 - e * 0.7) * k, 1.7 - e * 0.5, pos);
-      look.set(0, -1.0, 0);
+      orbit(BURGER_CENTER, 0.3 - e * 0.3, (7.4 - e * 0.6) * k, 1.5 - e * 0.35, pos);
+      // Must match ORBIT_TARGET in Scene.tsx: when OrbitControls takes over it re-aims at
+      // its own target, and any difference from the rig's aim shows up as a jump.
+      look.set(0, -0.45, 0);
+      subject.copy(BURGER_CENTER);
       break;
     }
   }
@@ -76,6 +104,7 @@ export function CameraRig({ reduced }: { reduced: boolean }) {
     () => ({
       pos: new THREE.Vector3(),
       look: new THREE.Vector3(),
+      subject: new THREE.Vector3().copy(BURGER_CENTER),
       current: new THREE.Vector3(0, 2.0, 5.5),
       target: new THREE.Vector3(0, 2.05, 0),
     }),
@@ -87,7 +116,7 @@ export function CameraRig({ reduced }: { reduced: boolean }) {
 
     const k = fitScale(size.width / size.height);
     const section = scrollState.active;
-    poseFor(section, scrollState.progress[section], k, scratch.pos, scratch.look);
+    poseFor(section, scrollState.progress[section], k, scratch.pos, scratch.look, scratch.subject);
 
     const dt = Math.min(delta, 1 / 20);
     // Slightly quicker on the look target than the position: the camera settles its aim
@@ -104,6 +133,14 @@ export function CameraRig({ reduced }: { reduced: boolean }) {
       THREE.MathUtils.damp(scratch.target.z, scratch.look.z, 3.4, dt),
     );
     camera.lookAt(scratch.target);
+
+    // Rack focus toward the new subject rather than cutting to it — a hard focus jump
+    // between sections reads as a glitch, a rack reads as a camera operator.
+    focusTarget.set(
+      THREE.MathUtils.damp(focusTarget.x, scratch.subject.x, 2.2, dt),
+      THREE.MathUtils.damp(focusTarget.y, scratch.subject.y, 2.2, dt),
+      THREE.MathUtils.damp(focusTarget.z, scratch.subject.z, 2.2, dt),
+    );
   });
 
   return null;
@@ -118,8 +155,11 @@ export function StaticCamera() {
   const { camera, size } = useThree();
   useMemo(() => {
     const k = fitScale(size.width / size.height);
-    camera.position.set(1.5 * k, 3.3, 9.6 * k);
-    camera.lookAt(1.0, 1.7, 0);
+    camera.position.set(1.5 * k, 3.6, 9.8 * k);
+    // Aimed above the meal so it sits in the lower half, clear of the copy. Must match
+    // STILL_ORBIT_TARGET in Scene.tsx — OrbitControls is mounted in this path and will
+    // re-aim the camera at its own target on the first frame.
+    camera.lookAt(0.9, 2.2, 0);
     camera.updateProjectionMatrix();
   }, [camera, size.width, size.height]);
   return null;

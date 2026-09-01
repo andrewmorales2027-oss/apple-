@@ -63,7 +63,7 @@ function buildPattyGeometry(radius: number, height: number, seed: number, detail
 }
 
 function Single({ y, seed, radius }: { y: number; seed: number; radius: number }) {
-  const { geometryDetail } = getQuality();
+  const { geometryDetail, richMaterials } = getQuality();
   const geo = useMemo(
     () => buildPattyGeometry(radius, 0.3, seed, geometryDetail),
     [radius, seed, geometryDetail],
@@ -71,10 +71,14 @@ function Single({ y, seed, radius }: { y: number; seed: number; radius: number }
 
   return (
     <mesh position={[0, y, 0]} geometry={geo} castShadow receiveShadow>
-      <meshStandardMaterial
+      <meshPhysicalMaterial
         color="#3a2318"
         roughness={0.78}
         metalness={0.04}
+        // Rendered fat sits on the crust as a thin wet film. A single broad clearcoat
+        // lobe over a matte char is what separates "seared" from "burnt cardboard".
+        clearcoat={richMaterials ? 0.3 : 0}
+        clearcoatRoughness={0.45}
         normalMap={pattyNormal()}
         normalScale={new THREE.Vector2(0.95, 0.95)}
         roughnessMap={pattyRoughness()}
