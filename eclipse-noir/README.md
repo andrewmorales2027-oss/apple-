@@ -144,6 +144,21 @@ after, and reduced-motion users never see it.
 
 ---
 
+## Single-file build
+
+`vite.config.single.ts` produces one self-contained JS bundle in `dist-single/`
+for hosts that can't serve sibling asset files:
+
+```bash
+npx vite build --config vite.config.single.ts
+```
+
+Inline `dist-single/app.css` and `dist-single/app.js` into a page with a
+`<div id="root">` and it runs with no requests but the two Google fonts. Escape
+`</script` as `<\/script` in the JS when you inline it.
+
+---
+
 ## Swapping in a real GLTF bottle
 
 The bottle is procedural on purpose — a lathe-turned coin profile with filleted
