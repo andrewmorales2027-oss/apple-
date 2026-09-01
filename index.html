@@ -28,6 +28,9 @@
     --dark-dim-2: rgba(22,21,26,.4);
     --accent: #ff4d23;
     --accent-deep: #d6350e;
+    /* Accent tuned for text on light surfaces: 4.8:1 on --paper.
+       The brighter --accent is 3.3:1 and fails for anything but icons. */
+    --accent-ink: #d6350e;
     --accent-2: #ffb703;
     --line-dark: rgba(255,255,255,.1);
     --line-light: rgba(22,21,26,.1);
@@ -35,7 +38,18 @@
     --radius-md: 18px;
     --radius-sm: 12px;
     --radius-pill: 999px;
-    --shadow-lift: 0 20px 60px -20px rgba(0,0,0,.45);
+    --shadow-lift:
+      0 1px 2px rgba(0,0,0,.18),
+      0 8px 16px -8px rgba(0,0,0,.28),
+      0 24px 60px -24px rgba(0,0,0,.45);
+    --shadow-card:
+      0 1px 2px rgba(22,21,26,.06),
+      0 6px 14px -8px rgba(22,21,26,.10),
+      0 24px 44px -30px rgba(22,21,26,.22);
+    --shadow-card-hover:
+      0 1px 2px rgba(22,21,26,.08),
+      0 10px 22px -10px rgba(22,21,26,.14),
+      0 34px 60px -34px rgba(22,21,26,.28);
     --font-display: 'Sora', system-ui, sans-serif;
     --font-body: 'Inter', system-ui, sans-serif;
     --container: 1180px;
@@ -97,8 +111,8 @@
      entirely and is still compositor-only. */
   [data-reveal]{
     opacity:0;
-    transform: translateY(28px);
-    transition: transform 700ms var(--ease-out), opacity 600ms var(--ease-out);
+    transform: translateY(16px);
+    transition: transform 520ms var(--ease-out), opacity 380ms var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
   }
   [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
@@ -139,7 +153,10 @@
     padding:10px 0;
     background:rgba(10,10,12,.7);
     backdrop-filter:blur(18px) saturate(160%);
-    box-shadow:0 1px 0 var(--line-dark), 0 20px 40px -30px rgba(0,0,0,.6);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.14),
+      0 1px 0 var(--line-dark),
+      0 20px 40px -30px rgba(0,0,0,.6);
   }
   .brand{ display:flex; align-items:center; gap:12px; color:var(--ink); }
   .brand-mark{ width:40px; height:40px; flex:none; }
@@ -205,9 +222,10 @@
     padding:8px 14px; border-radius:var(--radius-pill);
     border:1px solid var(--line-dark); background:rgba(255,255,255,.06); color:var(--ink-dim);
   }
-  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulseDot 1.8s var(--ease-in-out) infinite; }
-  @keyframes pulseDot{ 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.4; transform:scale(1.3); } }
-  @media (prefers-reduced-motion: reduce){ .eyebrow .dot{ animation:none; } }
+  .eyebrow .dot{
+    width:6px; height:6px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 0 3px rgba(255,77,35,.18);
+  }
 
   .hero h1{
     color:var(--ink);
@@ -333,11 +351,23 @@
     position:relative; padding:30px 26px; border-radius:var(--radius-lg);
     background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
     border:1px solid var(--line-dark);
-    transform-style:preserve-3d; transition: transform 220ms var(--ease-out), border-color 220ms ease;
+    transform-style:preserve-3d;
+    transition: transform 220ms var(--ease-out), border-color 220ms ease, box-shadow 220ms var(--ease-out), background 220ms ease;
     will-change:transform;
   }
-  @media (hover:hover) and (pointer:fine){ .service-card:hover{ border-color:rgba(255,77,35,.4); } }
-  .service-icon{ width:52px; height:52px; border-radius:var(--radius-sm); background:rgba(255,77,35,.14); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+  @media (hover:hover) and (pointer:fine){
+    .service-card:hover{
+      border-color:rgba(255,77,35,.4);
+      background:linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+      box-shadow: 0 1px 0 rgba(255,255,255,.06) inset, 0 18px 40px -24px rgba(0,0,0,.8);
+    }
+    .service-card:hover .service-icon{ background:rgba(255,77,35,.2); transform:scale(1.08); }
+  }
+  .service-icon{
+    width:52px; height:52px; border-radius:var(--radius-sm); background:rgba(255,77,35,.14);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+    transition: transform 220ms var(--ease-out), background 220ms ease;
+  }
   .service-icon svg{ width:26px; height:26px; color:var(--accent); }
   .service-card h3{ color:var(--ink); font-size:1.12rem; margin-bottom:10px; letter-spacing:-0.01em; }
   .service-card p{ color:var(--ink-dim); font-size:.92rem; line-height:1.55; }
@@ -347,8 +377,8 @@
   .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
   @media (max-width:980px){ .why-grid{ grid-template-columns:1fr 1fr; } }
   @media (max-width:560px){ .why-grid{ grid-template-columns:1fr; } }
-  .why-card{ padding:28px 22px; border-radius:var(--radius-lg); background:#fff; border:1px solid var(--line-light); box-shadow:0 20px 40px -30px rgba(22,21,26,.25); }
-  .why-num{ font-family:var(--font-display); font-weight:800; font-size:.85rem; color:var(--accent); margin-bottom:14px; }
+  .why-card{ padding:28px 22px; border-radius:var(--radius-lg); background:#fff; border:1px solid var(--line-light); box-shadow:var(--shadow-card); }
+  .why-num{ font-family:var(--font-display); font-weight:800; font-size:.85rem; color:var(--accent-ink); margin-bottom:14px; }
   .why-card h3{ font-size:1.02rem; margin-bottom:8px; letter-spacing:-0.01em; }
   .why-card p{ color:var(--dark-dim); font-size:.88rem; line-height:1.55; }
 
@@ -356,7 +386,7 @@
   .stats-section{ padding:80px 0; background:var(--dark); }
   .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center; }
   @media (max-width:760px){ .stats-grid{ grid-template-columns:1fr 1fr; row-gap:40px; } }
-  .stat-value{ font-family:var(--font-display); font-weight:800; font-size:clamp(2rem,4vw,2.8rem); color:var(--ink); letter-spacing:-0.02em; }
+  .stat-value{ display:inline-block; will-change:transform; font-family:var(--font-display); font-weight:800; font-size:clamp(2rem,4vw,2.8rem); color:var(--ink); letter-spacing:-0.02em; }
   .stat-label{ color:var(--ink-dim-2); font-size:.82rem; margin-top:8px; font-weight:600; letter-spacing:.02em; }
   .stat-stars{ position:relative; display:inline-flex; gap:3px; margin-bottom:6px; }
   .stat-stars svg{ width:20px; height:20px; }
@@ -387,7 +417,7 @@
   .t-track{ display:flex; transition: transform 520ms var(--ease-in-out); }
   .t-slide{ flex:0 0 100%; padding:4px; }
   @media (min-width:760px){ .t-slide{ flex:0 0 50%; } }
-  .t-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); padding:32px; height:100%; box-shadow:0 20px 40px -30px rgba(22,21,26,.25); }
+  .t-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); padding:32px; height:100%; box-shadow:var(--shadow-card); }
   .t-stars{ display:flex; gap:3px; margin-bottom:16px; }
   .t-stars svg{ width:16px; height:16px; color:var(--accent-2); }
   .t-quote{ font-size:1.02rem; line-height:1.6; color:var(--dark); margin-bottom:20px; }
@@ -417,7 +447,7 @@
   .location-section{ padding:110px 0; background:var(--paper); }
   .location-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
   @media (max-width:900px){ .location-grid{ grid-template-columns:1fr; } }
-  .loc-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); box-shadow:0 20px 40px -30px rgba(22,21,26,.25); padding:14px; }
+  .loc-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius-lg); box-shadow:var(--shadow-card); padding:14px; }
   .map-graphic{ position:relative; aspect-ratio:4/3; border-radius:var(--radius-md); overflow:hidden; background:#e9e5db; }
   .map-graphic svg{ width:100%; height:100%; }
   .map-pin{ position:absolute; top:44%; left:52%; transform:translate(-50%,-100%); animation: pinDrop 1.4s var(--ease-out) 200ms both; }
@@ -988,7 +1018,7 @@
   /* Preloader */
   window.addEventListener('load', function(){
     var p = document.getElementById('preloader');
-    setTimeout(function(){ p.classList.add('hide'); }, reduceMotion ? 0 : 350);
+    p.classList.add('hide');
   });
 
   /* Header scroll state */
@@ -1054,6 +1084,15 @@
             var val = target * eased;
             valueEl.textContent = val.toFixed(decimals) + suffix;
             if (progress < 1) requestAnimationFrame(step);
+            else {
+              // Settle: the number lands, then relaxes. Transform only.
+              valueEl.style.transition = 'none';
+              valueEl.style.transform = 'scale(1.045)';
+              requestAnimationFrame(function(){
+                valueEl.style.transition = 'transform 420ms var(--ease-out)';
+                valueEl.style.transform = 'scale(1)';
+              });
+            }
           }
           requestAnimationFrame(step);
         }
@@ -1069,8 +1108,16 @@
   var handle = document.getElementById('compareHandle');
   var dragging = false;
 
+  /* Momentum state. A drag that simply freezes on release reads as a
+     computer control; one that carries the velocity the hand gave it and
+     springs to rest reads as a physical object. */
+  var currentPct = 50;
+  var lastX = 0, lastT = 0, velocity = 0;  // velocity in px/ms
+  var settleRaf = null;
+
   function setPercent(pct){
     pct = Math.max(2, Math.min(98, pct));
+    currentPct = pct;
     after.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
     handle.style.left = pct + '%';
   }
@@ -1078,31 +1125,75 @@
     var rect = shell.getBoundingClientRect();
     return ((clientX - rect.left) / rect.width) * 100;
   }
+  function stopSettle(){
+    if (settleRaf) { cancelAnimationFrame(settleRaf); settleRaf = null; }
+  }
+  /* Interruptible spring: grabbing mid-settle cancels it from wherever it
+     is, rather than snapping. */
+  function settleTo(target){
+    stopSettle();
+    target = Math.max(2, Math.min(98, target));
+    var v = 0, stiffness = 0.16, damping = 0.74;
+    function frame(){
+      v = (v + (target - currentPct) * stiffness) * damping;
+      setPercent(currentPct + v);
+      if (Math.abs(target - currentPct) > 0.05 || Math.abs(v) > 0.05){
+        settleRaf = requestAnimationFrame(frame);
+      } else {
+        setPercent(target);
+        settleRaf = null;
+      }
+    }
+    settleRaf = requestAnimationFrame(frame);
+  }
+  function release(){
+    if (!dragging) return;
+    dragging = false;
+    if (reduceMotion || Math.abs(velocity) < 0.05) return;
+    // Project the throw ~140ms forward, in percent of the shell's width.
+    var rect = shell.getBoundingClientRect();
+    settleTo(currentPct + (velocity * 140) / rect.width * 100);
+  }
+
   shell.addEventListener('pointerdown', function(e){
+    stopSettle();
+    if (nudgeTimer) { clearInterval(nudgeTimer); nudgeTimer = null; }  // user wins over the hint
     dragging = true;
+    velocity = 0;
+    lastX = e.clientX;
+    lastT = performance.now();
     shell.setPointerCapture(e.pointerId);
     setPercent(pctFromEvent(e.clientX));
   });
   shell.addEventListener('pointermove', function(e){
     if (!dragging) return;
+    var now = performance.now();
+    var dt = now - lastT;
+    if (dt > 0){
+      // Blend with the previous sample so one jittery frame can't dominate.
+      velocity = velocity * 0.4 + ((e.clientX - lastX) / dt) * 0.6;
+      lastX = e.clientX;
+      lastT = now;
+    }
     setPercent(pctFromEvent(e.clientX));
   });
-  ['pointerup','pointercancel','pointerleave'].forEach(function(ev){
-    shell.addEventListener(ev, function(){ dragging = false; });
+  ['pointerup','pointercancel'].forEach(function(ev){
+    shell.addEventListener(ev, release);
   });
   setPercent(50);
 
   /* Auto-nudge the slider once on first view, for discoverability */
   var nudged = false;
+  var nudgeTimer = null;
   var nudgeIo = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if (entry.isIntersecting && !nudged && !reduceMotion){
         nudged = true;
         var t = 0;
-        var nudgeTimer = setInterval(function(){
+        nudgeTimer = setInterval(function(){
           t += 1;
           setPercent(50 + Math.sin(t/3) * 14 * Math.max(0, 1 - t/24));
-          if (t > 24) { clearInterval(nudgeTimer); setPercent(50); }
+          if (t > 24) { clearInterval(nudgeTimer); nudgeTimer = null; setPercent(50); }
         }, 30);
       }
     });
