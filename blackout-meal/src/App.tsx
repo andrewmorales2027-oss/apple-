@@ -1,51 +1,48 @@
-import { useEffect } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Scene } from "./scene/Scene";
-import { Cursor } from "./components/Cursor";
-import { Breakdown, Build, Cold, Footer, Hero, Masthead, Order } from "./components/Sections";
-import { useReducedMotion } from "./lib/reducedMotion";
-import { applyStylePalette, getStyle } from "./scene/style";
+import { Build, Cola, Footer, Fries, Hero, Intro, Masthead, Order } from "./components/Sections";
+import { HAS_PHOTOGRAPHY } from "./images/manifest";
 
 export default function App() {
-  const reduced = useReducedMotion();
-
-  // The chosen direction owns the page palette too, not just the render — a print look on
-  // a black page is neither of the two things it is trying to be.
-  useEffect(() => {
-    applyStylePalette(getStyle());
-  }, []);
-
-  // Fonts and the canvas both change layout height on arrival; a stale ScrollTrigger
-  // start/end is what makes these pages fire their beats a screen early.
-  useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh();
-    if (document.fonts?.ready) document.fonts.ready.then(refresh);
-    window.addEventListener("load", refresh);
-    return () => window.removeEventListener("load", refresh);
-  }, []);
-
   return (
     <>
-      {/* Visible, not just focus-revealed: the directed sequence is long, and anyone who
-          wants the price rather than the film should be able to leave at any moment. */}
       <a className="skip-link" href="#order">
         Skip to order
       </a>
 
-      <Scene reduced={reduced} />
-      <Cursor />
+      <Masthead />
 
-      <div className="content">
-        <Masthead />
-        <main>
-          <Hero />
-          <Build />
-          <Cold />
-          <Breakdown />
-          <Order />
-        </main>
-        <Footer />
-      </div>
+      <main>
+        <Hero />
+        <Intro />
+        <Build />
+        <Fries />
+        <Cola />
+        <Order />
+      </main>
+
+      <Footer />
+
+      {/* Development-only reminder. Stripped from the production bundle, and gone the
+          moment the first photograph lands in src/assets/shots. */}
+      {import.meta.env.DEV && !HAS_PHOTOGRAPHY && (
+        <p
+          style={{
+            position: "fixed",
+            insetInline: 0,
+            bottom: 0,
+            margin: 0,
+            padding: "0.5rem 1rem",
+            background: "#a8231b",
+            color: "#f4efe4",
+            font: "600 0.72rem/1.4 Karla, system-ui, sans-serif",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            textAlign: "center",
+            zIndex: 50,
+          }}
+        >
+          No photography yet — drop files into src/assets/shots named after each slot
+        </p>
+      )}
     </>
   );
 }

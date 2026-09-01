@@ -1,28 +1,20 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { onSectionProgress, useSectionScroll } from "../scene/scrollState";
-import { LAYERS } from "../scene/Burger";
-import { clamp01 } from "../scene/easing";
+import { useEffect, useRef, useState } from "react";
+import { Shot } from "./Shot";
+import { BUILD_STEPS } from "../images/manifest";
+import { useReveal, useRise } from "../lib/reveal";
 
-gsap.registerPlugin(ScrollTrigger);
-
-/* ----------------------------------------------------------------- masthead */
+/* ---------------------------------------------------------------- masthead */
 
 export function Masthead() {
   return (
     <header className="masthead">
-      <a className="masthead__brand" href="#hero">
-        Brazen<span className="masthead__long"> Burger Co.</span>
+      <a className="masthead__brand" href="#top">
+        Brazen Burger Co.
       </a>
       <nav className="masthead__nav" aria-label="Sections">
-        <a href="#build" data-magnetic="0.28">
-          The Build
-        </a>
-        <a href="#cold" data-magnetic="0.28">
-          Ice Cold
-        </a>
-        <a href="#order" data-magnetic="0.28">
+        <a href="#meal">The Meal</a>
+        <a href="#build">What&rsquo;s In It</a>
+        <a className="masthead__cta" href="#order">
           Order
         </a>
       </nav>
@@ -30,123 +22,144 @@ export function Masthead() {
   );
 }
 
-/* --------------------------------------------------------------------- hero */
+/* -------------------------------------------------------------------- hero */
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const wordmark = useRef<HTMLHeadingElement>(null);
-  useSectionScroll(ref, "hero");
-
-  useLayoutEffect(() => {
-    const el = wordmark.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    // Blur-to-focus scrubbed by scroll, not a fixed intro animation: the wordmark
-    // resolves because the reader moved, and un-resolves if they scroll back up.
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { filter: "blur(15px)", opacity: 0.5, letterSpacing: "0.16em", yPercent: 5 },
-        {
-          filter: "blur(0px)",
-          opacity: 1,
-          letterSpacing: "-0.02em",
-          yPercent: 0,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ref.current!,
-            start: "top top",
-            end: "42% top",
-            scrub: 0.6,
-          },
-        },
-      );
-    });
-    return () => ctx.revert();
-  }, []);
+  const frame = useReveal<HTMLDivElement>();
+  const copy = useRise<HTMLDivElement>();
 
   return (
-    <section className="section" id="hero" ref={ref} aria-labelledby="hero-title">
-      <div className="hero__inner">
-        <div>
-          <p className="eyebrow">Brazen Burger Co. presents</p>
-          <h1 className="hero__wordmark" id="hero-title" ref={wordmark}>
-            <span>The Blackout</span>
-            <span className="accent">Meal</span>
-          </h1>
-          <p className="hero__sub">
-            Best burger ever? That's the dare. Double smash, hand-cut fries, and a bottle of
-            Brazen Cola pulled straight off the ice.
-          </p>
-        </div>
-        <p className="hero__hint" aria-hidden="true">
-          Scroll
+    <section className="hero" id="top" aria-labelledby="hero-title">
+      <div className="reveal" ref={frame}>
+        <Shot id="hero" parallax={0.1} priority />
+      </div>
+      <div className="hero__scrim" aria-hidden="true" />
+      <div className="hero__copy rise" ref={copy}>
+        <p className="eyebrow">Brazen Burger Co.</p>
+        <h1 className="hero__title" id="hero-title">
+          The Blackout
+          <em>Meal</em>
+        </h1>
+        <p className="hero__meta">
+          <span>Double smash</span>
+          <span>Hand-cut fries</span>
+          <span>Brazen Cola</span>
+          <span>$16.50</span>
         </p>
       </div>
     </section>
   );
 }
 
-/* -------------------------------------------------------------------- build */
+/* ------------------------------------------------------------------- intro */
 
-const INGREDIENTS = [
-  { name: "Brioche base", note: "toasted on the flat top" },
-  { name: "Butter lettuce", note: "cold, for the contrast" },
-  { name: "Double smash patty", note: "4oz each, hard sear" },
-  { name: "Aged cheddar", note: "laid on hot, left to run" },
-  { name: "Hickory bacon", note: "thick cut, straight off the grill" },
-  { name: "Tomato, onion, pickle", note: "sliced to order" },
-  { name: "House sauce", note: "smoked, sharp, ours" },
-  { name: "Charcoal sesame crown", note: "black brioche, sealed" },
-];
+export function Intro() {
+  const copy = useRise<HTMLDivElement>();
+  const frame = useReveal<HTMLDivElement>();
 
-type LayerState = "" | "landing" | "landed";
+  return (
+    <section className="intro" id="meal" aria-labelledby="meal-title">
+      <div className="rise" ref={copy}>
+        <p className="eyebrow">01 — The meal</p>
+        <h2 className="intro__title" id="meal-title">
+          Built to be ordered once and remembered for a week.
+        </h2>
+        <div className="intro__body">
+          <p className="lede">
+            Two quarter-pound patties pressed thin on a 500&deg; flat top, so the whole face
+            crusts instead of just the edges. Aged cheddar goes on while they&rsquo;re still
+            moving. Hickory bacon, house sauce, and a charcoal sesame brioche that holds
+            together to the last bite.
+          </p>
+          <p className="lede">
+            It comes with hand-cut fries and a glass bottle of Brazen Cola pulled off the
+            ice. No substitutions. There is no small version.
+          </p>
+        </div>
+        <dl className="intro__spec">
+          <div>
+            <b>Serves</b> One, honestly
+          </div>
+          <div>
+            <b>Available</b> Daily from 4pm, until it runs out
+          </div>
+          <div>
+            <b>Allergens</b> Wheat, dairy, egg. Ask us about anything else.
+          </div>
+        </dl>
+      </div>
+      <div className="reveal" ref={frame}>
+        <Shot id="section" parallax={0.14} />
+      </div>
+    </section>
+  );
+}
 
+/* ------------------------------------------------------------------- build */
+
+/**
+ * The ingredient walk-through: a sticky photograph that changes as the reader moves
+ * down the list beside it. This is the photographic equivalent of watching it get
+ * built — and unlike a scrubbed 3D sequence, every step is real DOM text with a real
+ * heading, so it reads perfectly with the images off or a screen reader on.
+ */
 export function Build() {
-  const ref = useRef<HTMLElement>(null);
-  useSectionScroll(ref, "build");
-  const [states, setStates] = useState<LayerState[]>(() => LAYERS.map(() => ""));
+  const [active, setActive] = useState(0);
+  const steps = useRef<(HTMLLIElement | null)[]>([]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setStates(LAYERS.map(() => "landed"));
-      return;
-    }
-    let signature = "";
-    return onSectionProgress((key, p) => {
-      if (key !== "build") return;
-      const next = LAYERS.map((l) => {
-        const t = clamp01((p - l.at) / l.span);
-        return t >= 1 ? "landed" : t > 0 ? "landing" : "";
-      }) as LayerState[];
-      // One React update per state change, not one per scroll frame.
-      const sig = next.join("|");
-      if (sig === signature) return;
-      signature = sig;
-      setStates(next);
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // The step nearest the middle of the viewport owns the frame.
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const index = steps.current.indexOf(visible.target as HTMLLIElement);
+        if (index >= 0) setActive(index);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.5, 1] },
+    );
+    steps.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section className="section" id="build" ref={ref} aria-labelledby="build-title">
-      <div className="sticky">
-        <div className="build__panel">
-          <p className="eyebrow">02 — The build</p>
-          <h2 className="build__title" id="build-title">
-            Stacked
-            <br />
-            Right
+    <section className="build" id="build" aria-labelledby="build-title">
+      <div className="build__inner">
+        {/* All five frames are stacked in one grid cell and cross-faded, so the image
+            never reflows and the swap costs nothing but opacity. */}
+        <div className="build__frame" aria-hidden="true">
+          {BUILD_STEPS.map((step, i) => (
+            <Shot
+              key={step.shot}
+              id={step.shot}
+              parallax={0}
+              className={i === active ? "is-active" : undefined}
+            />
+          ))}
+        </div>
+
+        <div>
+          <p className="eyebrow">02 — What&rsquo;s in it</p>
+          <h2 className="sr-only" id="build-title">
+            What goes into the Blackout Meal
           </h2>
-          <p className="lede">
-            Eight layers, one order, built in the order it has to be built. Bun down, protein
-            hot, cheese last thing on before it stops moving.
-          </p>
-          <ol className="build__list">
-            {INGREDIENTS.map((item, i) => (
-              <li key={item.name} data-state={states[i] || undefined}>
-                <span>
-                  {item.name} <span className="build__note">— {item.note}</span>
-                </span>
+          <ol className="build__steps">
+            {BUILD_STEPS.map((step, i) => (
+              <li
+                key={step.name}
+                className="build__step"
+                data-active={i === active}
+                ref={(el) => {
+                  steps.current[i] = el;
+                }}
+              >
+                <h3>
+                  <span>{String(i + 1).padStart(2, "0")}</span>
+                  {step.name}
+                </h3>
+                <p>{step.note}</p>
               </li>
             ))}
           </ol>
@@ -156,121 +169,109 @@ export function Build() {
   );
 }
 
-/* --------------------------------------------------------------------- cold */
+/* ------------------------------------------------------------------ panels */
 
-export function Cold() {
-  const ref = useRef<HTMLElement>(null);
-  useSectionScroll(ref, "cold");
+function Panel({
+  id,
+  shotId,
+  side,
+  eyebrow,
+  title,
+  body,
+  spec,
+}: {
+  id: string;
+  shotId: "fries" | "cola";
+  side: "left" | "right";
+  eyebrow: string;
+  title: string;
+  body: string;
+  spec: string;
+}) {
+  const frame = useReveal<HTMLDivElement>();
+  const copy = useRise<HTMLDivElement>();
 
   return (
-    <section className="section" id="cold" ref={ref} aria-labelledby="cold-title">
-      <div className="sticky cold__inner" data-scrim="right">
-        <div className="cold__panel">
-          <p className="eyebrow">03 — Brazen Cola</p>
-          <h2 className="cold__quote" id="cold-title">
-            Cold enough to <em>fight back.</em>
-          </h2>
-          <p className="lede" style={{ marginLeft: "auto" }}>
-            Glass bottle, twelve ounces, kept buried in ice until the second it's yours. It
-            arrives already sweating and it does not warm up politely.
-          </p>
-        </div>
+    <section
+      className={`panel ${side === "right" ? "panel--right" : ""}`}
+      id={id}
+      aria-labelledby={`${id}-title`}
+    >
+      <div className="reveal" ref={frame}>
+        <Shot id={shotId} parallax={0.16} />
+      </div>
+      <div className="panel__scrim" aria-hidden="true" />
+      <div className="panel__copy rise" ref={copy}>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 id={`${id}-title`}>{title}</h2>
+        <p>{body}</p>
+        <p className="panel__spec">{spec}</p>
       </div>
     </section>
   );
 }
 
-/* ---------------------------------------------------------------- breakdown */
-
-const PANELS = [
-  {
-    index: "01",
-    side: "right" as const,
-    title: "Burger",
-    copy: "Two 4oz patties smashed thin so the whole surface crusts, aged cheddar melted into the seam, hickory bacon, and a charcoal sesame crown that seals the whole thing shut.",
-    spec: "Half pound · Seared hard · Served hot",
-  },
-  {
-    index: "02",
-    side: "left" as const,
-    title: "Fries",
-    copy: "Cut in-house every morning, skin on, blanched and fried a second time for a shell that actually holds. Salted with flake, not dust, while they're still spitting.",
-    spec: "Skin on · Twice fried · Flaky salt",
-  },
-  {
-    index: "03",
-    side: "right" as const,
-    title: "Cola",
-    copy: "Brazen Cola in glass, because aluminium changes the edge on it. Deep, dry, and carbonated hard enough that the first sip is a decision.",
-    spec: "Glass · 12oz · Straight off the ice",
-  },
-];
-
-export function Breakdown() {
-  const ref = useRef<HTMLElement>(null);
-  useSectionScroll(ref, "breakdown");
-
+export function Fries() {
   return (
-    <section className="section" id="breakdown" ref={ref} aria-labelledby="breakdown-title">
-      <h2 className="sr-only" id="breakdown-title">
-        The meal, component by component
-      </h2>
-      {PANELS.map((panel) => (
-        <article className="panel" key={panel.title} aria-labelledby={`panel-${panel.index}`}>
-          <div className="sticky panel__inner" data-align={panel.side} data-scrim={panel.side}>
-            <div className="panel__card">
-              <p className="panel__index">{panel.index}</p>
-              <h3 className="panel__title" id={`panel-${panel.index}`}>
-                {panel.title}
-              </h3>
-              <p className="lede">{panel.copy}</p>
-              <p className="panel__spec">{panel.spec}</p>
-            </div>
-          </div>
-        </article>
-      ))}
-    </section>
+    <Panel
+      id="fries"
+      shotId="fries"
+      side="left"
+      eyebrow="03 — The fries"
+      title="Cut this morning."
+      body="Skin on, blanched, and fried a second time so the shell actually holds. Salted with flake while they're still spitting."
+      spec="Skin on · Twice fried · Flaky salt"
+    />
   );
 }
 
-/* -------------------------------------------------------------------- order */
+export function Cola() {
+  return (
+    <Panel
+      id="cola"
+      shotId="cola"
+      side="right"
+      eyebrow="04 — The cola"
+      title="Cold enough to fight back."
+      body="Brazen Cola in glass, because aluminium changes the edge on it. Kept buried in ice until the second it's yours."
+      spec="Glass · 12oz · Straight off the ice"
+    />
+  );
+}
+
+/* ------------------------------------------------------------------- order */
 
 export function Order() {
-  const ref = useRef<HTMLElement>(null);
-  useSectionScroll(ref, "order");
-  // Orbit is offered on fine pointers only: a touch-drag on the canvas would swallow the
-  // page scroll, which is exactly the trap this build is meant to avoid.
-  const [canSpin, setCanSpin] = useState(false);
-  useEffect(() => setCanSpin(window.matchMedia("(pointer: fine)").matches), []);
+  const copy = useRise<HTMLDivElement>();
+  const frame = useReveal<HTMLDivElement>();
 
   return (
-    <section className="section" id="order" ref={ref} aria-labelledby="order-title">
-      <div className="sticky order__inner" data-scrim="bottom">
+    <section className="order" id="order" aria-labelledby="order-title">
+      <div className="reveal" ref={frame}>
+        <Shot id="order" parallax={0.12} />
+      </div>
+      <div className="rise" ref={copy}>
         <p className="eyebrow">05 — Order</p>
         <h2 className="order__title" id="order-title">
-          Own the Combo
+          Own the combo.
         </h2>
-        <p className="lede" style={{ marginInline: "auto", textAlign: "center" }}>
-          The Blackout Meal. Burger, fries, cola. No substitutions, no apologies, no
-          value-menu energy.
+        <p className="lede">
+          Burger, fries, cola. Available daily from 4pm at every Brazen location, and gone
+          when it&rsquo;s gone.
         </p>
-        <button className="cta" type="button" data-magnetic="0.42">
-          Order — $16.50
+        <p className="order__price">
+          $16.50 <small>The Blackout Meal</small>
+        </p>
+        <button className="cta" type="button">
+          Order now
         </button>
-        {canSpin && (
-          <p className="order__hint" aria-hidden="true">
-            Drag to spin
-          </p>
-        )}
-        <p className="order__note">
-          Served after 4pm at every Brazen location. Allergens listed in store.
+        <p className="order__hours">
+          Mon&ndash;Thu 4&ndash;11pm · Fri&ndash;Sat 4pm&ndash;1am · Sun 4&ndash;10pm
         </p>
       </div>
     </section>
   );
 }
-
-/* ------------------------------------------------------------------- footer */
 
 export function Footer() {
   return (
