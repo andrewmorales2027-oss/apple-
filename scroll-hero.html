@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The City Opens — scroll-locked video hero</title>
+<style>
+  :root{
+    --bg:#05070d;
+    --text:#f2f4f8;
+    --sans:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    height:100dvh;
+    width:100%;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .hero__video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    opacity:0;
+    transform-origin:center center;
+    will-change:transform;
+    transition:opacity .6s ease;
+  }
+  .hero__video.is-ready{ opacity:1; }
+
+  .hero__scrim{
+    position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg,
+      rgba(5,7,13,.35), rgba(5,7,13,0) 30%, rgba(5,7,13,.15) 70%, rgba(5,7,13,.55));
+  }
+
+  .hero__layer{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; pointer-events:none;
+  }
+  .hero__title{ padding:0 6%; }
+  .hero__title span{
+    display:inline-block;
+    font-weight:800;
+    font-size:clamp(30px,7vw,96px);
+    line-height:1;
+    letter-spacing:-.02em;
+    text-shadow:0 4px 30px rgba(0,0,0,.5);
+    will-change:transform, filter, opacity;
+  }
+  .hero__tagline{ padding:0 8%; opacity:0; }
+  .hero__tagline span{
+    font-weight:700;
+    font-size:clamp(20px,3.4vw,40px);
+    line-height:1.2;
+    letter-spacing:-.01em;
+    text-shadow:0 4px 24px rgba(0,0,0,.5);
+  }
+
+  .hero__hint{
+    position:absolute; left:50%; bottom:clamp(20px,6vh,48px);
+    transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:rgba(240,244,248,.75);
+    font-size:clamp(10px,1.4vw,12px);
+    font-weight:600; letter-spacing:.3em;
+    transition:opacity .4s ease;
+    pointer-events:none;
+  }
+  .hero__hint svg{ animation:hero-bounce 1.6s ease-in-out infinite; }
+  @keyframes hero-bounce{
+    0%,100%{ transform:translateY(0); opacity:.5; }
+    50%{ transform:translateY(5px); opacity:1; }
+  }
+
+  .hero__track{
+    position:absolute; left:0; right:0; bottom:0;
+    height:2px; background:rgba(255,255,255,.12);
+  }
+  .hero__bar{
+    height:100%; width:100%;
+    background:linear-gradient(90deg, rgba(255,255,255,.5), rgba(255,255,255,.95));
+    transform:scaleX(0);
+    transform-origin:left center;
+  }
+
+  /* Escape hatch — the lock is a trap without one. */
+  .hero__skip{
+    position:absolute; left:clamp(12px,2.5vw,24px); bottom:clamp(10px,2vw,18px);
+    z-index:3;
+    font:inherit; font-size:clamp(11px,1.4vw,13px); font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase;
+    color:rgba(220,224,232,.6);
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;
+    padding:.6em 1.1em;
+    cursor:pointer;
+    transition:color .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .hero__skip:hover,
+  .hero__skip:focus-visible{
+    color:var(--text);
+    background:rgba(255,255,255,.12);
+    border-color:rgba(255,255,255,.3);
+  }
+
+  /* ---------- content below, to prove the page continues ---------- */
+  .after{ background:#0b0e16; }
+  .wrap{ max-width:760px; margin:0 auto; padding:clamp(64px,12vh,140px) clamp(20px,6vw,40px); }
+  .after h2{
+    font-size:clamp(24px,4vw,44px); line-height:1.1; letter-spacing:-.02em;
+    margin:0 0 .6em;
+  }
+  .after p{
+    margin:0 0 1.2em; line-height:1.7;
+    font-size:clamp(15px,1.6vw,18px);
+    color:rgba(242,244,248,.72);
+  }
+  .after section + section{ border-top:1px solid rgba(255,255,255,.08); }
+  code{
+    font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size:.9em;
+    background:rgba(255,255,255,.08);
+    padding:.15em .45em; border-radius:5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero" id="hero">
+  <video class="hero__video" id="hero-video"
+         src="https://raw.githubusercontent.com/gughigug/metro-hero-assets/main/Subway_doors_open_to_city_202608242331.mp4"
+         muted playsinline preload="auto"></video>
+
+  <div class="hero__scrim"></div>
+
+  <div class="hero__layer hero__title" id="hero-title"><span>THE CITY OPENS</span></div>
+
+  <div class="hero__layer hero__tagline" id="hero-tagline">
+    <span>Every door in the city is already open.</span>
+  </div>
+
+  <div class="hero__hint" id="hero-hint">
+    <span>SCROLL</span>
+    <svg width="14" height="18" viewBox="0 0 14 18" aria-hidden="true">
+      <path d="M7 1 L7 17 M2 12 L7 17 L12 12" stroke="currentColor" stroke-width="1.5"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="hero__track"><div class="hero__bar" id="hero-bar"></div></div>
+
+  <button class="hero__skip" id="hero-skip" type="button">Skip intro</button>
+</div>
+
+<main class="after">
+  <section class="wrap">
+    <h2>You made it past the hero.</h2>
+    <p>
+      That is the part the original component could not do. It pinned
+      <code>document.body</code> on mount and never let go, so this text was
+      unreachable — scrolling only ever moved the video.
+    </p>
+    <p>
+      Here the lock releases the moment your gesture pushes past the end of the
+      video, and re-engages if you scroll back up into the hero. Try it: scroll up
+      and the doors close again.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <h2>It also lets people out.</h2>
+    <p>
+      Keyboard scrolling works while locked — arrows, <code>Page Up</code> /
+      <code>Page Down</code>, <code>Space</code>, <code>Home</code> and
+      <code>End</code> all scrub. The <em>Skip intro</em> button is a deliberate
+      escape hatch, and anyone with <code>prefers-reduced-motion</code> set never
+      gets locked at all: the video parks on its final frame and the page scrolls
+      normally.
+    </p>
+  </section>
+</main>
+
+<script>
+(function () {
+  var section  = document.getElementById('hero');
+  var video    = document.getElementById('hero-video');
+  var titleEl  = document.getElementById('hero-title');
+  var taglineEl= document.getElementById('hero-tagline');
+  var hintEl   = document.getElementById('hero-hint');
+  var barEl    = document.getElementById('hero-bar');
+  var skipEl   = document.getElementById('hero-skip');
+
+  // Total input distance (px) needed to scrub the whole video.
+  var SCRUB_DISTANCE = 3200;
+
+  var reduceMotion = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var duration = 0, rafId = 0;
+  var target = 0, current = 0;
+  var lastSought = -1;
+  var started = false;
+  var isSeeking = false, pendingTime = null;
+  var locked = false, lockedScrollY = 0, canRelock = false;
+  var touchStartY = 0;
+
+  function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+  video.addEventListener('loadeddata', function () {
+    duration = video.duration || 0;
+    video.classList.add('is-ready');
+    if (reduceMotion && duration) video.currentTime = duration * 0.92;
+  });
+
+  // Seeks are queued: asking for a new currentTime while one is still in
+  // flight makes the browser drop frames, so we keep at most one pending.
+  video.addEventListener('seeked', function () {
+    isSeeking = false;
+    if (pendingTime !== null) {
+      var t = pendingTime;
+      pendingTime = null;
+      isSeeking = true;
+      video.currentTime = t;
+    }
+  });
+
+  // Below roughly half a frame there is nothing to see, and re-seeking every
+  // rAF tick while the scrub is at rest just churns the decoder.
+  var SEEK_EPSILON = 1 / 120;
+
+  function seekTo(t) {
+    if (Math.abs(t - lastSought) < SEEK_EPSILON) return;
+    lastSought = t;
+    if (isSeeking) { pendingTime = t; return; }
+    isSeeking = true;
+    video.currentTime = t;
+  }
+
+  function engageLock() {
+    if (locked) return;
+    locked = true;
+    lockedScrollY = window.scrollY;
+    var b = document.body.style;
+    b.position = 'fixed';
+    b.top = '-' + lockedScrollY + 'px';
+    b.left = '0';
+    b.right = '0';
+    b.width = '100%';
+    // iOS Safari still rubber-bands a fixed body without this.
+    document.documentElement.style.overscrollBehavior = 'none';
+  }
+
+  function releaseLock() {
+    if (!locked) return;
+    locked = false;
+    canRelock = false;          // don't re-grab until the hero has left the viewport
+    var y = lockedScrollY;
+    var b = document.body.style;
+    b.position = ''; b.top = ''; b.left = ''; b.right = ''; b.width = '';
+    document.documentElement.style.overscrollBehavior = '';
+    window.scrollTo(0, y);
+  }
+
+  // Returns false when the gesture overshoots either end — the caller then
+  // hands the event back to the page instead of swallowing it.
+  function addDelta(deltaY) {
+    var raw = target + deltaY / SCRUB_DISTANCE;
+    target = clamp(raw, 0, 1);
+    if (target > 0.001) started = true;
+    return raw >= 0 && raw <= 1;
+  }
+
+  function handleInput(deltaY, e) {
+    if (!locked) return;
+    if (addDelta(deltaY)) {
+      e.preventDefault();
+    } else {
+      releaseLock();
+    }
+  }
+
+  window.addEventListener('wheel', function (e) {
+    handleInput(e.deltaY, e);
+  }, { passive: false });
+
+  window.addEventListener('touchstart', function (e) {
+    touchStartY = e.touches[0] ? e.touches[0].clientY : 0;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', function (e) {
+    var y = e.touches[0] ? e.touches[0].clientY : touchStartY;
+    var deltaY = touchStartY - y;
+    touchStartY = y;
+    handleInput(deltaY, e);
+  }, { passive: false });
+
+  // Wheel capture alone strands keyboard users on a pinned body.
+  var KEY_DELTA = {
+    ArrowDown: 120, ArrowUp: -120,
+    PageDown: 640,  PageUp: -640,
+    End: 4000,      Home: -4000,
+    ' ': 640, Spacebar: 640
+  };
+  window.addEventListener('keydown', function (e) {
+    if (!locked) return;
+    if (e.target !== document.body && e.target !== document.documentElement) return;
+    var delta = KEY_DELTA[e.key];
+    if (delta === undefined) return;
+    handleInput(delta, e);
+  });
+
+  skipEl.addEventListener('click', function () {
+    target = 1;
+    releaseLock();
+    section.scrollIntoView({ block: 'end', behavior: 'smooth' });
+  });
+
+  function frame() {
+    current += (target - current) * 0.18;
+
+    if (duration > 0) seekTo(current * duration);
+
+    video.style.transform = 'scale(' + (1 + current * 0.06) + ')';
+
+    var t = 1 - clamp(current / 0.35, 0, 1);
+    titleEl.style.opacity = String(t);
+    titleEl.style.transform = 'translateY(' + ((1 - t) * -24) + 'px) scale(' + (0.96 + t * 0.04) + ')';
+    titleEl.style.filter = 'blur(' + ((1 - t) * 10) + 'px)';
+
+    hintEl.style.opacity = started ? '0' : '1';
+
+    // Mirrors the title's blur-focus treatment, timed as the payoff once the
+    // reveal is nearly complete.
+    var g = clamp((current - 0.82) / 0.18, 0, 1);
+    taglineEl.style.opacity = String(g);
+    taglineEl.style.transform = 'translateY(' + ((1 - g) * 20) + 'px) scale(' + (0.97 + g * 0.03) + ')';
+    taglineEl.style.filter = 'blur(' + ((1 - g) * 8) + 'px)';
+
+    barEl.style.transform = 'scaleX(' + current + ')';
+
+    rafId = requestAnimationFrame(frame);
+  }
+
+  if (reduceMotion) {
+    // No lock, no input capture, no rAF — just the end state and a normal page.
+    titleEl.style.opacity = '0';
+    taglineEl.style.opacity = '1';
+    taglineEl.style.filter = 'none';
+    taglineEl.style.transform = 'none';
+    hintEl.style.display = 'none';
+    barEl.style.transform = 'scaleX(1)';
+    skipEl.style.display = 'none';
+  } else {
+    engageLock();
+    rafId = requestAnimationFrame(frame);
+
+    // Re-arm only after the hero has genuinely left, so releasing at the end
+    // doesn't immediately snap the lock back on.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        var ratio = entries[0].intersectionRatio;
+        if (ratio < 0.9) canRelock = true;
+        else if (ratio > 0.99 && canRelock && !locked) engageLock();
+      }, { threshold: [0, 0.9, 0.99, 1] }).observe(section);
+    }
+  }
+
+  window.addEventListener('pagehide', function () {
+    cancelAnimationFrame(rafId);
+    releaseLock();
+  });
+})();
+</script>
+</body>
+</html>

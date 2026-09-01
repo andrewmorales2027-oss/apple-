@@ -299,4 +299,25 @@ parts are only `useRef` and `useState`:
   (`--bg`, `--ink`, `--accent`, `--ease-out`)
 
 The wheel/touch handling, the `isSeeking`/`pendingTime` seek queue, and the `0.18`
-lerp all carry over unchanged. Say the word and I'll do that port.
+lerp all carry over unchanged.
+
+**That port is done: [`scroll-hero.html`](../scroll-hero.html)** — open it in a
+browser, no build step. It is the same effect with the §5 defects fixed:
+
+- the lock releases when a gesture overshoots the end, and re-engages via
+  `IntersectionObserver` when you scroll back up into the hero;
+- `prefers-reduced-motion` skips the lock and the input capture entirely;
+- arrows / `Page Up` / `Page Down` / `Space` / `Home` / `End` scrub while locked,
+  and a *Skip intro* button is a visible escape hatch;
+- `seekTo` no longer re-seeks when the value hasn't moved (the naive version fires
+  a seek every rAF tick at rest — measured ~64/sec of pure decoder churn).
+
+Verified in Chromium: locked at rest, forward scrub 0→4.5s, backward scrub
+4.5→1.5s, release at the end, normal page scroll, re-lock on return, and backward
+scrub again after re-lock.
+
+To use it as this site's hero, its markup and script move into `index.html` and the
+inline styles swap to the page's existing tokens (`--bg`, `--ink`, `--accent`,
+`--ease-out`). Note the hero currently there is a text + CTA layout carrying the
+business's headline, phone CTA and trust badges — a full-bleed locked video would
+displace all of it, so that swap is a content decision, not just a code one.
