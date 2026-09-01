@@ -5,3 +5,4 @@ dist
 
 # tsc build info
 *.tsbuildinfo
+dist-artifact
