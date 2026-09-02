@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JARVIS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%2305070c'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%234fd6ff' stroke-width='1.5' stroke-opacity='.55'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%234fd6ff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#05070c; --panel:rgba(255,255,255,.035); --line:rgba(120,220,255,.14);
+    --ink:#dceaf5; --dim:rgba(220,234,245,.52); --dimmer:rgba(220,234,245,.3);
+    --cyan:#4fd6ff; --amber:#ffb347; --red:#ff6b6b; --green:#6ee7a8;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --font:ui-sans-serif,-apple-system,"SF Pro Text",Inter,Segoe UI,system-ui,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;overflow:hidden;
+  }
+  /* Depth: two slow radial washes so the void is not flat black. */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(60vw 60vw at 50% 42%,rgba(79,214,255,.10),transparent 62%),
+      radial-gradient(40vw 40vw at 82% 88%,rgba(255,179,71,.05),transparent 60%);
+  }
+  .grid{
+    position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),
+                     linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(72vw 72vw at 50% 45%,#000 20%,transparent 78%);
+    -webkit-mask-image:radial-gradient(72vw 72vw at 50% 45%,#000 20%,transparent 78%);
+  }
+  .shell{
+    position:relative;z-index:1;height:100%;display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;gap:18px;
+    max-width:1080px;margin:0 auto;padding:22px 24px 26px;
+  }
+
+  /* ---------- header ---------- */
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:baseline;gap:12px}
+  .brand h1{
+    margin:0;font-size:15px;font-weight:600;letter-spacing:.42em;text-transform:uppercase;
+  }
+  .brand span{font-size:11px;color:var(--dimmer);letter-spacing:.16em}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .badge{
+    font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;padding:5px 10px;
+    border:1px solid var(--line);border-radius:999px;color:var(--dim);
+    background:var(--panel);white-space:nowrap;
+  }
+  .badge.on{color:var(--green);border-color:rgba(110,231,168,.34)}
+  .badge.off{color:var(--dimmer)}
+
+  /* ---------- reactor ---------- */
+  /* Every ancestor of the scrolling log needs min-height:0, or the log grows
+     to fit its content and pushes the composer off the page instead of
+     scrolling inside its own box. */
+  .stage{
+    display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;
+    align-items:stretch;min-height:0;
+  }
+  .reactor{position:relative;width:200px;height:200px;justify-self:center;align-self:center}
+  .reactor svg{width:100%;height:100%;overflow:visible}
+  .ring{fill:none;stroke:var(--cyan);transform-origin:100px 100px}
+  #r1{stroke-opacity:.30;stroke-width:1;stroke-dasharray:3 7;animation:spin 34s linear infinite}
+  #r2{stroke-opacity:.55;stroke-width:1.5;stroke-dasharray:64 26;animation:spin 13s linear infinite reverse}
+  #r3{stroke-opacity:.22;stroke-width:6;stroke-dasharray:2 12;animation:spin 22s linear infinite}
+  .core{fill:var(--cyan);filter:drop-shadow(0 0 14px rgba(79,214,255,.75))}
+  .halo{fill:rgba(79,214,255,.10)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  /* Breathing only while idle; work has its own faster pulse. */
+  .reactor{animation:breathe 5.5s var(--ease) infinite}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.022)}}
+  body[data-state="listening"] .core{fill:var(--green);filter:drop-shadow(0 0 18px rgba(110,231,168,.85))}
+  body[data-state="listening"] .reactor{animation:pulse 1.15s var(--ease) infinite}
+  body[data-state="thinking"] .core{fill:var(--amber);filter:drop-shadow(0 0 20px rgba(255,179,71,.85))}
+  body[data-state="thinking"] .reactor{animation:pulse .72s var(--ease) infinite}
+  body[data-state="thinking"] #r2{animation-duration:2.4s}
+  body[data-state="speaking"] .reactor{animation:pulse 1.9s var(--ease) infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+
+  .status{min-width:0;min-height:0;display:flex;flex-direction:column}
+  .state{
+    font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);
+    display:flex;align-items:center;gap:9px;margin-bottom:10px;
+  }
+  .state i{width:6px;height:6px;border-radius:50%;background:currentColor;
+           box-shadow:0 0 10px currentColor;animation:blink 2s var(--ease) infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.28}}
+  .heard{font-size:22px;line-height:1.32;font-weight:500;margin:0 0 8px;
+         min-height:1.32em;color:var(--ink)}
+  .heard:empty::before{content:"Say something.";color:var(--dimmer);font-weight:400}
+  .tools{display:flex;gap:6px;flex-wrap:wrap;min-height:22px;flex:0 0 auto}
+  .state,.heard{flex:0 0 auto}
+  .tool{
+    font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:5px;
+    border:1px solid rgba(255,179,71,.3);color:var(--amber);
+    background:rgba(255,179,71,.07);animation:rise .34s var(--ease) both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+  /* ---------- transcript ---------- */
+  .log{
+    flex:1 1 auto;min-height:0;overflow-y:auto;padding:4px 4px 4px 0;display:flex;
+    flex-direction:column;gap:14px;scrollbar-width:thin;
+    scrollbar-color:rgba(120,220,255,.2) transparent;
+  }
+  .log::-webkit-scrollbar{width:6px}
+  .log::-webkit-scrollbar-thumb{background:rgba(120,220,255,.2);border-radius:3px}
+  .turn{animation:rise .4s var(--ease) both;max-width:76ch}
+  .turn .who{
+    font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dimmer);
+    margin-bottom:5px;display:flex;gap:8px;align-items:center;
+  }
+  .turn.you .who{color:rgba(220,234,245,.4)}
+  .turn.jarvis .who{color:rgba(79,214,255,.62)}
+  .turn p{margin:0;font-size:15.5px;line-height:1.62;white-space:pre-wrap;word-wrap:break-word}
+  .turn.you p{color:var(--dim)}
+  .turn.notify p{color:var(--amber)}
+  .turn.error p{color:var(--red)}
+  .via{
+    font-family:var(--mono);font-size:9.5px;padding:2px 6px;border-radius:4px;
+    border:1px solid var(--line);color:var(--dimmer);letter-spacing:.04em;
+  }
+  .via.reflex{color:var(--green);border-color:rgba(110,231,168,.26)}
+  .via.brain{color:var(--amber);border-color:rgba(255,179,71,.26)}
+  .caret::after{
+    content:"";display:inline-block;width:7px;height:1.05em;margin-left:2px;
+    background:var(--cyan);vertical-align:text-bottom;animation:blink 1s steps(2) infinite;
+  }
+
+  /* ---------- composer ---------- */
+  .composer{display:flex;gap:10px;align-items:center}
+  .field{
+    flex:1;display:flex;align-items:center;gap:12px;padding:13px 18px;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    transition:border-color .28s var(--ease),background .28s var(--ease);
+  }
+  .field:focus-within{border-color:rgba(79,214,255,.42);background:rgba(79,214,255,.05)}
+  .field input{
+    flex:1;background:none;border:none;outline:none;color:var(--ink);
+    font-family:var(--font);font-size:15px;
+  }
+  .field input::placeholder{color:var(--dimmer)}
+  button{
+    font:inherit;color:inherit;cursor:pointer;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:12px 15px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .18s var(--ease),border-color .22s var(--ease),
+               background .22s var(--ease),color .22s var(--ease);
+  }
+  button:hover{border-color:rgba(79,214,255,.4);background:rgba(79,214,255,.07)}
+  button:active{transform:scale(.96)}
+  button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+  button[aria-pressed="true"]{
+    color:var(--green);border-color:rgba(110,231,168,.45);background:rgba(110,231,168,.1)
+  }
+  button[disabled]{opacity:.35;cursor:not-allowed}
+  .mic{width:48px;height:48px;padding:0;justify-content:center;border-radius:50%}
+  .mic svg{width:19px;height:19px}
+  .hint{font-size:11px;color:var(--dimmer);text-align:center;letter-spacing:.05em}
+  kbd{
+    font-family:var(--mono);font-size:10px;border:1px solid var(--line);
+    border-radius:4px;padding:1px 5px;color:var(--dim);
+  }
+
+  @media (max-width:720px){
+    .stage{grid-template-columns:1fr;gap:14px}
+    .reactor{width:132px;height:132px}
+    .status{text-align:center}
+    .state{justify-content:center}
+    .tools{justify-content:center}
+    .heard{font-size:18px}
+    header{flex-direction:column;align-items:flex-start;gap:8px}
+    .badges{justify-content:flex-start}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+      transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body data-state="idle">
+<div class="grid" aria-hidden="true"></div>
+
+<div class="shell">
+  <header>
+    <div class="brand">
+      <h1 id="name">JARVIS</h1>
+      <span id="tagline">reflex &amp; reason</span>
+    </div>
+    <div class="badges">
+      <span class="badge" id="badge-link">link</span>
+      <span class="badge" id="badge-brain">brain</span>
+      <span class="badge" id="badge-skills">skills</span>
+      <span class="badge" id="badge-voice">voice</span>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div class="reactor" aria-hidden="true">
+      <svg viewBox="0 0 200 200">
+        <circle class="halo" cx="100" cy="100" r="62"/>
+        <circle class="ring" id="r1" cx="100" cy="100" r="88"/>
+        <circle class="ring" id="r2" cx="100" cy="100" r="72"/>
+        <circle class="ring" id="r3" cx="100" cy="100" r="55"/>
+        <circle class="core" cx="100" cy="100" r="19"/>
+      </svg>
+    </div>
+
+    <div class="status">
+      <div class="state"><i></i><span id="state-label">standing by</span></div>
+      <p class="heard" id="heard"></p>
+      <div class="tools" id="tools"></div>
+      <div class="log" id="log" role="log" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="composer">
+      <button class="mic" id="mic" title="Push to talk" aria-label="Push to talk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="2" width="6" height="12" rx="3"/>
+          <path d="M5 11a7 7 0 0 0 14 0M12 18v4"/>
+        </svg>
+      </button>
+      <div class="field">
+        <input id="input" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Ask me something, or press the microphone" aria-label="Ask JARVIS">
+      </div>
+      <button id="wake" aria-pressed="false" title="Listen continuously for the wake word">
+        wake word
+      </button>
+      <button id="mute" aria-pressed="false" title="Mute spoken replies">speak</button>
+    </div>
+    <p class="hint"><kbd>Enter</kbd> to send &middot; <kbd>Space</kbd> to talk &middot;
+       <kbd>Esc</kbd> to stop</p>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const log = $("log"), heardEl = $("heard"), toolsEl = $("tools"), input = $("input");
+  const micBtn = $("mic"), wakeBtn = $("wake"), muteBtn = $("mute"), stateLabel = $("state-label");
+
+  let wakeWord = "jarvis";
+  let speaking = true;          // speak replies aloud
+  let wakeMode = false;         // continuous listen, gated on the wake word
+  let pushing = false;          // one-shot push-to-talk
+  let current = null;           // the JARVIS bubble being streamed into
+  let busy = false;
+
+  const setState = (state, label) => {
+    document.body.dataset.state = state;
+    stateLabel.textContent = label;
+  };
+
+  // ---------- transcript ----------
+  function bubble(kind, who, text, via) {
+    const turn = document.createElement("div");
+    turn.className = `turn ${kind}`;
+    const head = document.createElement("div");
+    head.className = "who";
+    head.textContent = who;
+    if (via) {
+      const tag = document.createElement("span");
+      tag.className = `via ${via}`;
+      tag.textContent = via;
+      head.appendChild(tag);
+    }
+    const body = document.createElement("p");
+    body.textContent = text;
+    turn.append(head, body);
+    log.appendChild(turn);
+    log.scrollTop = log.scrollHeight;
+    return body;
+  }
+
+  // ---------- speech out ----------
+  const speak = (text) => {
+    if (!speaking || !("speechSynthesis" in window) || !text) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.06; utterance.pitch = 0.92;
+    // Prefer a British male voice when the platform has one - closer to the
+    // character, and it degrades to the default without complaint.
+    const voices = speechSynthesis.getVoices();
+    utterance.voice =
+      voices.find(v => /daniel|arthur|george/i.test(v.name)) ||
+      voices.find(v => v.lang === "en-GB") || null;
+    utterance.onstart = () => setState("speaking", "speaking");
+    utterance.onend = utterance.onerror = () => idle();
+    speechSynthesis.speak(utterance);
+  };
+
+  // Where the reactor rests between turns.
+  const idle = () => setState(wakeMode ? "listening" : "idle",
+                              wakeMode ? `listening for “${wakeWord}”` : "standing by");
+
+  // ---------- server ----------
+  async function ask(text, source) {
+    if (!text.trim() || busy) return;
+    busy = true;
+    heardEl.textContent = text;
+    toolsEl.innerHTML = "";
+    bubble("you", "you", text);
+    setState("thinking", "thinking");
+    current = null;
+    try {
+      const response = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, source: source || "text" })
+      });
+      if (!response.ok) throw new Error(`server said ${response.status}`);
+    } catch (err) {
+      bubble("error", "jarvis", `Lost contact with the assistant: ${err.message}`);
+      setState("idle", "disconnected");
+    } finally {
+      busy = false;
+    }
+  }
+
+  function connect() {
+    const stream = new EventSource("/api/events");
+    stream.onopen = () => {
+      $("badge-link").textContent = "linked";
+      $("badge-link").className = "badge on";
+    };
+    stream.onerror = () => {
+      $("badge-link").textContent = "reconnecting";
+      $("badge-link").className = "badge off";
+    };
+    stream.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === "token") {
+        // Tokens arrive only on the reasoning path; stream them in place.
+        if (!current) { current = bubble("jarvis", "jarvis", "", "brain"); current.classList.add("caret"); }
+        current.textContent += message.text;
+        log.scrollTop = log.scrollHeight;
+      } else if (message.type === "tool") {
+        const chip = document.createElement("span");
+        chip.className = "tool";
+        chip.textContent = message.name;
+        toolsEl.appendChild(chip);
+      } else if (message.type === "reply") {
+        if (current) {
+          current.classList.remove("caret");
+          current.textContent = message.display || message.speech;
+        } else {
+          bubble("jarvis", "jarvis", message.display || message.speech, message.path);
+        }
+        current = null;
+        speak(message.speech);
+        // Settle back immediately; onstart flips to "speaking" if the browser
+        // actually has a voice. Waiting on it would strand the reactor on
+        // "thinking" wherever speech synthesis is missing or silent.
+        idle();
+      } else if (message.type === "notify") {
+        bubble("notify", "jarvis", message.text);
+        speak(message.text);
+      } else if (message.type === "error") {
+        bubble("error", "jarvis", message.message);
+        setState("idle", "standing by");
+      }
+    };
+  }
+
+  // ---------- speech in ----------
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = "en-GB";
+    recognition.interimResults = true;
+    recognition.continuous = true;
+
+    recognition.onresult = (event) => {
+      let finalText = "", interim = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const result = event.results[i];
+        if (result.isFinal) finalText += result[0].transcript;
+        else interim += result[0].transcript;
+      }
+      if (interim && !finalText) heardEl.textContent = interim;
+      if (!finalText.trim()) return;
+
+      const said = finalText.trim();
+      if (pushing) {                      // push-to-talk: take it verbatim
+        pushing = false;
+        recognition.stop();
+        ask(said, "voice");
+        return;
+      }
+      // Wake mode: ignore everything that does not name us.
+      const at = said.toLowerCase().indexOf(wakeWord);
+      if (at === -1) { heardEl.textContent = ""; return; }
+      const command = said.slice(at + wakeWord.length).replace(/^[\s,.:!?]+/, "");
+      if (command) ask(command, "voice");
+    };
+
+    recognition.onerror = (event) => {
+      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+        $("badge-voice").textContent = "mic blocked";
+        $("badge-voice").className = "badge off";
+        wakeMode = false; wakeBtn.setAttribute("aria-pressed", "false");
+      }
+    };
+    // The browser ends recognition on its own every so often; restart it while
+    // wake mode is on so "always listening" actually stays on.
+    recognition.onend = () => {
+      if (wakeMode) { try { recognition.start(); } catch (_) {} }
+      else if (!pushing) setState("idle", "standing by");
+    };
+
+    $("badge-voice").textContent = "voice ready";
+    $("badge-voice").className = "badge on";
+  } else {
+    $("badge-voice").textContent = "no speech api";
+    $("badge-voice").className = "badge off";
+    micBtn.disabled = true; wakeBtn.disabled = true;
+    micBtn.title = wakeBtn.title = "This browser has no Web Speech API - try Chrome or Edge";
+  }
+
+  const startPushToTalk = () => {
+    if (!recognition || wakeMode || pushing) return;
+    pushing = true;
+    setState("listening", "listening");
+    try { recognition.start(); } catch (_) { pushing = false; }
+  };
+
+  micBtn.addEventListener("click", startPushToTalk);
+
+  wakeBtn.addEventListener("click", () => {
+    if (!recognition) return;
+    wakeMode = !wakeMode;
+    wakeBtn.setAttribute("aria-pressed", String(wakeMode));
+    if (wakeMode) {
+      setState("listening", `listening for “${wakeWord}”`);
+      try { recognition.start(); } catch (_) {}
+    } else {
+      recognition.stop();
+      setState("idle", "standing by");
+    }
+  });
+
+  muteBtn.addEventListener("click", () => {
+    speaking = !speaking;
+    muteBtn.setAttribute("aria-pressed", String(!speaking));
+    muteBtn.textContent = speaking ? "speak" : "muted";
+    if (!speaking && "speechSynthesis" in window) speechSynthesis.cancel();
+  });
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      const text = input.value;
+      input.value = "";
+      ask(text, "text");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+      if (recognition) { wakeMode = false; pushing = false;
+                         wakeBtn.setAttribute("aria-pressed", "false"); recognition.stop(); }
+      setState("idle", "standing by");
+    }
+    // Space talks, but only when the user is not typing into the field.
+    if (event.code === "Space" && document.activeElement !== input) {
+      event.preventDefault();
+      startPushToTalk();
+    }
+  });
+
+  // ---------- boot ----------
+  fetch("/api/skills").then(r => r.json()).then(info => {
+    wakeWord = (info.wake_word || "jarvis").toLowerCase();
+    $("name").textContent = info.name || "JARVIS";
+    document.title = info.name || "JARVIS";
+    $("badge-skills").textContent = `${info.skills.length} skills`;
+    $("badge-skills").className = "badge on";
+    $("badge-brain").textContent = info.brain ? "claude online" : "skills only";
+    $("badge-brain").className = info.brain ? "badge on" : "badge off";
+    $("tagline").textContent = info.brain ? "reflex & reason" : "reflex only";
+  }).catch(() => {});
+
+  connect();
+  input.focus();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jarvis-assistant"
+version = "1.0.0"
+description = "A voice assistant with a fast reflex path and a Claude-powered reasoning path."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = ["jarvis", "voice-assistant", "claude", "anthropic", "speech", "jarvis-ai"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+# The assistant and its HUD run on the standard library alone. Everything that
+# could fail to install is an extra.
+dependencies = []
+
+[project.optional-dependencies]
+brain = ["anthropic>=1.0"]
+voice = ["pyttsx3>=2.90", "SpeechRecognition>=3.10", "PyAudio>=0.2.13"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+jarvis = "jarvis.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["jarvis*"]
+
+[tool.setuptools.package-data]
+"jarvis.server" = ["static/*.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error::DeprecationWarning"]
